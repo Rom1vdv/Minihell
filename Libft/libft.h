@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:41:11 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 11:09:50 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/10 18:45:47 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // # include <unistd.h>
 # include <stdlib.h>
 // # include <limits.h>
-// # include <stdarg.h>
+# include <stdarg.h>
 
 // int		ft_max(int a, int b);
 // int		ft_min(int a, int b);
@@ -33,6 +33,7 @@ void	ft_free_arr(char **arr);
 // int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+void	ft_strcpy(char *dst, const char *src);
 // char	*get_next_line(int fd);
 // char	*ft_strjoin_gnl(char *s1, char *s2);
 // char	*ft_strdup_gnl(char **str);
@@ -43,8 +44,8 @@ size_t	ft_strlen(const char *str);
 // char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
-// char	*ft_strjoins(int ac, ...);
-// char	*ft_strdup(char *str);
+char	*ft_strjoins(int ac, ...);
+char	*ft_strdup(const char *s1);
 // char	**ft_arrayadd_back(char **arr, char *str);
 int		ft_arraylen(char **array);
 

@@ -3,22 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+         #
+#    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/10 14:14:01 by romvan-d         ###   ########.fr        #
+#    Updated: 2023/01/10 15:25:27 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 OBJS_DIR = Objs
-OBJS_DIR_SRCS = Objs/Sources
+OBJS_DIR_Sources = Objs/Sources
 
-FILES = builtins builtins2 colors lexer main signal test utils
+FILES = builtins builtins2 cd colors env lexer main signal test utils
 
-SRCS = $(addprefix Sources/, $(addsuffix .c, $(FILES)))
+Sources = $(addprefix Sources/, $(addsuffix .c, $(FILES)))
 
-OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
+OBJS = $(addprefix $(OBJS_DIR)/, $(Sources:.c=.o))
 
 # ===---===---===---===---===---===---===---===---===---===---===---===---
 
@@ -36,18 +36,18 @@ LIBFT = $(LIBFT_PATH)
 
 # ===---===---===---===---===---===---===---===---===---===---===---===---
 
-all: $(OBJS_DIR_SRCS) $(NAME)
+all: $(OBJS_DIR_Sources) $(NAME)
 
-$(OBJS_DIR_SRCS):
+$(OBJS_DIR_Sources):
 	@mkdir -p $(OBJS_DIR)
-	@mkdir -p $(OBJS_DIR)/SRCS
+	@mkdir -p $(OBJS_DIR)/Sources
 
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(READLINE) $(LIBFT)
 
-$(OBJS_DIR)/SRCS/%.o: SRCS/%.c
+$(OBJS_DIR)/Sources/%.o: Sources/%.c
 	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
-	@mv $(<:.c=.o) $(OBJS_DIR)/SRCS
+	@mv $(<:.c=.o) $(OBJS_DIR)/Sources
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
@@ -61,4 +61,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re NAME OBJS_DIR_SRCS LIBFT
+.PHONY: all clean fclean re NAME OBJS_DIR_Sources LIBFT
