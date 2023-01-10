@@ -6,7 +6,7 @@
 #    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/10 15:25:27 by yhuberla         ###   ########.fr        #
+#    Updated: 2023/01/10 19:36:11 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME = minishell
 OBJS_DIR = Objs
 OBJS_DIR_Sources = Objs/Sources
 
-FILES = builtins builtins2 cd colors env lexer main signal test utils
+FILES = builtins builtins2 cd colors env export lexer main signal test unset \
+		utils
 
 Sources = $(addprefix Sources/, $(addsuffix .c, $(FILES)))
 

@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:25:10 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 18:58:46 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:45:24 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,15 @@ void	ft_setenv(t_envp *envp, char *target, char *value)
 	int		targetlen;
 	char	*join;
 
-	if (!envp || !target)
+	if (!envp || !target || !value)
 		return ;
-	if (!value)
-		ft_perror("strdup");
 	targetlen = ft_strlen(target);
 	while (envp)
 	{
 		if (!ft_strncmp(envp->head, target, targetlen))
 		{
-			envp->value = value;
+			free(envp->value);
+			envp->value = ft_strdup(value);
 			return ;
 		}
 		if (envp->next)

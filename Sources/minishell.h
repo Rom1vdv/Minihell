@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 18:28:11 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:37:00 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int		check_quotes(char *str);
 void	exec_echo(char **lex, char *args);
 void	exec_cd(char **lex, t_ms *ms);
 void	display_pwd(void);
+void	exec_export(t_ms *ms, char *line);
+void	exec_unset(t_ms *ms, char *target);
 void	display_env(t_envp *envp);
 
 t_envp	*env_init(char **envp);
