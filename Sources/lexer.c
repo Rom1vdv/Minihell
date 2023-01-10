@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../Includes/minishell.h"
 
 void	lexer(char *rl, t_ms *ms)
 {

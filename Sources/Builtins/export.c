@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins2.c                                        :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/10 10:02:28 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 18:27:30 by yhuberla         ###   ########.fr       */
+/*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
+/*   Updated: 2023/01/10 20:11:43 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
-void	display_env(t_envp *envp)
+void	exec_export(t_ms *ms, char *line)
 {
-	while (envp)
+	char	*value;
+
+	if (!line)
 	{
-		printf("%s=%s\n", envp->head, envp->value);
-		envp = envp->next;
+		printf("TODO -> printf bunch of stuff when export used alone\n"); //todo
+		return ;
 	}
+	value = ft_strchr(line, '=');
+	if (!value)
+		return ;
+	line[ft_strlen(line) - ft_strlen(value)] = '\0';
+	ft_setenv(ms->envp, line, &value[1]);
 }

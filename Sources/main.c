@@ -6,11 +6,11 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 18:10:59 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:11:57 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../Includes/minishell.h"
 
 /* SIGINT = CTRL+C, */
 static void	setup(t_ms *ms, char **envp)

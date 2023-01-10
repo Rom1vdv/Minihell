@@ -6,11 +6,11 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:31:57 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 14:58:59 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:11:59 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../Includes/minishell.h"
 
 void	signal_handler(int signo, siginfo_t *info, void *context)
 {

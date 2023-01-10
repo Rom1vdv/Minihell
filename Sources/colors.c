@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../Includes/minishell.h"
 
 /* any call to this function must be followed by a printf("\n"); */
 void	set_col(char *col)

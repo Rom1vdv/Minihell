@@ -6,11 +6,11 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:25:10 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 19:45:24 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:11:41 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 static t_envp	*envp_new(char *line)
 {

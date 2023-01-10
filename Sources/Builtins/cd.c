@@ -6,11 +6,11 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 19:45:31 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:11:38 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 /* step 5 in https://man7.org/linux/man-pages/man1/cd.1p.html */
 static void	cat_cdpath(char curpath[255], char *directory, t_envp *envp)

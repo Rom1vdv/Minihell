@@ -6,7 +6,7 @@
 #    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/10 19:36:11 by yhuberla         ###   ########.fr        #
+#    Updated: 2023/01/10 20:11:01 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,11 @@ NAME = minishell
 OBJS_DIR = Objs
 OBJS_DIR_Sources = Objs/Sources
 
-FILES = builtins builtins2 cd colors env export lexer main signal test unset \
-		utils
+FILES = colors lexer main signal test utils
+
+FILES_BUILTINS = builtins builtins2 cd env export unset
+
+FILES += $(addprefix Builtins/, $(FILES_BUILTINS))
 
 Sources = $(addprefix Sources/, $(addsuffix .c, $(FILES)))
 
@@ -42,9 +45,14 @@ all: $(OBJS_DIR_Sources) $(NAME)
 $(OBJS_DIR_Sources):
 	@mkdir -p $(OBJS_DIR)
 	@mkdir -p $(OBJS_DIR)/Sources
+	@mkdir -p $(OBJS_DIR)/Sources/Builtins
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(READLINE) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(READLINE) $(LIBFT) -I Includes
+
+$(OBJS_DIR)/Sources/Builtins/%.o: Sources/Builtins/%.c
+	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
+	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Builtins
 
 $(OBJS_DIR)/Sources/%.o: Sources/%.c
 	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)

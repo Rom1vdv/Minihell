@@ -6,11 +6,11 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 19:40:44 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:11:46 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 static void	ft_free_node_envp(t_envp *free_me)
 {

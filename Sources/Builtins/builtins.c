@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../Includes/minishell.h"
 
 static void	print_echo(char *str)
 {
