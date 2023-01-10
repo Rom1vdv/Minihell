@@ -35,7 +35,8 @@ void	lexer(char *rl, t_ms *ms)
 		display_env(ms->envp);
 	else if (!ft_strncmp(lex[0], "exit", 5))
 		close_program();
-		
+	else
+		exec_cmd(ms->envp_original, ft_getenv(ms->envp, "PATH"), lex);
 	ft_free_arr(lex);
 }
 

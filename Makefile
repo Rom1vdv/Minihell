@@ -6,7 +6,7 @@
 #    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/10 20:11:01 by yhuberla         ###   ########.fr        #
+#    Updated: 2023/01/10 20:29:54 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,10 @@ FILES = colors lexer main signal test utils
 FILES_BUILTINS = builtins builtins2 cd env export unset
 
 FILES += $(addprefix Builtins/, $(FILES_BUILTINS))
+
+FILES_EXEC = exec_cmd
+
+FILES += $(addprefix Exec/, $(FILES_EXEC))
 
 Sources = $(addprefix Sources/, $(addsuffix .c, $(FILES)))
 
@@ -46,6 +50,7 @@ $(OBJS_DIR_Sources):
 	@mkdir -p $(OBJS_DIR)
 	@mkdir -p $(OBJS_DIR)/Sources
 	@mkdir -p $(OBJS_DIR)/Sources/Builtins
+	@mkdir -p $(OBJS_DIR)/Sources/Exec
 
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(READLINE) $(LIBFT) -I Includes
@@ -53,6 +58,10 @@ $(NAME): $(OBJS) $(LIBFT)
 $(OBJS_DIR)/Sources/Builtins/%.o: Sources/Builtins/%.c
 	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
 	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Builtins
+
+$(OBJS_DIR)/Sources/Exec/%.o: Sources/Exec/%.c
+	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
+	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Exec
 
 $(OBJS_DIR)/Sources/%.o: Sources/%.c
 	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)

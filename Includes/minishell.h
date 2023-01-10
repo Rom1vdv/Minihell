@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 19:37:00 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:28:48 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 # include <signal.h>
 # include <sys/errno.h>
+# include <sys/wait.h>
 
 # define BLUE "\033[0;34m"
 # define CYAN "\033[0;36m"
@@ -44,7 +45,7 @@ typedef struct s_envp {
 }				t_envp;
 
 typedef struct s_minishell {
-	char	prev_pwd[255];
+	char	**envp_original;
 	t_envp	*envp;
 }				t_ms;
 
@@ -58,6 +59,8 @@ void	display_pwd(void);
 void	exec_export(t_ms *ms, char *line);
 void	exec_unset(t_ms *ms, char *target);
 void	display_env(t_envp *envp);
+
+void	exec_cmd(char **envp, char *paths, char **cmds);
 
 t_envp	*env_init(char **envp);
 char	*ft_getenv(t_envp *envp, char *target);
