@@ -18,6 +18,11 @@ void	lexer(char *rl, t_ms *ms)
 
 	if (!rl[0])
 		return ;
+	if (check_quotes(rl))
+	{
+		printf("Unclosed quotes detected, pls fix");
+		return ;
+	}
 	lex = ft_split(rl, ' ');
 	if (!ft_strncmp(lex[0], "test", 5))
 		test();

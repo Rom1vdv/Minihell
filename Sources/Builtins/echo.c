@@ -52,10 +52,7 @@ void	exec_echo(char **lex, char *args)
 	option = (!ft_strncmp(lex[1], "-n", 3));
 	if (option)
 		args = ft_strchr(args, 'n') + 1;
-	if (check_quotes(args))
-		printf("Unclosed quotes detected, pls fix");
-	else
-		print_echo(args);
+	print_echo(args);
 	if (!option)
 		printf("\n");
 }

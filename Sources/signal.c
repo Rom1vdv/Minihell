@@ -6,12 +6,13 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:31:57 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 20:11:59 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:28:27 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Includes/minishell.h"
 
+/* SIGINT = ctrl+c */
 void	signal_handler(int signo, siginfo_t *info, void *context)
 {
 	(void)context;
@@ -24,4 +25,6 @@ void	signal_handler(int signo, siginfo_t *info, void *context)
 		// rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	else if (signo == SIGQUIT)
+		printf("CTRL+\\ catch\n");
 }
