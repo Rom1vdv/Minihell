@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 20:11:38 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/11 11:17:10 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,11 @@ static void	cat_pwd(char curpath[255], t_envp *envp)
 
 	pwd = ft_getenv(envp, "PWD");
 	if (!pwd)
+	{
+		printf("you must first export PWD\n");
+		curpath[0] = '\0';
 		return ;
+	}
 	if (pwd[ft_strlen(pwd) - 1] == '/')
 		path = ft_strjoin(pwd, curpath);
 	else
@@ -141,7 +145,7 @@ void	exec_cd(char **lex, t_ms *ms)
 		directory = lex[1];
 	else
 	{
-		printf("cd: too many arguments\n"); //check if this is the behavior
+		printf("cd: too many arguments\n"); //check if this is the behavior, spoiler alert : it is not
 		return ;
 	}
 	if (ft_strncmp(directory, "-", 2))
@@ -150,16 +154,28 @@ void	exec_cd(char **lex, t_ms *ms)
 			ft_strcpy(curpath, directory);
 		else
 			cat_cdpath(curpath, directory, ms->envp);
+		if (!curpath[0])
+		{
+			directory = ft_strjoin("-bash: cd: ", lex[1]);
+			perror(directory);
+			free(directory);
+			return ;
+		}
 		if (curpath[0] != '/')
+		{
 			cat_pwd(curpath, ms->envp);
+			if (!curpath[0])
+				return ;
+		}
 		convert_canon(curpath);
 	}
 	else
 		ft_strcpy(curpath, ft_getenv(ms->envp, "OLDPWD"));
 	// do we step 9 in https://man7.org/linux/man-pages/man1/cd.1p.html ????
+	ft_setenvpwd(ms->envp); //if pwd was unset, we reset it
 	if (chdir(curpath) == -1)
 	{
-		directory = ft_strjoin("-bash: cd: ", curpath);
+		directory = ft_strjoin("-bash: cd: ", curpath); //or join with lex[1] to mimic real msg ??
 		perror(directory);
 		free(directory);
 	}

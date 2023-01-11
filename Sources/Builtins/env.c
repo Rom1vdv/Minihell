@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:25:10 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 20:11:41 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/11 11:17:25 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,12 @@ void	ft_setenv(t_envp *envp, char *target, char *value)
 			return (free(join));
 		}
 	}
+}
+
+void	ft_setenvpwd(t_envp *envp)
+{
+	char	pwd[255];
+
+	if (getcwd(pwd, sizeof(pwd)))
+		ft_setenv(envp, "PWD", pwd);
 }

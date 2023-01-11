@@ -26,7 +26,7 @@ void	lexer(char *rl, t_ms *ms)
 	else if (!ft_strncmp(lex[0], "cd", 3))
 		exec_cd(lex, ms);
 	else if (!ft_strncmp(lex[0], "pwd", 4))
-		display_pwd();
+		printf("%s\n", ft_getenv(ms->envp, "PWD"));
 	else if (!ft_strncmp(lex[0], "export", 7))
 		exec_export(ms, lex[1]);
 	else if (!ft_strncmp(lex[0], "unset", 6))

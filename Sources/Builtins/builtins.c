@@ -63,7 +63,7 @@ void	exec_echo(char **lex, char *args)
 /**
  * It gets the current working directory and prints it to the standard output
  */
-void	display_pwd(void)
+void	display_pwd(void) //don't need this no more
 {
 	char	str[255];
 

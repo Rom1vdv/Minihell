@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 20:45:25 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/11 11:13:25 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,35 @@ static void	setup(t_ms *ms, char **envp)
 	printf("\n");
 }
 
+static void	ft_printshortdir(void)
+{
+	int		index;
+	char	pwd[255];
+
+	if (!getcwd(pwd, sizeof(pwd)))
+		return ;
+	index = ft_strlen(pwd) - 1;
+	while (index > 0 && pwd[index] != '/')
+		--index;
+	if (pwd[index] == '/')
+		++index;
+	printf("%s", &pwd[index]);
+}
+
 static void	loop(t_ms *ms)
 {
 	char	*rl;
 	char	*logname;
-	char	*pwd;
 
 	while (1)
 	{
 		logname = ft_getenv(ms->envp, "LOGNAME");
-		write(1, logname, ft_strlen(logname));
-		write(1, " ", 1);
-		pwd = ft_getenv(ms->envp, "PWD");
-		write(1, pwd, ft_strlen(pwd));
+		if (!logname)
+			logname = "anonymous";
+		set_col(PURPLE);
+		printf("%s ", logname);
+		set_col(WHITE);
+		ft_printshortdir();
 		rl = readline(" $> ");
 		if (!rl)	// == ctrl+D
 			close_program();
