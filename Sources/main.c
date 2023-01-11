@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/11 13:21:57 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/11 19:24:55 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void	setup(t_ms *ms, char **envp)
 	act.sa_sigaction = &signal_handler;
 	if (sigaction(SIGINT, &act, NULL) == -1)
 		ft_perror("sigaction");
+	if (sigaction(SIGQUIT, &act, NULL) == -1)
+		ft_perror("sigaction");
 	ms->envp_original = envp;
 	ms->envp = env_init(envp);
 	set_col(GREEN);
@@ -29,7 +31,7 @@ static void	setup(t_ms *ms, char **envp)
 	printf("\n");
 }
 
-static void	ft_printshortdir(void)
+static void	ft_catshortdir(char prompt[255])
 {
 	int		index;
 	char	pwd[255];
@@ -41,24 +43,27 @@ static void	ft_printshortdir(void)
 		--index;
 	if (pwd[index] == '/')
 		++index;
-	printf("%s", &pwd[index]);
+	ft_strcat(prompt, &pwd[index]);
 }
 
 static void	loop(t_ms *ms)
 {
 	char	*rl;
 	char	*logname;
+	char	prompt[255];
 
 	while (1)
 	{
 		logname = ft_getenv(ms->envp, "LOGNAME");
 		if (!logname)
 			logname = "anonymous";
-		set_col(PURPLE);
-		printf("%s ", logname);
-		set_col(WHITE);
-		ft_printshortdir();
-		rl = readline(" $> ");
+		ft_strcpy(prompt, PURPLE);
+		ft_strcat(prompt, logname);
+		ft_strcat(prompt, WHITE);
+		ft_strcat(prompt, " ");
+		ft_catshortdir(prompt);
+		ft_strcat(prompt, " $> ");
+		rl = readline(prompt);
 		if (!rl)	// == ctrl+D
 			close_program();
 		add_history(rl);

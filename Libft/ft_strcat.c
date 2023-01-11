@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 15:31:57 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/11 19:28:52 by yhuberla         ###   ########.fr       */
+/*   Created: 2022/10/03 13:55:46 by yhuberla          #+#    #+#             */
+/*   Updated: 2023/01/11 19:14:35 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Includes/minishell.h"
+#include "libft.h"
 
-/* SIGINT = ctrl+c */
-void	signal_handler(int signo, siginfo_t *info, void *context)
+void	ft_strcat(char *dst, const char *src)
 {
-	(void)context;
-	(void)signo;
-	(void)info;
-	if (signo == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		// rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (signo == SIGQUIT)
-	{
-		printf("CTRL+\\ catch\n");
+	size_t	index;
+	size_t	dstlen;
+
+	if (!dst || !src)
 		return ;
+	dstlen = ft_strlen(dst);
+	index = 0;
+	while (src[index])
+	{
+		dst[dstlen + index] = src[index];
+		++index;
 	}
+	dst[dstlen + index] = '\0';
 }

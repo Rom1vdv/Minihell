@@ -6,14 +6,14 @@
 #    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/28 12:41:01 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/10 18:43:57 by yhuberla         ###   ########.fr        #
+#    Updated: 2023/01/11 19:14:16 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
 FILES = ft_arraylen ft_bzero ft_free_arr ft_putendl ft_split ft_strchr \
-		ft_strcpy ft_strdup ft_strjoin ft_strjoins ft_strlen ft_strncmp
+		ft_strcat ft_strcpy ft_strdup ft_strjoin ft_strjoins ft_strlen ft_strncmp
 
 SRCS = $(addsuffix .c, $(FILES))
 

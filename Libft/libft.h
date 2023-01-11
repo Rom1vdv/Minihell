@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:41:11 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 18:45:47 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/11 19:14:05 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ft_free_arr(char **arr);
 char	*ft_strchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_strcpy(char *dst, const char *src);
+void	ft_strcat(char *dst, const char *src);
 // char	*get_next_line(int fd);
 // char	*ft_strjoin_gnl(char *s1, char *s2);
 // char	*ft_strdup_gnl(char **str);

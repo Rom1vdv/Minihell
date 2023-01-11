@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/11 11:23:01 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:11:29 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_envp {
 }				t_envp;
 
 typedef struct s_minishell {
+	char	rl[1024];
 	char	**envp_original;
 	t_envp	*envp;
 }				t_ms;
@@ -52,7 +53,6 @@ typedef struct s_minishell {
 void	signal_handler(int signo, siginfo_t *info, void *context);
 
 void	lexer(char *rl, t_ms *ms);
-int		check_quotes(char *str);
 void	exec_echo(char **lex, char *args);
 void	exec_cd(char **lex, t_ms *ms);
 void	display_pwd(void);
