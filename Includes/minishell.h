@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/11 11:17:14 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/11 11:23:01 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define YELLOW "\033[0;33m"
 
 typedef struct s_envp {
-	char			*head;
+	char			*key;
 	char			*value;
 	struct s_envp	*next;
 }				t_envp;

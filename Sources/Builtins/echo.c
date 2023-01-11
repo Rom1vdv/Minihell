@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/10 09:47:43 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 09:47:43 by yhuberla         ###   ########.fr       */
+/*   Created: 2023/01/11 11:26:09 by yhuberla          #+#    #+#             */
+/*   Updated: 2023/01/11 11:26:09 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,6 @@ void	exec_echo(char **lex, char *args)
 	if (!option)
 		printf("\n");
 }
-
-/**
- * It gets the current working directory and prints it to the standard output
- */
-void	display_pwd(void) //don't need this no more
-{
-	char	str[255];
-
-	if (getcwd(str, sizeof(str)))
-			printf("%s\n", str);
-}
-
 
 // static void	print_echo(char **lex, int option) -> doesn't work for "echo 'one    two'"...
 // {
