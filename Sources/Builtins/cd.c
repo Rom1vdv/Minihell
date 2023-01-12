@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 09:23:42 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/12 14:40:10 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,46 +193,3 @@ void	exec_cd(char **lex, t_ms *ms)
 	if (!ft_strncmp(directory, "-", 2))
 		printf("%s\n", curpath);
 }
-
-
-/**
- * It changes the current working directory to the one specified in the first argument of the command
- * 
- * @param lex the array of strings that are the command and its arguments
- * @param ms a structure that contains the previous pwd
- */
-// void	exec_cd(char **lex, t_ms *ms)
-// {
-// 	char	*msg;
-// 	char	tmp_pwd[255];
-// 	char	new_pwd[255];
-// 	int		ret_cd;
-
-// 	ret_cd = 0;
-// 	printf("prev before : %s\n", ms->prev_pwd);
-// 	getcwd(tmp_pwd, sizeof(tmp_pwd));
-// 	if (ft_arraylen(lex) > 2)
-// 		printf("-bash: cd: too many arguments\n");
-// 	else if (!ft_strncmp(lex[1], "-", 2))
-// 	{
-// 		if (!ms->prev_pwd)
-// 			printf("there is no previous pwd\n");
-// 		else
-// 			ret_cd = chdir(ms->prev_pwd);
-// 	}
-// 	else 
-// 		ret_cd = chdir(lex[1]);
-// 	if (ret_cd == -1)
-// 	{
-// 		msg = ft_strjoin("-bash: cd: ", lex[1]);
-// 		perror(msg);
-// 		free(msg);
-// 	}
-// 	else
-// 	{
-// 		getcwd(new_pwd, sizeof(new_pwd));
-// 		printf("old : %s, new : %s\n", tmp_pwd, new_pwd);
-// 		ms->prev_pwd = tmp_pwd;
-// 	}
-// 	printf("prev after : %s\n", ms->prev_pwd);
-// }

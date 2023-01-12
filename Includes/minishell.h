@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 09:50:45 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/12 15:52:44 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,12 @@ void	exec_env(t_envp *envp);
 void	exec_cmd(char **envp, char *paths, char **cmds);
 
 t_envp	*env_init(char **envp);
+char	**env_dup(t_envp *envp);
 char	*ft_getenv(t_envp *envp, char *target);
 void	ft_setenv(t_envp *envp, char *target, char *value);
 void	ft_setenvpwd(t_envp *envp);
+int		ft_envplen(t_envp *envp);
+void	env_increment_shlvl(t_envp *envp);
 
 void	set_col(char *col);
 void	greet_user(void);

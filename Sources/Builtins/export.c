@@ -6,24 +6,11 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 10:12:52 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/12 13:26:40 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
-
-static int	ft_envplen(t_envp *envp)
-{
-	int	res;
-
-	res = 0;
-	while (envp)
-	{
-		++res;
-		envp = envp->next;
-	}
-	return (res);
-}
 
 static void	display_sorted_env(t_envp *envp)
 {
@@ -42,6 +29,19 @@ static void	display_sorted_env(t_envp *envp)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		++index;
 	}
+}
+
+int	ft_envplen(t_envp *envp)
+{
+	int	res;
+
+	res = 0;
+	while (envp)
+	{
+		++res;
+		envp = envp->next;
+	}
+	return (res);
 }
 
 void	exec_export(t_ms *ms, char *line)

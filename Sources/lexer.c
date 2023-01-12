@@ -108,6 +108,7 @@ static int	transform_metachars(t_ms *ms, char *str)
 void	lexer(char *rl, t_ms *ms)
 {
 	char	**lex;
+	char	**envp_dup;
 
 	if (!rl[0])
 		return ;
@@ -139,6 +140,10 @@ void	lexer(char *rl, t_ms *ms)
 	else if (!ft_strncmp(lex[0], "exit", 5))
 		close_program();
 	else
-		exec_cmd(ms->envp_original, ft_getenv(ms->envp, "PATH"), lex);
+	{
+		envp_dup = env_dup(ms->envp);
+		exec_cmd(envp_dup, ft_getenv(ms->envp, "PATH"), lex);
+		ft_free_arr(envp_dup);
+	}
 	ft_free_arr(lex);
 }

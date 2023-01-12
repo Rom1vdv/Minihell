@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:24:35 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 10:04:49 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/12 15:43:14 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	ft_setenv(t_envp *envp, char *target, char *value)
 
 	if (!envp || !target || !value)
 		return ;
-	targetlen = ft_strlen(target);
+	targetlen = ft_strlen(target) + 1;
 	tmp = envp;
 	while (tmp)
 	{
@@ -99,4 +99,14 @@ void	ft_setenv(t_envp *envp, char *target, char *value)
 			return (free(join));
 		}
 	}
+}
+
+void	env_increment_shlvl(t_envp *envp)
+{
+	char	*value;
+
+	value = ft_getenv(envp, "SHLVL");
+	if (!value)
+		return (ft_setenv(envp, "SHLVL", "1"));
+	ft_setenv(envp, "SHLVL", ft_itoa(ft_atoi(value) + 1));
 }

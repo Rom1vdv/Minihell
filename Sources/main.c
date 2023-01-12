@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/11 19:24:55 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/12 15:37:01 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	setup(t_ms *ms, char **envp)
 		ft_perror("sigaction");
 	ms->envp_original = envp;
 	ms->envp = env_init(envp);
+	env_increment_shlvl(ms->envp);
 	set_col(GREEN);
 	greet_user();
 	set_col(WHITE);

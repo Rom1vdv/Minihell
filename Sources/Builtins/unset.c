@@ -6,11 +6,24 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/11 11:23:31 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/12 10:53:29 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
+
+static void	env_unsetascii(t_envp *envp, t_envp *target)
+{
+	int	lencmp;
+
+	lencmp = ft_strlen(target->key);
+	while (envp)
+	{
+		if (ft_strncmp(envp->key, target->key, lencmp) > 0)
+			--envp->ascii_pos;
+		envp = envp->next;
+	}
+}
 
 static void	ft_free_node_envp(t_envp *free_me)
 {
@@ -29,12 +42,13 @@ void	exec_unset(t_ms *ms, char *target)
 		return ;
 	if (!target)
 	{
-		printf("not enough arguments\n");
+		printf("unset: not enough arguments\n");
 		return ;
 	}
 	targetlen = ft_strlen(target);
 	if (!ft_strncmp(ms->envp->key, target, targetlen))
 	{
+		env_unsetascii(ms->envp, ms->envp);
 		free_this = ms->envp;
 		ms->envp = ms->envp->next;
 		ft_free_node_envp(free_this);
@@ -45,6 +59,7 @@ void	exec_unset(t_ms *ms, char *target)
 	{
 		if (!ft_strncmp(tmp->next->key, target, targetlen))
 		{
+			env_unsetascii(ms->envp, tmp->next);
 			free_this = tmp->next;
 			tmp->next = tmp->next->next;
 			ft_free_node_envp(free_this);
