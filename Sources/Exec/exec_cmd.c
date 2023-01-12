@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 20:30:12 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/12 09:25:15 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	exec_cmd(char **envp, char *paths, char **cmds)
 
 	if (!cmds)
 		return ;
-	cmds[0] = ft_get_cmdpath(cmds[0], ft_split(paths, ':'));
+	if (paths)
+		cmds[0] = ft_get_cmdpath(cmds[0], ft_split(paths, ':'));
 	if (!cmds[0])
 		return ;
 	ft_fork(&pid);

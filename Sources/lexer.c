@@ -129,13 +129,13 @@ void	lexer(char *rl, t_ms *ms)
 	else if (!ft_strncmp(lex[0], "cd", 3))
 		exec_cd(lex, ms);
 	else if (!ft_strncmp(lex[0], "pwd", 4))
-		printf("%s\n", ft_getenv(ms->envp, "PWD"));
+		exec_pwd();
 	else if (!ft_strncmp(lex[0], "export", 7))
 		exec_export(ms, lex[1]);
 	else if (!ft_strncmp(lex[0], "unset", 6))
 		exec_unset(ms, lex[1]);
 	else if (!ft_strncmp(lex[0], "env", 4))
-		display_env(ms->envp);
+		exec_env(ms->envp);
 	else if (!ft_strncmp(lex[0], "exit", 5))
 		close_program();
 	else

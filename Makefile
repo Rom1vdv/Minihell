@@ -6,7 +6,7 @@
 #    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/11 11:26:29 by yhuberla         ###   ########.fr        #
+#    Updated: 2023/01/12 09:14:12 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ OBJS_DIR_Sources = Objs/Sources
 
 FILES = colors lexer main signal test utils
 
-FILES_BUILTINS = cd echo env env_utils export unset
+FILES_BUILTINS = cd echo env env_utils export pwd unset
 
 FILES += $(addprefix Builtins/, $(FILES_BUILTINS))
 

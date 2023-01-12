@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/11 16:11:29 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/12 09:50:45 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@
 # define YELLOW "\033[0;33m"
 
 typedef struct s_envp {
-	char			*key;
-	char			*value;
+	char	*key;
+	char	*value;
+	int		ascii_pos;
 	struct s_envp	*next;
 }				t_envp;
 
@@ -55,10 +56,10 @@ void	signal_handler(int signo, siginfo_t *info, void *context);
 void	lexer(char *rl, t_ms *ms);
 void	exec_echo(char **lex, char *args);
 void	exec_cd(char **lex, t_ms *ms);
-void	display_pwd(void);
+void	exec_pwd(void);
 void	exec_export(t_ms *ms, char *line);
 void	exec_unset(t_ms *ms, char *target);
-void	display_env(t_envp *envp);
+void	exec_env(t_envp *envp);
 
 void	exec_cmd(char **envp, char *paths, char **cmds);
 

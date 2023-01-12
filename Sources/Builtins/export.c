@@ -6,19 +6,53 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 20:11:43 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/12 10:12:52 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
+static int	ft_envplen(t_envp *envp)
+{
+	int	res;
+
+	res = 0;
+	while (envp)
+	{
+		++res;
+		envp = envp->next;
+	}
+	return (res);
+}
+
+static void	display_sorted_env(t_envp *envp)
+{
+	int		index;
+	int		size;
+	t_envp	*tmp;
+
+	size = ft_envplen(envp);
+	index = 1;
+	while (index < size + 1)
+	{
+		tmp = envp;
+		while (tmp && tmp->ascii_pos != index)
+			tmp = tmp->next;
+		if (tmp && ft_strncmp(tmp->key, "_", 2))
+			printf("%s=%s\n", tmp->key, tmp->value);
+		++index;
+	}
+}
+
 void	exec_export(t_ms *ms, char *line)
 {
 	char	*value;
 
+	if (!ms || !ms->envp)
+		return ;
 	if (!line)
 	{
-		printf("TODO -> printf bunch of stuff when export used alone\n"); //todo
+		display_sorted_env(ms->envp);
 		return ;
 	}
 	value = ft_strchr(line, '=');
