@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Includes/minishell.h"
+#include "../../Includes/minishell.h"
 
 static int	check_quotes(char *str)
 {
@@ -40,7 +40,7 @@ static int	ft_catvar(t_ms *ms, int *cpyndex, char *str, int *index, char quote) 
 	char	*var;
 	int		kindex;
 
-	if (str[*index + 1] == '?') //TODO
+	if (str[*index + 1] == '?')
 	{
 		++(*index);
 		var = ft_itoa(ms->ret_cmd);
@@ -119,7 +119,7 @@ static int	transform_metachars(t_ms *ms, char *str)
 			else if (str[index] == quote)
 				quote = 0;
 		}
-		if (str[index] == '$' && (!quote || quote == '\"') && str[index + 1] != ' ' && str[index + 1] != '~' && str[index + 1])
+		if (str[index] == '$' && (!quote || quote == '\"') && str[index + 1] != ' ' && str[index + 1])
 		{
 			if (ft_catvar(ms, &cpyndex, str, &index, quote) > 1023)
 				return (cpyndex);

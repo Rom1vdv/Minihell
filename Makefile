@@ -6,7 +6,7 @@
 #    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/12 09:14:12 by yhuberla         ###   ########.fr        #
+#    Updated: 2023/01/13 14:29:25 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 OBJS_DIR = Objs
 OBJS_DIR_Sources = Objs/Sources
 
-FILES = colors lexer main signal test utils
+FILES = colors main test utils
 
 FILES_BUILTINS = cd echo env env_utils export pwd unset
 
@@ -23,6 +23,14 @@ FILES += $(addprefix Builtins/, $(FILES_BUILTINS))
 FILES_EXEC = exec_cmd
 
 FILES += $(addprefix Exec/, $(FILES_EXEC))
+
+FILES_SIGNAL = signal
+
+FILES += $(addprefix Signal/, $(FILES_SIGNAL))
+
+FILES_LEXER = lexer
+
+FILES += $(addprefix Lexer/, $(FILES_LEXER))
 
 Sources = $(addprefix Sources/, $(addsuffix .c, $(FILES)))
 
@@ -51,6 +59,8 @@ $(OBJS_DIR_Sources):
 	@mkdir -p $(OBJS_DIR)/Sources
 	@mkdir -p $(OBJS_DIR)/Sources/Builtins
 	@mkdir -p $(OBJS_DIR)/Sources/Exec
+	@mkdir -p $(OBJS_DIR)/Sources/Signal
+	@mkdir -p $(OBJS_DIR)/Sources/Lexer
 
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(READLINE) $(LIBFT) -I Includes
@@ -62,6 +72,14 @@ $(OBJS_DIR)/Sources/Builtins/%.o: Sources/Builtins/%.c
 $(OBJS_DIR)/Sources/Exec/%.o: Sources/Exec/%.c
 	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
 	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Exec
+
+$(OBJS_DIR)/Sources/Signal/%.o: Sources/Signal/%.c
+	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
+	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Signal
+
+$(OBJS_DIR)/Sources/Lexer/%.o: Sources/Lexer/%.c
+	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
+	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Lexer
 
 $(OBJS_DIR)/Sources/%.o: Sources/%.c
 	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)

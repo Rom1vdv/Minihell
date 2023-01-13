@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 10:36:45 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 11:11:38 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,17 @@ static void	loop(t_ms *ms)
 			logname[18] = '\0';
 			ft_strcat(logname, "..");
 		}
-		ft_strcpy(prompt, PURPLE);
+		if (!ms->ret_cmd)
+		{
+			ft_strcpy(prompt, PURPLE);
+			ft_strcat(prompt, "○ ");
+		}
+		else
+		{
+			ft_strcpy(prompt, RED);
+			ft_strcat(prompt, "⦿ ");
+			ft_strcat(prompt, PURPLE);
+		}
 		ft_strcat(prompt, logname);
 		free(logname);
 		ft_strcat(prompt, WHITE);

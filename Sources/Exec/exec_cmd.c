@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 10:44:08 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:03:35 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*ft_get_cmdpath(char *cmd, char **paths)
 {
 	int		index;
 	char	*res;
-	char	*joins;
+	char	*msg;
 
 	if (!access(cmd, X_OK))
 		return (cmd);
@@ -50,28 +50,40 @@ static char	*ft_get_cmdpath(char *cmd, char **paths)
 		}
 		free(res);
 	}
-	joins = ft_strjoins(6, __FILE__, ": ", __func__, ": ",
-			cmd, ": command not found\n");
-	write(2, joins, ft_strlen(joins));
-	free(joins);
+	msg = ft_strjoin(cmd, ": command not found\n");
+	write(2, msg, ft_strlen(msg));
+	free(msg);
 	free(cmd);
 	return (0);
 }
 
-void	exec_cmd(int *ret_cmd, char **envp, char *paths, char **cmds)
+void	exec_cmd(int *ret_cmd, char **envp, char *path_lst, char **cmds)
 {
 	int	pid;
+	char	**paths;
 
 	if (!cmds)
 		return ;
-	if (paths)
-		cmds[0] = ft_get_cmdpath(cmds[0], ft_split(paths, ':'));
+	if (path_lst)
+	{
+		paths = ft_split(path_lst, ':');
+		cmds[0] = ft_get_cmdpath(cmds[0], paths);
+		ft_free_arr(paths);
+	}
 	if (!cmds[0])
+	{
+		*ret_cmd = 127;
 		return ;
+	}
 	ft_fork(&pid);
 	if (!pid)
 	{
 		execve(cmds[0], cmds, envp);
+		if (errno == EACCES)
+		{
+			perror(cmds[0]);
+			exit(126);
+		}
 		ft_perror(cmds[0]);
 	}
 	else

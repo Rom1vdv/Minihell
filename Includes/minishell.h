@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 10:52:48 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:08:32 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	exec_export(t_ms *ms, char *line);
 void	exec_unset(t_ms *ms, char *target);
 void	exec_env(t_envp *envp, int *ret_cmd);
 
-void	exec_cmd(int *ret_cmd, char **envp, char *paths, char **cmds);
+void	exec_cmd(int *ret_cmd, char **envp, char *path_lst, char **cmds);
 
 t_envp	*env_init(char **envp);
 char	**env_dup(t_envp *envp);
