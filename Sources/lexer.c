@@ -40,7 +40,23 @@ static int	ft_catvar(t_ms *ms, int *cpyndex, char *str, int *index, char quote) 
 	char	*var;
 	int		kindex;
 
-	if (str[*index + 1] == '$')
+	if (str[*index + 1] == '?') //TODO
+	{
+		++(*index);
+		var = ft_itoa(ms->ret_cmd);
+		if (var)
+		{
+			(*cpyndex) += ft_strlen(var);
+			if (*cpyndex > 1023)
+			{
+				free(var);
+				return (*cpyndex);
+			}
+			ft_strcpy(&ms->rl[*cpyndex - ft_strlen(var)], var);
+			free(var);
+		}
+	}
+	else if (str[*index + 1] == '$')
 	{
 		++(*index);
 		(*cpyndex) += 5;
@@ -68,6 +84,21 @@ static int	ft_catvar(t_ms *ms, int *cpyndex, char *str, int *index, char quote) 
 	return (*cpyndex);
 }
 
+static int	ft_cathome(t_ms *ms, int *cpyndex)
+{
+	char	*var;
+
+	var = ft_getenv(ms->envp, "HOME");
+	if (var)
+	{
+		(*cpyndex) += ft_strlen(var);
+		if (*cpyndex > 1023)
+			return (*cpyndex);
+		ft_strcpy(&ms->rl[*cpyndex - ft_strlen(var)], var);
+	}
+	return (*cpyndex);
+}
+
 /* using envp to transform $vars to their real value          *
 *  do not change if -> if -> else, it's meant to be like that */
 static int	transform_metachars(t_ms *ms, char *str)
@@ -88,9 +119,14 @@ static int	transform_metachars(t_ms *ms, char *str)
 			else if (str[index] == quote)
 				quote = 0;
 		}
-		if (str[index] == '$' && (!quote || quote == '\"') && str[index + 1] != ' ' && str[index + 1])
+		if (str[index] == '$' && (!quote || quote == '\"') && str[index + 1] != ' ' && str[index + 1] != '~' && str[index + 1])
 		{
 			if (ft_catvar(ms, &cpyndex, str, &index, quote) > 1023)
+				return (cpyndex);
+		}
+		else if (str[index] == '~' && !quote && (index == 0 || str[index - 1] == ' ') && (!str[index + 1] || str[index + 1] == ' ' || str[index + 1] == '/'))
+		{
+			if (ft_cathome(ms, &cpyndex) > 1023)
 				return (cpyndex);
 		}
 		else
@@ -115,34 +151,36 @@ void	lexer(char *rl, t_ms *ms)
 	if (check_quotes(rl))
 	{
 		printf("Unclosed quotes detected, pls fix\n");
+		ms->ret_cmd = 1;
 		return ;
 	}
 	if (transform_metachars(ms, rl) > 1023)
 	{
 		printf("You exceded the maximum input size accepted, line must not exceed 1023 characters\n");
+		ms->ret_cmd = 1;
 		return ;
 	}
 	lex = ft_split(ms->rl, ' ');
 	if (!ft_strncmp(lex[0], "test", 5))
-		test();
+		test(ms);
 	else if (!ft_strncmp(lex[0], "echo", 5))
-		exec_echo(lex, &ms->rl[4]);
+		exec_echo(lex, &ms->rl[4], &ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "cd", 3))
 		exec_cd(lex, ms);
 	else if (!ft_strncmp(lex[0], "pwd", 4))
-		exec_pwd();
+		exec_pwd(&ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "export", 7))
 		exec_export(ms, lex[1]);
 	else if (!ft_strncmp(lex[0], "unset", 6))
 		exec_unset(ms, lex[1]);
 	else if (!ft_strncmp(lex[0], "env", 4))
-		exec_env(ms->envp);
+		exec_env(ms->envp, &ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "exit", 5))
-		close_program();
+		close_program(ms->envp);
 	else
 	{
 		envp_dup = env_dup(ms->envp);
-		exec_cmd(envp_dup, ft_getenv(ms->envp, "PATH"), lex);
+		exec_cmd(&ms->ret_cmd, envp_dup, ft_getenv(ms->envp, "PATH"), lex);
 		ft_free_arr(envp_dup);
 	}
 	ft_free_arr(lex);

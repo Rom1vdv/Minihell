@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 10:53:29 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 10:50:37 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ void	exec_unset(t_ms *ms, char *target)
 	if (!target)
 	{
 		printf("unset: not enough arguments\n");
+		ms->ret_cmd = 1;
 		return ;
 	}
+	ms->ret_cmd = 0;
 	targetlen = ft_strlen(target);
 	if (!ft_strncmp(ms->envp->key, target, targetlen))
 	{

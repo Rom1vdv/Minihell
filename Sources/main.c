@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 15:37:01 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 10:36:45 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,50 +23,66 @@ static void	setup(t_ms *ms, char **envp)
 		ft_perror("sigaction");
 	if (sigaction(SIGQUIT, &act, NULL) == -1)
 		ft_perror("sigaction");
+	ms->ret_cmd = 0;
 	ms->envp_original = envp;
 	ms->envp = env_init(envp);
 	env_increment_shlvl(ms->envp);
 	set_col(GREEN);
-	greet_user();
+	greet_user(ms->envp);
 	set_col(WHITE);
 	printf("\n");
 }
 
 static void	ft_catshortdir(char prompt[255])
 {
-	int		index;
+	int		start;
+	int		end;
 	char	pwd[255];
 
 	if (!getcwd(pwd, sizeof(pwd)))
 		return ;
-	index = ft_strlen(pwd) - 1;
-	while (index > 0 && pwd[index] != '/')
-		--index;
-	if (pwd[index] == '/')
-		++index;
-	ft_strcat(prompt, &pwd[index]);
+	end = ft_strlen(pwd) - 1;
+	start = end;
+	while (start > 0 && pwd[start] != '/')
+		--start;
+	if (pwd[start] == '/')
+		++start;
+	if (end - start > 19)
+	{
+		pwd[start + 18] = '\0';
+		ft_strcat(pwd, "..");
+	}
+	ft_strcat(prompt, &pwd[start]);
 }
 
 static void	loop(t_ms *ms)
 {
+	int		loglen;
 	char	*rl;
 	char	*logname;
 	char	prompt[255];
 
 	while (1)
 	{
-		logname = ft_getenv(ms->envp, "LOGNAME");
+		logname = ft_strdup(ft_getenv(ms->envp, "LOGNAME"));
 		if (!logname)
-			logname = "anonymous";
+			logname = ft_strdup("anonymous");
+		loglen = ft_strlen(logname);
+		if (loglen > 20)
+		{
+			logname[18] = '\0';
+			ft_strcat(logname, "..");
+		}
 		ft_strcpy(prompt, PURPLE);
 		ft_strcat(prompt, logname);
+		free(logname);
 		ft_strcat(prompt, WHITE);
 		ft_strcat(prompt, " ");
 		ft_catshortdir(prompt);
 		ft_strcat(prompt, " $> ");
 		rl = readline(prompt);
 		if (!rl)	// == ctrl+D
-			close_program();
+			close_program(ms->envp);
 		add_history(rl);
 		lexer(rl, ms);
 		free(rl);

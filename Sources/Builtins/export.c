@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 13:26:40 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 10:51:20 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,5 @@ void	exec_export(t_ms *ms, char *line)
 		return ;
 	line[ft_strlen(line) - ft_strlen(value)] = '\0';
 	ft_setenv(ms->envp, line, &value[1]);
+	ms->ret_cmd = 0;
 }

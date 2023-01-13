@@ -43,7 +43,7 @@ static void	print_echo(char *str)
  * @param lex array of strings, each string is a word in the command line
  * @param args "-n hello world"
  */
-void	exec_echo(char **lex, char *args)
+void	exec_echo(char **lex, char *args, int *ret_cmd)
 {
 	int		option;
 
@@ -55,6 +55,7 @@ void	exec_echo(char **lex, char *args)
 	print_echo(args);
 	if (!option)
 		printf("\n");
+	*ret_cmd = 0;
 }
 
 // static void	print_echo(char **lex, int option) -> doesn't work for "echo 'one    two'"...

@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 15:52:44 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 10:52:48 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_envp {
 }				t_envp;
 
 typedef struct s_minishell {
+	int		ret_cmd;
 	char	rl[1024];
 	char	**envp_original;
 	t_envp	*envp;
@@ -54,14 +55,14 @@ typedef struct s_minishell {
 void	signal_handler(int signo, siginfo_t *info, void *context);
 
 void	lexer(char *rl, t_ms *ms);
-void	exec_echo(char **lex, char *args);
+void	exec_echo(char **lex, char *args, int *ret_cmd);
 void	exec_cd(char **lex, t_ms *ms);
-void	exec_pwd(void);
+void	exec_pwd(int *ret_cmd);
 void	exec_export(t_ms *ms, char *line);
 void	exec_unset(t_ms *ms, char *target);
-void	exec_env(t_envp *envp);
+void	exec_env(t_envp *envp, int *ret_cmd);
 
-void	exec_cmd(char **envp, char *paths, char **cmds);
+void	exec_cmd(int *ret_cmd, char **envp, char *paths, char **cmds);
 
 t_envp	*env_init(char **envp);
 char	**env_dup(t_envp *envp);
@@ -72,11 +73,11 @@ int		ft_envplen(t_envp *envp);
 void	env_increment_shlvl(t_envp *envp);
 
 void	set_col(char *col);
-void	greet_user(void);
-void	close_program(void);
+void	greet_user(t_envp *envp);
+void	close_program(t_envp *envp);
 
 void	ft_perror(char *str);
 
-void	test(void);
+void	test(t_ms *ms);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 09:25:15 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 10:44:08 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static void	ft_wait_child(int pid)
+static void	ft_wait_child(int pid, int *ret_cmd)
 {
 	int	wait;
 	int	status;
@@ -20,8 +20,8 @@ static void	ft_wait_child(int pid)
 	wait = waitpid(pid, &status, 0);
 	if (wait == -1)
 		return ;
-	// if (WIFEXITED(status) && WEXITSTATUS(status) && !*ret)
-	// 	*ret = WEXITSTATUS(status);
+	if (WIFEXITED(status))
+		*ret_cmd = WEXITSTATUS(status);
 }
 
 static void	ft_fork(int *child_pid)
@@ -58,7 +58,7 @@ static char	*ft_get_cmdpath(char *cmd, char **paths)
 	return (0);
 }
 
-void	exec_cmd(char **envp, char *paths, char **cmds)
+void	exec_cmd(int *ret_cmd, char **envp, char *paths, char **cmds)
 {
 	int	pid;
 
@@ -75,5 +75,5 @@ void	exec_cmd(char **envp, char *paths, char **cmds)
 		ft_perror(cmds[0]);
 	}
 	else
-		ft_wait_child(pid);
+		ft_wait_child(pid, ret_cmd);
 }

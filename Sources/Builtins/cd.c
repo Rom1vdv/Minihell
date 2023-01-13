@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 14:40:10 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 10:55:39 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ void	exec_cd(char **lex, t_ms *ms)
 	int		lexlen;
 	char	*directory;
 
+	ms->ret_cmd = 0;
 	lexlen = ft_arraylen(lex);
 	if (lexlen == 1)
 	{
@@ -146,16 +147,11 @@ void	exec_cd(char **lex, t_ms *ms)
 	else
 	{
 		printf("cd: too many arguments\n"); //check if this is the behavior, spoiler alert : it is not
+		ms->ret_cmd = 1;
 		return ;
 	}
 	ft_setenvpwd(ms->envp); //if pwd was unset, we reset it
-	if (!ft_strncmp(directory, "~", 2))
-	{
-		ft_strcpy(curpath, ft_getenv(ms->envp, "HOME"));
-		if (!curpath[0])
-			return ;
-	}
-	else if (ft_strncmp(directory, "-", 2))
+	if (ft_strncmp(directory, "-", 2))
 	{
 		if (ft_strchr("/.", directory[0]))
 			ft_strcpy(curpath, directory);
@@ -166,6 +162,7 @@ void	exec_cd(char **lex, t_ms *ms)
 			directory = ft_strjoin("-bash: cd: ", lex[1]);
 			perror(directory);
 			free(directory);
+			ms->ret_cmd = 1;
 			return ;
 		}
 		if (curpath[0] != '/')
@@ -181,9 +178,10 @@ void	exec_cd(char **lex, t_ms *ms)
 	// do we step 9 in https://man7.org/linux/man-pages/man1/cd.1p.html ????
 	if (chdir(curpath) == -1)
 	{
-		directory = ft_strjoin("-bash: cd: ", directory); //or join with lex[1] to mimic real msg ??
+		directory = ft_strjoin("-bash: cd: ", directory);
 		perror(directory);
 		free(directory);
+		ms->ret_cmd = 1;
 	}
 	else
 	{

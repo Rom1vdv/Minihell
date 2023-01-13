@@ -15,8 +15,9 @@
 
 /* This function is called when "test" is entered on the terminal, it's purpose
 is to try out a bunch of stuff */
-void	test(void)
+void	test(t_ms *ms)
 {
+	ms->ret_cmd = 0;
 	printf("no tests at the moment.\n");
 }
 

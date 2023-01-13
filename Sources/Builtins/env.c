@@ -6,13 +6,13 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:25:36 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 14:23:26 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 10:55:51 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-void	exec_env(t_envp *envp)
+void	exec_env(t_envp *envp, int *ret_cmd)
 {
 	while (envp)
 	{
@@ -20,6 +20,7 @@ void	exec_env(t_envp *envp)
 		printf("%s=%s\n", envp->key, envp->value);
 		envp = envp->next;
 	}
+	*ret_cmd = 0;
 }
 
 /* loops through envp and return the value associated to the key "target" *
