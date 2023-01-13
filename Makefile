@@ -6,7 +6,7 @@
 #    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/13 14:29:25 by yhuberla         ###   ########.fr        #
+#    Updated: 2023/01/13 14:44:13 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ FILES_SIGNAL = signal
 
 FILES += $(addprefix Signal/, $(FILES_SIGNAL))
 
-FILES_LEXER = lexer
+FILES_LEXER = lexer lexer_bonus
 
 FILES += $(addprefix Lexer/, $(FILES_LEXER))
 

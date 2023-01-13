@@ -12,28 +12,6 @@
 
 #include "../../Includes/minishell.h"
 
-static int	check_quotes(char *str)
-{
-	int		index;
-	char	quote;
-
-	index = 0;
-	while (str[index])
-	{
-		if (ft_strchr("'\"", str[index]))
-		{
-			quote = str[index];
-			++index;
-			while (str[index] && str[index] != quote)
-				++index;
-			if (!str[index])
-				return (1);
-		}
-		++index;
-	}
-	return (0);
-}
-
 static int	ft_catvar(t_ms *ms, int *cpyndex, char *str, int *index, char quote) //5args, because f*ck the norm
 {
 	char	key[255];
@@ -146,14 +124,6 @@ void	lexer(char *rl, t_ms *ms)
 	char	**lex;
 	char	**envp_dup;
 
-	if (!rl[0])
-		return ;
-	if (check_quotes(rl))
-	{
-		printf("Unclosed quotes detected, pls fix\n");
-		ms->ret_cmd = 1;
-		return ;
-	}
 	if (transform_metachars(ms, rl) > 1023)
 	{
 		printf("You exceded the maximum input size accepted, line must not exceed 1023 characters\n");

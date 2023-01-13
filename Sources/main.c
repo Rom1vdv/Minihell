@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 11:11:38 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:43:59 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void	loop(t_ms *ms)
 		if (!rl)	// == ctrl+D
 			close_program(ms->envp);
 		add_history(rl);
-		lexer(rl, ms);
+		lexer_bonus(rl, ms);
 		free(rl);
 	}
 }
