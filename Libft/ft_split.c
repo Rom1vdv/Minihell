@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 09:48:42 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 12:32:13 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/14 18:47:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,6 @@ static char	*ft_get_next_word(char const *s, char c, size_t *ptri)
 	return (res);
 }
 
-static char	**ft_free_return(char **res, size_t limit)
-{
-	size_t	index;
-
-	index = 0;
-	while (index < limit)
-		free(res[index++]);
-	free(res);
-	return (0);
-}
-
 char	**ft_split(char const *s, char c)
 {
 	size_t	index;
@@ -82,8 +71,6 @@ char	**ft_split(char const *s, char c)
 	while (index < mallen - 1)
 	{
 		res[index] = ft_get_next_word(s, c, &sindex);
-		if (!res[index])
-			return (ft_free_return(res, index));
 		++index;
 	}
 	res[index] = 0;

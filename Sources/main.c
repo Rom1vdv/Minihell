@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 12:01:38 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/14 17:45:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static void	loop(t_ms *ms)
 {
 	int		loglen;
 	char	*rl;
+	char	*rl_save;
 	char	*logname;
 	char	prompt[255];
 
@@ -94,8 +95,9 @@ static void	loop(t_ms *ms)
 		if (!rl)	// == ctrl+D
 			close_program(ms->envp, 0);
 		add_history(rl);
+		rl_save = rl;
 		lexer_bonus(rl, ms);
-		free(rl);
+		free(rl_save);
 	}
 }
 

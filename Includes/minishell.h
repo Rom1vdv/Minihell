@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 15:04:46 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/14 17:19:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_envp {
 
 typedef struct s_minishell {
 	int		ret_cmd;
-	char	rl[1024];
+	char	*rl;
 	char	**envp_original;
 	t_envp	*envp;
 }				t_ms;
