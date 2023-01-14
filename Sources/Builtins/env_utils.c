@@ -6,28 +6,33 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:24:35 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 12:27:28 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/14 15:04:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static void	env_setascii(t_envp *envp, t_envp *target)
+void	env_setascii(t_envp *envp, t_envp *target)
 {
 	int	lencmp;
 
+	if (!target->exported)
+		return ;
 	lencmp = ft_strlen(target->key);
 	while (envp)
 	{
-		if (ft_strncmp(envp->key, target->key, lencmp) < 0)
-			++target->ascii_pos;
-		else
-			++envp->ascii_pos;
+		if (envp->exported)
+		{
+			if (ft_strncmp(envp->key, target->key, lencmp) < 0)
+				++target->ascii_pos;
+			else
+				++envp->ascii_pos;
+		}
 		envp = envp->next;
 	}
 }
 
-static t_envp	*envp_new(char *line)
+t_envp	*envp_new(char *line, int exported)
 {
 	t_envp	*res;
 	char	**splt;
@@ -39,6 +44,7 @@ static t_envp	*envp_new(char *line)
 	res->key = splt[0];
 	res->value = splt[1];
 	res->ascii_pos = 0;
+	res->exported = exported;
 	res->next = 0;
 	free(splt);
 	return (res);
@@ -52,12 +58,12 @@ t_envp	*env_init(char **envp)
 
 	if (!envp || !envp[0])
 		return (0);
-	res = envp_new(envp[0]);
+	res = envp_new(envp[0], 1);
 	tmp = res;
 	index = 1;
 	while (envp[index])
 	{
-		tmp->next = envp_new(envp[index]);
+		tmp->next = envp_new(envp[index], 1);
 		tmp = tmp->next;
 		env_setascii(res, tmp);
 		++index;
@@ -65,7 +71,7 @@ t_envp	*env_init(char **envp)
 	return (res);
 }
 
-void	ft_setenv(t_envp *envp, char *target, char *value)
+void	ft_setenv(t_envp *envp, char *target, char *value, int exported)
 {
 	int		targetlen;
 	char	*join;
@@ -88,7 +94,7 @@ void	ft_setenv(t_envp *envp, char *target, char *value)
 		else
 		{
 			join = ft_strjoins(3, target, "=", value);
-			tmp->next = envp_new(join);
+			tmp->next = envp_new(join, exported);
 			env_setascii(envp, tmp->next);
 			return (free(join));
 		}
@@ -103,11 +109,11 @@ void	env_increment_shlvl(t_envp *envp)
 
 	value = ft_getenv(envp, "SHLVL");
 	if (!value)
-		return (ft_setenv(envp, "SHLVL", "1"));
+		return (ft_setenv(envp, "SHLVL", "1", 1));
 	shlvl = ft_atoi(value);
 	if (shlvl < 0)
 		shlvl = -1;
 	new_value = ft_itoa(shlvl + 1);
-	ft_setenv(envp, "SHLVL", new_value);
+	ft_setenv(envp, "SHLVL", new_value, 1);
 	free(new_value);
 }

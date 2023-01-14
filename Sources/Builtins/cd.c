@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 12:26:04 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/14 14:23:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,8 +177,8 @@ void	exec_cd(char **lex, t_ms *ms)
 	}
 	else
 	{
-		ft_setenv(ms->envp, "OLDPWD", ft_getenv(ms->envp, "PWD"));
-		ft_setenv(ms->envp, "PWD", curpath);
+		ft_setenv(ms->envp, "OLDPWD", ft_getenv(ms->envp, "PWD"), 1);
+		ft_setenv(ms->envp, "PWD", curpath, 1);
 	}
 	if (!ft_strncmp(directory, "-", 2))
 		printf("%s\n", curpath);

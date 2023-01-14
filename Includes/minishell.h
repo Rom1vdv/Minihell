@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 12:16:38 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/14 15:04:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_envp {
 	char	*key;
 	char	*value;
 	int		ascii_pos;
+	int		exported;
 	struct s_envp	*next;
 }				t_envp;
 
@@ -59,16 +60,18 @@ void	lexer_bonus(char *rl, t_ms *ms);
 void	exec_echo(char **lex, char *args, int *ret_cmd);
 void	exec_cd(char **lex, t_ms *ms);
 void	exec_pwd(int *ret_cmd);
-void	exec_export(t_ms *ms, char *line);
+void	exec_export(t_ms *ms, char *line, int exported);
 void	exec_unset(t_ms *ms, char *target);
 void	exec_env(t_envp *envp, int *ret_cmd);
 
 void	exec_cmd(int *ret_cmd, char **envp, char *path_lst, char **cmds);
 
 t_envp	*env_init(char **envp);
+t_envp	*envp_new(char *line, int exported);
 char	**env_dup(t_envp *envp);
+void	env_setascii(t_envp *envp, t_envp *target);
 char	*ft_getenv(t_envp *envp, char *target);
-void	ft_setenv(t_envp *envp, char *target, char *value);
+void	ft_setenv(t_envp *envp, char *target, char *value, int exported);
 void	ft_setenvpwd(t_envp *envp);
 int		ft_envplen(t_envp *envp);
 void	env_increment_shlvl(t_envp *envp);

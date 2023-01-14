@@ -3,22 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:36:28 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 18:22:32 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:04:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
+static int	parse_error(char *str)
+{
+	printf("parse error : %s\n", str);
+	return (1);
+}
+
 static int	check_quotes(char *str)
 {
 	int		index;
 	char	quote;
+	char	paranthesis;
 
-	index = 0;
-	while (str[index])
+	paranthesis = 0;
+	index = -1;
+	while (str[++index])
 	{
 		if (ft_strchr("'\"", str[index]))
 		{
@@ -26,18 +34,15 @@ static int	check_quotes(char *str)
 			while (str[index] && str[index] != quote)
 				++index;
 			if (!str[index])
-			{
-				printf("Unclosed quotes detected, pls fix\n");
-				return (1);
-			}
+				return (parse_error("quotes"));
 		}
-		// else if (ft_strchr("&|", str[index]) && handle_andor(str, &index, str[index]))
-		// {
-		// 	printf("parse error near'%c'\n", str[index]);
-		// 	return (1);
-		// }
-		++index;
+		else if (str[index] == '(')
+			++paranthesis;
+		else if (str[index] == ')')
+			--paranthesis;
 	}
+	if (paranthesis)
+		return (parse_error("paranthesis"));
 	return (0);
 }
 

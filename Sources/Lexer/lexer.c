@@ -107,6 +107,7 @@ static int	transform_metachars(t_ms *ms, char *str)
 			if (ft_cathome(ms, &cpyndex) > 1023)
 				return (cpyndex);
 		}
+		else if (ft_strchr("()", str[index]) && !quote);
 		else
 		{
 			ms->rl[cpyndex++] = str[index];
@@ -140,13 +141,15 @@ void	lexer(char *rl, t_ms *ms)
 	else if (!ft_strncmp(lex[0], "pwd", 4))
 		exec_pwd(&ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "export", 7))
-		exec_export(ms, lex[1]);
+		exec_export(ms, lex[1], 1);
 	else if (!ft_strncmp(lex[0], "unset", 6))
 		exec_unset(ms, lex[1]);
 	else if (!ft_strncmp(lex[0], "env", 4))
 		exec_env(ms->envp, &ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "exit", 5))
 		close_program(ms->envp, rl);
+	else if (ft_strchr(lex[0], '=') && lex[0][0] != '=')
+		exec_export(ms, lex[0], 0);
 	else
 	{
 		envp_dup = env_dup(ms->envp);

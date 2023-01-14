@@ -18,7 +18,7 @@ static void	free_envp(t_envp *envp)
 
 	while (envp)
 	{
-		printf("freeing %s=%s\n", envp->key, envp->value);
+		// printf("freeing %s=%s\n", envp->key, envp->value);
 		free(envp->key);
 		free(envp->value);
 		tmp = envp;

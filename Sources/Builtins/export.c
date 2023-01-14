@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 10:51:20 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 15:03:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,35 @@ static void	display_sorted_env(t_envp *envp)
 	}
 }
 
+static void	ft_exportvar(t_envp *envp, char *target)
+{
+	int		targetlen;
+	char	*join;
+	t_envp	*tmp;
+
+	if (!envp || !target)
+		return ;
+	targetlen = ft_strlen(target) + 1;
+	tmp = envp;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->key, target, targetlen))
+		{
+			tmp->exported = 1;
+			return ;
+		}
+		if (tmp->next)
+			tmp = tmp->next;
+		else
+		{
+			join = ft_strjoin(target, "=");
+			tmp->next = envp_new(join, 1);
+			env_setascii(envp, tmp->next);
+			return (free(join));
+		}
+	}
+}
+
 int	ft_envplen(t_envp *envp)
 {
 	int	res;
@@ -38,13 +67,14 @@ int	ft_envplen(t_envp *envp)
 	res = 0;
 	while (envp)
 	{
-		++res;
+		if (envp->exported)
+			++res;
 		envp = envp->next;
 	}
 	return (res);
 }
 
-void	exec_export(t_ms *ms, char *line)
+void	exec_export(t_ms *ms, char *line, int exported)
 {
 	char	*value;
 
@@ -57,8 +87,11 @@ void	exec_export(t_ms *ms, char *line)
 	}
 	value = ft_strchr(line, '=');
 	if (!value)
+	{
+		ft_exportvar(ms->envp, line);
 		return ;
+	}
 	line[ft_strlen(line) - ft_strlen(value)] = '\0';
-	ft_setenv(ms->envp, line, &value[1]);
+	ft_setenv(ms->envp, line, &value[1], exported);
 	ms->ret_cmd = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 10:50:37 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 13:26:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,16 @@ static void	env_unsetascii(t_envp *envp, t_envp *target)
 {
 	int	lencmp;
 
+	if (!target->exported)
+		return ;
 	lencmp = ft_strlen(target->key);
 	while (envp)
 	{
-		if (ft_strncmp(envp->key, target->key, lencmp) > 0)
-			--envp->ascii_pos;
+		if (envp->exported)
+		{
+			if (ft_strncmp(envp->key, target->key, lencmp) > 0)
+				--envp->ascii_pos;
+		}
 		envp = envp->next;
 	}
 }
