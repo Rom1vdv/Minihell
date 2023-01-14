@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 13:54:52 by yhuberla          #+#    #+#             */
-/*   Updated: 2022/11/28 14:26:07 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:24:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,7 @@ char	*ft_strjoins(int ac, ...)
 
 	va_start(ap, ac);
 	va_copy(ap_cpy, ap);
-	res = malloc(sizeof(*res) * (ft_mallen(ac, ap_cpy) + 1));
-	if (!res)
-		return (0);
+	res = ft_malloc(sizeof(*res) * (ft_mallen(ac, ap_cpy) + 1), "strjoins");
 	index = 0;
 	wc = -1;
 	while (++wc < ac)

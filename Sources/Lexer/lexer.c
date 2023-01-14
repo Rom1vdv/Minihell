@@ -146,7 +146,7 @@ void	lexer(char *rl, t_ms *ms)
 	else if (!ft_strncmp(lex[0], "env", 4))
 		exec_env(ms->envp, &ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "exit", 5))
-		close_program(ms->envp);
+		close_program(ms->envp, rl);
 	else
 	{
 		envp_dup = env_dup(ms->envp);

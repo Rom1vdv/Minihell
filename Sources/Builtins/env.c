@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:25:36 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 10:55:51 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:27:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,11 @@ char	**env_dup(t_envp *envp)
 	char	**res;
 
 	envlen = ft_envplen(envp);
-	res = malloc(sizeof(*res) * (envlen + 1));
-	if (!res)
-		ft_perror("env_dup");
+	res = ft_malloc(sizeof(*res) * (envlen + 1), "env_dup");
 	index = 0;
 	while (index < envlen)
 	{
 		res[index] = ft_strjoins(3, envp->key, "=", envp->value);
-		if (!res[index])
-			ft_perror("joins");
 		envp = envp->next;
 		++index;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:41:11 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 15:51:25 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:22:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 // # include <limits.h>
 # include <stdarg.h>
 
+void	ft_perror(char *str);
+void	*ft_malloc(int size, char *msg);
 // int		ft_max(int a, int b);
 // int		ft_min(int a, int b);
 // int		ft_abs(int nb);

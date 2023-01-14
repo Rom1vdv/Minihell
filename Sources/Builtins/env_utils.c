@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:24:35 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/12 15:43:14 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:27:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,8 @@ static t_envp	*envp_new(char *line)
 
 	if (!line)
 		return (0);
-	res = malloc(sizeof(*res));
-	if (!res)
-		ft_perror("env_init");
+	res = ft_malloc(sizeof(*res), "env_init");
 	splt = ft_split(line, '=');
-	if (!splt)
-		ft_perror("env_init");
 	res->key = splt[0];
 	res->value = splt[1];
 	res->ascii_pos = 0;
@@ -92,8 +88,6 @@ void	ft_setenv(t_envp *envp, char *target, char *value)
 		else
 		{
 			join = ft_strjoins(3, target, "=", value);
-			if (!join)
-				ft_perror("joins");
 			tmp->next = envp_new(join);
 			env_setascii(envp, tmp->next);
 			return (free(join));
@@ -103,10 +97,17 @@ void	ft_setenv(t_envp *envp, char *target, char *value)
 
 void	env_increment_shlvl(t_envp *envp)
 {
+	int		shlvl;
 	char	*value;
+	char	*new_value;
 
 	value = ft_getenv(envp, "SHLVL");
 	if (!value)
 		return (ft_setenv(envp, "SHLVL", "1"));
-	ft_setenv(envp, "SHLVL", ft_itoa(ft_atoi(value) + 1));
+	shlvl = ft_atoi(value);
+	if (shlvl < 0)
+		shlvl = -1;
+	new_value = ft_itoa(shlvl + 1);
+	ft_setenv(envp, "SHLVL", new_value);
+	free(new_value);
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 09:48:42 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/10 09:48:42 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:32:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
 static size_t	ft_get_mallen(char const *s, char c)
 {
@@ -43,9 +43,7 @@ static char	*ft_get_next_word(char const *s, char c, size_t *ptri)
 	while (s[*ptri + len] && s[*ptri + len] != c)
 		++len;
 	++len;
-	res = malloc(sizeof(*res) * len);
-	if (!res)
-		return (0);
+	res = ft_malloc(sizeof(*res) * len, "gnw in split");
 	index = 0;
 	while (index < len - 1)
 	{
@@ -78,9 +76,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (0);
 	mallen = ft_get_mallen(s, c);
-	res = malloc(sizeof(*res) * mallen);
-	if (!res)
-		return (0);
+	res = ft_malloc(sizeof(*res) * mallen, "split");
 	index = 0;
 	sindex = 0;
 	while (index < mallen - 1)

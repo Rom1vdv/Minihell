@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 14:43:59 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:01:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void	loop(t_ms *ms)
 		ft_strcat(prompt, " $> ");
 		rl = readline(prompt);
 		if (!rl)	// == ctrl+D
-			close_program(ms->envp);
+			close_program(ms->envp, 0);
 		add_history(rl);
 		lexer_bonus(rl, ms);
 		free(rl);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 10:55:39 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:26:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static void	cat_cdpath(char curpath[255], char *directory, t_envp *envp)
 	if (path)
 	{
 		paths = ft_split(path, ':');
-		if (!paths)
-			ft_perror("split");
 		index = 0;
 		while (paths[index])
 		{
@@ -33,8 +31,6 @@ static void	cat_cdpath(char curpath[255], char *directory, t_envp *envp)
 				path = ft_strjoin(paths[index], directory);
 			else
 				path = ft_strjoins(3, paths[index], "/", directory);
-			if (!path)
-				ft_perror("join");
 			dir = opendir(path);
 			if (dir)
 			{
@@ -51,8 +47,6 @@ static void	cat_cdpath(char curpath[255], char *directory, t_envp *envp)
 		ft_free_arr(paths);
 	}
 	path = ft_strjoin("./", directory);
-	if (!path)
-		ft_perror("join");
 	dir = opendir(path);
 	if (dir)
 	{
@@ -81,8 +75,6 @@ static void	cat_pwd(char curpath[255], t_envp *envp)
 		path = ft_strjoin(pwd, curpath);
 	else
 		path = ft_strjoins(3, pwd, "/", curpath);
-	if (!path)
-		ft_perror("join");
 	ft_strcpy(curpath, path);
 	free(path);
 }

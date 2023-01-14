@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 14:43:53 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:16:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ void	env_increment_shlvl(t_envp *envp);
 
 void	set_col(char *col);
 void	greet_user(t_envp *envp);
-void	close_program(t_envp *envp);
-
-void	ft_perror(char *str);
+void	close_program(t_envp *envp, char *rl);
 
 void	test(t_ms *ms);
 
