@@ -36,10 +36,9 @@ static int	check_quotes(char *str)
 			if (!str[index])
 				return (parse_error("quotes"));
 		}
-		else if (str[index] == '(')
-			++paranthesis;
-		else if (str[index] == ')')
-			--paranthesis;
+		else if (str[index] == ';')
+			return (parse_error("';'"));
+		paranthesis += (str[index] == '(') - (str[index] == ')');
 	}
 	if (paranthesis)
 		return (parse_error("paranthesis"));

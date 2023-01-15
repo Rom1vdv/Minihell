@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 14:23:17 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/15 16:37:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	cat_cdpath(char curpath[255], char *directory, t_envp *envp)
 		index = 0;
 		while (paths[index])
 		{
-			if (paths[index][ft_strlen(paths[index] - 1)] == '/')
+			if (paths[index][ft_strlen(paths[index]) - 1] == '/')
 				path = ft_strjoin(paths[index], directory);
 			else
 				path = ft_strjoins(3, paths[index], "/", directory);
@@ -39,7 +39,7 @@ static void	cat_cdpath(char curpath[255], char *directory, t_envp *envp)
 				ft_free_arr(paths);
 				return (free(path));
 			}
-			else if (errno != ENOENT) //dir exists but failed to open
+			else if (errno != ENOENT && errno != ENOTDIR) //dir exists but failed to open
 				ft_perror(path);
 			free(path);
 			++index;
@@ -52,10 +52,10 @@ static void	cat_cdpath(char curpath[255], char *directory, t_envp *envp)
 	{
 		closedir(dir);
 		ft_strcpy(curpath, path);
-		free(path);
 	}
-	else if (errno != ENOENT)
+	else if (errno != ENOENT && errno != ENOTDIR)
 		ft_perror(path);
+	free(path);
 }
 
 /* step 7 in https://man7.org/linux/man-pages/man1/cd.1p.html */
@@ -138,7 +138,7 @@ void	exec_cd(char **lex, t_ms *ms)
 		directory = lex[1];
 	else
 	{
-		printf("cd: too many arguments\n"); //check if this is the behavior, spoiler alert : it is not
+		printf("-minishell: cd: too many arguments\n"); //check if this is the behavior, spoiler alert : it is not
 		ms->ret_cmd = 1;
 		return ;
 	}
@@ -151,7 +151,7 @@ void	exec_cd(char **lex, t_ms *ms)
 			cat_cdpath(curpath, directory, ms->envp);
 		if (!curpath[0])
 		{
-			directory = ft_strjoin("-bash: cd: ", lex[1]);
+			directory = ft_strjoin("-minishell: cd: ", lex[1]);
 			perror(directory);
 			free(directory);
 			ms->ret_cmd = 1;
@@ -170,7 +170,7 @@ void	exec_cd(char **lex, t_ms *ms)
 	// do we step 9 in https://man7.org/linux/man-pages/man1/cd.1p.html ????
 	if (chdir(curpath) == -1)
 	{
-		directory = ft_strjoin("-bash: cd: ", directory);
+		directory = ft_strjoin("-minishell: cd: ", directory);
 		perror(directory);
 		free(directory);
 		ms->ret_cmd = 1;
