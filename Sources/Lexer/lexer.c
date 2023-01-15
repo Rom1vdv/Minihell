@@ -126,7 +126,7 @@ void	lexer(char *rl, t_ms *ms)
 	char	**envp_dup;
 
 	transform_metachars(ms, rl);
-	lex = ft_split(ms->rl, ' ');
+	lex = ft_split_quotes(ms->rl, ' ');
 	if (!ft_strncmp(lex[0], "test", 5))
 		test(ms);
 	else if (!ft_strncmp(lex[0], "echo", 5))

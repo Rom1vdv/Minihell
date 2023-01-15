@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:41:11 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 12:22:42 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/15 12:18:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	ft_strcat(char *dst, const char *src);
 size_t	ft_strlen(const char *str);
 // char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
+char	**ft_split_quotes(char *str, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoins(int ac, ...);
 char	*ft_strdup(const char *s1);

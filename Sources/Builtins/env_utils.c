@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:24:35 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 15:04:07 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/15 12:35:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,11 @@ void	ft_setenv(t_envp *envp, char *target, char *value, int exported)
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(value);
+			if (!tmp->exported && exported)
+			{
+				tmp->exported = exported;
+				env_setascii(envp, tmp);
+			}
 			return ;
 		}
 		if (tmp->next)

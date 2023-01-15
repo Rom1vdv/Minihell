@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 15:03:53 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/15 12:26:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void	ft_exportvar(t_envp *envp, char *target)
 		if (!ft_strncmp(tmp->key, target, targetlen))
 		{
 			tmp->exported = 1;
+			env_setascii(envp, tmp);
 			return ;
 		}
 		if (tmp->next)

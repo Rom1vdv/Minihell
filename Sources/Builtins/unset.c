@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 13:26:18 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/15 12:37:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	env_unsetascii(t_envp *envp, t_envp *target)
 
 	if (!target->exported)
 		return ;
-	lencmp = ft_strlen(target->key);
+	lencmp = ft_strlen(target->key) + 1;
 	while (envp)
 	{
 		if (envp->exported)
@@ -52,7 +52,7 @@ void	exec_unset(t_ms *ms, char *target)
 		return ;
 	}
 	ms->ret_cmd = 0;
-	targetlen = ft_strlen(target);
+	targetlen = ft_strlen(target) + 1;
 	if (!ft_strncmp(ms->envp->key, target, targetlen))
 	{
 		env_unsetascii(ms->envp, ms->envp);
