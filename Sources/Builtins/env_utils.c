@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:24:35 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/15 12:35:31 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/15 14:50:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ t_envp	*envp_new(char *line, int exported)
 		return (0);
 	res = ft_malloc(sizeof(*res), "env_init");
 	splt = ft_split(line, '=');
-	res->key = splt[0];
-	res->value = splt[1];
+	res->key = ft_strdup(splt[0]);
+	res->value = ft_strdup(splt[1]);
 	res->ascii_pos = 0;
 	res->exported = exported;
 	res->next = 0;
-	free(splt);
+	ft_free_arr(splt);
 	return (res);
 }
 

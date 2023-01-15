@@ -142,7 +142,7 @@ void	lexer(char *rl, t_ms *ms)
 	else if (!ft_strncmp(lex[0], "env", 4))
 		exec_env(ms->envp, &ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "exit", 5))
-		close_program(ms->envp, rl);
+		close_program(ms, rl, lex);
 	else if (ft_strchr(lex[0], '=') && lex[0][0] != '=')
 		exec_export(ms, lex[0], 0);
 	else

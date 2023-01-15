@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 17:45:51 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/15 14:57:35 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	setup(t_ms *ms, char **envp)
 	if (sigaction(SIGQUIT, &act, NULL) == -1)
 		ft_perror("sigaction");
 	ms->ret_cmd = 0;
+	ms->rl = 0;
 	ms->envp_original = envp;
 	ms->envp = env_init(envp);
 	env_increment_shlvl(ms->envp);
@@ -93,7 +94,7 @@ static void	loop(t_ms *ms)
 		ft_strcat(prompt, " $> ");
 		rl = readline(prompt);
 		if (!rl)	// == ctrl+D
-			close_program(ms->envp, 0);
+			close_program(ms, 0, 0);
 		add_history(rl);
 		rl_save = rl;
 		lexer_bonus(rl, ms);

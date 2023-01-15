@@ -27,15 +27,17 @@ static void	free_envp(t_envp *envp)
 	}
 }
 
-void	close_program(t_envp *envp, char *rl)
+void	close_program(t_ms *ms, char *rl, char **lex)
 {
 	free(rl);
 	printf("\n");
 	set_col(RED);
-	greet_user(envp);
+	greet_user(ms->envp);
 	set_col(WHITE);
 	printf("\n");
-	free_envp(envp);
+	free_envp(ms->envp);
+	free(ms->rl);
+	ft_free_arr(lex);
 	exit(EXIT_SUCCESS);
 }
 
