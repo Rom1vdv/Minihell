@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/14 12:16:47 by marvin           ###   ########.fr        #
+#    Updated: 2023/01/16 16:09:34 by romvan-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ OBJS = $(addprefix $(OBJS_DIR)/, $(Sources:.c=.o))
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
-READLINE = -lreadline #-L /Users/$(USER)/.brew/Cellar/readline/lib -I /Users/$(USER)/.brew/Cellar/readline/include
+READLINE = -lreadline -L /Users/$(USER)/.brew/Opt/readline/lib -I /Users/$(USER)/.brew/Opt/readline/include
 
 # ===---===---===---===---===---===---===---===---===---===---===---===---
 
@@ -66,23 +66,23 @@ $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(READLINE) $(LIBFT) -I Includes
 
 $(OBJS_DIR)/Sources/Builtins/%.o: Sources/Builtins/%.c
-	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
+	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Opt/readline/include -c $< -o $(<:.c=.o)
 	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Builtins
 
 $(OBJS_DIR)/Sources/Exec/%.o: Sources/Exec/%.c
-	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
+	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Opt/readline/include -c $< -o $(<:.c=.o)
 	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Exec
 
 $(OBJS_DIR)/Sources/Signal/%.o: Sources/Signal/%.c
-	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
+	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Opt/readline/include -c $< -o $(<:.c=.o)
 	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Signal
 
 $(OBJS_DIR)/Sources/Lexer/%.o: Sources/Lexer/%.c
-	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
+	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Opt/readline/include -c $< -o $(<:.c=.o)
 	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Lexer
 
 $(OBJS_DIR)/Sources/%.o: Sources/%.c
-	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Cellar/readline/include -c $< -o $(<:.c=.o)
+	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Opt/readline/include -c $< -o $(<:.c=.o)
 	@mv $(<:.c=.o) $(OBJS_DIR)/Sources
 
 $(LIBFT):
