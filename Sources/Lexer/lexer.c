@@ -101,14 +101,19 @@ static void	transform_metachars(t_ms *ms, char *str)
 	quote = 0;
 	while (str[index])
 	{
+		// printf("%d : %c\n", index, str[index]);
 		if (ft_strchr("'\"", str[index]))
 		{
 			if (!quote)
 				quote = str[index];
 			else if (str[index] == quote)
 				quote = 0;
+			if (quote && str[index] != quote)
+				++index;
+			else
+				ft_joinfree(ms, &str, &index);
 		}
-		if (str[index] == '$' && (!quote || quote == '\"') && str[index + 1] != ' ' && str[index + 1])
+		else if (str[index] == '$' && (!quote || quote == '\"') && str[index + 1] != ' ' && str[index + 1])
 			ft_joinvar(ms, &str, &index, quote);
 		else if (str[index] == '~' && !quote && (index == 0 || str[index - 1] == ' ') && (!str[index + 1] || str[index + 1] == ' ' || str[index + 1] == '/'))
 			ft_joinhome(ms, &str, &index);
@@ -122,15 +127,24 @@ static void	transform_metachars(t_ms *ms, char *str)
 
 void	lexer(char *rl, t_ms *ms)
 {
+	int		index;
 	char	**lex;
 	char	**envp_dup;
 
-	transform_metachars(ms, rl);
-	lex = ft_split_quotes(ms->rl, ' ');
+	lex = ft_split_quotes(rl, ' ');
+	index = 0;
+	while (lex[index])
+	{
+		transform_metachars(ms, lex[index]);
+		free(lex[index]);
+		lex[index] = ms->rl;
+		// printf("%d -> %s\n", index, lex[index]);
+		++index;
+	}
 	if (!ft_strncmp(lex[0], "test", 5))
 		test(ms);
 	else if (!ft_strncmp(lex[0], "echo", 5))
-		exec_echo(lex, &ms->rl[4], &ms->ret_cmd);
+		exec_echo(lex, &ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "cd", 3))
 		exec_cd(lex, ms);
 	else if (!ft_strncmp(lex[0], "pwd", 4))
@@ -151,8 +165,6 @@ void	lexer(char *rl, t_ms *ms)
 		exec_cmd(&ms->ret_cmd, envp_dup, ft_getenv(ms->envp, "PATH"), lex);
 		ft_free_arr(envp_dup);
 	}
-	free(ms->rl);
-	ms->rl = 0;
 	ft_free_arr(lex);
 }
 

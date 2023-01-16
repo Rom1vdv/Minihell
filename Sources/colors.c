@@ -36,7 +36,6 @@ void	close_program(t_ms *ms, char *rl, char **lex)
 	set_col(WHITE);
 	printf("\n");
 	free_envp(ms->envp);
-	free(ms->rl);
 	ft_free_arr(lex);
 	exit(EXIT_SUCCESS);
 }

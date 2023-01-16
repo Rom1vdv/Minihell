@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/15 14:57:47 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/16 14:50:31 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	signal_handler(int signo, siginfo_t *info, void *context);
 
 void	lexer(char *rl, t_ms *ms);
 void	lexer_bonus(char *rl, t_ms *ms);
-void	exec_echo(char **lex, char *args, int *ret_cmd);
+void	exec_echo(char **lex, int *ret_cmd);
 void	exec_cd(char **lex, t_ms *ms);
 void	exec_pwd(int *ret_cmd);
 void	exec_export(t_ms *ms, char *line, int exported);

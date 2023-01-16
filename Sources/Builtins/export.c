@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/16 11:27:07 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/16 15:26:23 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,32 +61,32 @@ static void	ft_exportvar(t_envp *envp, char *target)
 	}
 }
 
-static void	ft_trimquotes(char *value)
-{
-	int		index;
-	int		cpyndex;
-	char	quote;
+// static void	ft_trimquotes(char *value) //did this for nothing
+// {
+// 	int		index;
+// 	int		cpyndex;
+// 	char	quote;
 
-	index = 1;
-	cpyndex = 1;
-	quote = 0;
-	while (value[index])
-	{
-		if (ft_strchr("'\"", value[index]))
-		{
-			if (!quote)
-				quote = value[index];
-			else if (value[index] == quote)
-				quote = 0;
-			else
-				value[cpyndex++] = value[index];
-		}
-		else
-			value[cpyndex++] = value[index];
-		++index;
-	}
-	value[cpyndex] = '\0';
-}
+// 	index = 1;
+// 	cpyndex = 1;
+// 	quote = 0;
+// 	while (value[index])
+// 	{
+// 		if (ft_strchr("'\"", value[index]))
+// 		{
+// 			if (!quote)
+// 				quote = value[index];
+// 			else if (value[index] == quote)
+// 				quote = 0;
+// 			else
+// 				value[cpyndex++] = value[index];
+// 		}
+// 		else
+// 			value[cpyndex++] = value[index];
+// 		++index;
+// 	}
+// 	value[cpyndex] = '\0';
+// }
 
 void	exec_export(t_ms *ms, char *line, int exported)
 {
@@ -106,7 +106,7 @@ void	exec_export(t_ms *ms, char *line, int exported)
 		return ;
 	}
 	line[ft_strlen(line) - ft_strlen(value)] = '\0';
-	ft_trimquotes(value);
+	// ft_trimquotes(value);
 	ft_setenv(ms->envp, line, &value[1], exported);
 	ms->ret_cmd = 0;
 }

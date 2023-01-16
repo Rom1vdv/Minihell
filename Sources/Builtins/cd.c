@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/15 16:37:52 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/16 13:22:25 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void	exec_cd(char **lex, t_ms *ms)
 	char	*directory;
 
 	ms->ret_cmd = 0;
+	curpath[0] = '\0';
 	lexlen = ft_arraylen(lex);
 	if (lexlen == 1)
 	{
@@ -166,7 +167,15 @@ void	exec_cd(char **lex, t_ms *ms)
 		convert_canon(curpath);
 	}
 	else
+	{
 		ft_strcpy(curpath, ft_getenv(ms->envp, "OLDPWD"));
+		if (!curpath[0])
+		{
+			printf("-minishell: cd: OLDPWD not set\n");
+			ms->ret_cmd = 1;
+			return ;
+		}
+	}
 	// do we step 9 in https://man7.org/linux/man-pages/man1/cd.1p.html ????
 	if (chdir(curpath) == -1)
 	{

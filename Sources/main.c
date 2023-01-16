@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/15 14:57:35 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/16 14:42:07 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static void	loop(t_ms *ms)
 {
 	int		loglen;
 	char	*rl;
-	char	*rl_save;
 	char	*logname;
 	char	prompt[255];
 
@@ -96,9 +95,8 @@ static void	loop(t_ms *ms)
 		if (!rl)	// == ctrl+D
 			close_program(ms, 0, 0);
 		add_history(rl);
-		rl_save = rl;
 		lexer_bonus(rl, ms);
-		free(rl_save);
+		free(rl);
 	}
 }
 

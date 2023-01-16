@@ -12,30 +12,30 @@
 
 #include "../../Includes/minishell.h"
 
-static void	print_echo(char *str)
-{
-	int		index;
-	char	quote;
+// static void	print_echo(char *str)
+// {
+// 	int		index;
+// 	char	quote;
 
-	index = 0;
-	quote = 0;
-	while (str[++index])
-	{
-		if (ft_strchr("'\"", str[index]))
-		{
-			if (!quote)
-				quote = str[index];
-			else if (str[index] == quote)
-				quote = 0;
-			else
-				write(1, &str[index], 1);
-		}
-		else if (quote || str[index] != ' ')
-			write(1, &str[index], 1);
-		else if (str[index - 1] != ' ')
-			write(1, " ", 1);
-	}
-}
+// 	index = 0;
+// 	quote = 0;
+// 	while (str[++index])
+// 	{
+// 		if (ft_strchr("'\"", str[index]))
+// 		{
+// 			if (!quote)
+// 				quote = str[index];
+// 			else if (str[index] == quote)
+// 				quote = 0;
+// 			else
+// 				write(1, &str[index], 1);
+// 		}
+// 		else if (quote || str[index] != ' ')
+// 			write(1, &str[index], 1);
+// 		else if (str[index - 1] != ' ')
+// 			write(1, " ", 1);
+// 	}
+// }
 
 /**
  * It prints the arguments passed to it, with the option to not print a newline at the end
@@ -43,16 +43,22 @@ static void	print_echo(char *str)
  * @param lex array of strings, each string is a word in the command line
  * @param args "-n hello world"
  */
-void	exec_echo(char **lex, char *args, int *ret_cmd)
+void	exec_echo(char **lex, int *ret_cmd)
 {
 	int		option;
+	int		index;
 
-	if (ft_arraylen(lex) == 1)
+	if (!lex[1])
 		return (ft_putendl(""));
 	option = (!ft_strncmp(lex[1], "-n", 3));
-	if (option)
-		args = ft_strchr(args, 'n') + 1;
-	print_echo(args);
+	index = option + 1;
+	while (lex[index])
+	{
+		printf("%s", lex[index]);
+		if (lex[index + 1])
+			printf(" ");
+		++index;
+	}
 	if (!option)
 		printf("\n");
 	*ret_cmd = 0;
