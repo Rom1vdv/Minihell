@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:25:36 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 14:24:16 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/16 10:49:56 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,20 @@ void	ft_setenvpwd(t_envp *envp)
 
 	if (getcwd(pwd, sizeof(pwd)))
 		ft_setenv(envp, "PWD", pwd, 1);
+}
+
+int	ft_envplen(t_envp *envp)
+{
+	int	res;
+
+	res = 0;
+	while (envp)
+	{
+		if (envp->exported)
+			++res;
+		envp = envp->next;
+	}
+	return (res);
 }
 
 char	**env_dup(t_envp *envp)

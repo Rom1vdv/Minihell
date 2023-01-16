@@ -152,6 +152,7 @@ void	lexer(char *rl, t_ms *ms)
 		ft_free_arr(envp_dup);
 	}
 	free(ms->rl);
+	ms->rl = 0;
 	ft_free_arr(lex);
 }
 
