@@ -1,4 +1,16 @@
-#include "libft.h" //add header
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split_quotes.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/16 10:28:18 by yhuberla          #+#    #+#             */
+/*   Updated: 2023/01/16 10:28:18 by yhuberla         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
 
 static size_t	ft_get_mallen(char *str, char c)
 {
@@ -25,7 +37,7 @@ static size_t	ft_get_mallen(char *str, char c)
 			++index;
 		}
 	}
-	return (res +  1);
+	return (res + 1);
 }
 
 static char	*ft_get_next_word(char *str, char c, size_t *ptri)

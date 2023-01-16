@@ -1,6 +1,18 @@
-#include "../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_perror.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/16 10:23:20 by yhuberla          #+#    #+#             */
+/*   Updated: 2023/01/16 10:23:20 by yhuberla         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	ft_perror(char *str) //add header
+#include "../Includes/minishell.h"
+
+void	ft_perror(char *str)
 {
 	perror(str);
 	exit(EXIT_FAILURE);
