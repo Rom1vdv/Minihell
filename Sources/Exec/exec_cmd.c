@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 10:12:28 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/17 11:22:29 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ static char	*ft_get_cmdpath(char *cmd, char **paths) //modif to do
 
 	if (!access(cmd, X_OK))
 		return (cmd);
+	if (!access(cmd, F_OK))
+	{
+		msg = ft_strjoin(cmd, ": permission denied\n");
+		write(2, msg, ft_strlen(msg));
+		free(msg);
+		free(cmd);
+		exit(126);
+	}
 	index = -1;
 	while (paths[++index])
 	{
