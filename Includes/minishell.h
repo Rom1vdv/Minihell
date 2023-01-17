@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 10:20:36 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/17 11:05:31 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_envp {
 
 typedef struct s_minishell {
 	int		ret_cmd;
+	int		pipein[2];
+	int		pipeout[2];
 	char	*rl;
 	char	**envp_original;
 	t_envp	*envp;
@@ -69,6 +71,7 @@ void	ft_wait_child(int pid, int *ret_cmd);
 void	ft_fork(int *child_pid);
 void	ft_pipe(int pipefd[2]);
 void	ft_close_pipe(int pipefd[2]);
+void	ft_set_pipe(int pipefd[2], int in, int out);
 void	ft_dup2(int pipefd[2], int fd);
 
 t_envp	*env_init(char **envp);

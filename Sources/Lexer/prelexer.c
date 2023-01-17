@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_bonus.c                                      :+:      :+:    :+:   */
+/*   prelexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/13 14:36:28 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/14 16:04:51 by marvin           ###   ########.fr       */
+/*   Created: 2023/01/17 10:40:29 by yhuberla          #+#    #+#             */
+/*   Updated: 2023/01/17 10:40:29 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,22 @@ static void	exec_block(char *block, t_ms *ms, int piping)
 {
 	int	pid;
 
-	if (!piping)
-		return (lexer(block, ms, 0));
+	if (piping)
+		ft_pipe(ms->pipeout);
+	// printf("pipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
 	ft_fork(&pid);
 	if (!pid)
 	{
+		ft_dup2(ms->pipein, 0);
+		ft_close_pipe(ms->pipein);
+		ft_dup2(ms->pipeout, 1);
+		ft_close_pipe(ms->pipeout);
 		lexer(block, ms, 1);
 		exit(ms->ret_cmd);
 	}
+	ft_close_pipe(ms->pipein);
+	ft_set_pipe(ms->pipein, ms->pipeout[0], ms->pipeout[1]);
+	ft_set_pipe(ms->pipeout, -1, -1);
 	ft_wait_child(pid, &ms->ret_cmd);
 }
 
@@ -100,9 +108,10 @@ void	lexer_bonus(char *rl, t_ms *ms)
 	{
 		pipe_section = ft_split(rl, '|');
 		index = 0;
+		ft_set_pipe(ms->pipein, -1, -1);
+		ft_set_pipe(ms->pipeout, -1, -1);
 		while (pipe_section[index])
 		{
-			//pipe stuff here
 			exec_block(pipe_section[index], ms, pipe_section[index + 1] != 0);
 			++index;
 		}
