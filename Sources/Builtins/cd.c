@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/16 13:22:25 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/17 10:31:02 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	cat_pwd(char curpath[255], t_envp *envp)
 	pwd = ft_getenv(envp, "PWD");
 	if (!pwd)
 	{
-		printf("you must first export PWD\n");
+		write(2, "you must first export PWD\n", 26);
 		curpath[0] = '\0';
 		return ;
 	}
@@ -139,7 +139,7 @@ void	exec_cd(char **lex, t_ms *ms)
 		directory = lex[1];
 	else
 	{
-		printf("-minishell: cd: too many arguments\n"); //check if this is the behavior, spoiler alert : it is not
+		write(2, "-minishell: cd: too many arguments\n", 35); //check if this is the behavior, spoiler alert : it is not
 		ms->ret_cmd = 1;
 		return ;
 	}
@@ -171,7 +171,7 @@ void	exec_cd(char **lex, t_ms *ms)
 		ft_strcpy(curpath, ft_getenv(ms->envp, "OLDPWD"));
 		if (!curpath[0])
 		{
-			printf("-minishell: cd: OLDPWD not set\n");
+			write(2, "-minishell: cd: OLDPWD not set\n", 31);
 			ms->ret_cmd = 1;
 			return ;
 		}

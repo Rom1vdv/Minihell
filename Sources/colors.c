@@ -27,8 +27,10 @@ static void	free_envp(t_envp *envp)
 	}
 }
 
-void	close_program(t_ms *ms, char *rl, char **lex)
+void	close_program(t_ms *ms, char *rl, char **lex, int piping)
 {
+	if (piping)
+		return ;
 	free(rl);
 	printf("\n");
 	set_col(RED);

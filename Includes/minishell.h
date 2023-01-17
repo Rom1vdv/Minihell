@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/16 14:50:31 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/17 10:20:36 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_minishell {
 
 void	signal_handler(int signo, siginfo_t *info, void *context);
 
-void	lexer(char *rl, t_ms *ms);
+void	lexer(char *rl, t_ms *ms, int piping);
 void	lexer_bonus(char *rl, t_ms *ms);
 void	exec_echo(char **lex, int *ret_cmd);
 void	exec_cd(char **lex, t_ms *ms);
@@ -65,6 +65,11 @@ void	exec_unset(t_ms *ms, char *target);
 void	exec_env(t_envp *envp, int *ret_cmd);
 
 void	exec_cmd(int *ret_cmd, char **envp, char *path_lst, char **cmds);
+void	ft_wait_child(int pid, int *ret_cmd);
+void	ft_fork(int *child_pid);
+void	ft_pipe(int pipefd[2]);
+void	ft_close_pipe(int pipefd[2]);
+void	ft_dup2(int pipefd[2], int fd);
 
 t_envp	*env_init(char **envp);
 t_envp	*envp_new(char *line, int exported);
@@ -78,7 +83,7 @@ void	env_increment_shlvl(t_envp *envp);
 
 void	set_col(char *col);
 void	greet_user(t_envp *envp);
-void	close_program(t_ms *ms, char *rl, char **lex);
+void	close_program(t_ms *ms, char *rl, char **lex, int piping);
 
 void	test(t_ms *ms);
 

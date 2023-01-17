@@ -6,32 +6,17 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/13 14:03:35 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/17 10:12:28 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static void	ft_wait_child(int pid, int *ret_cmd)
-{
-	int	wait;
-	int	status;
-
-	wait = waitpid(pid, &status, 0);
-	if (wait == -1)
-		return ;
-	if (WIFEXITED(status))
-		*ret_cmd = WEXITSTATUS(status);
-}
-
-static void	ft_fork(int *child_pid)
-{
-	*child_pid = fork();
-	if (*child_pid == -1)
-		ft_perror("fork");
-}
-
-static char	*ft_get_cmdpath(char *cmd, char **paths)
+/* list of modifs to be done :                                        *
+ *   ./ls -> bash: ./ls: No such file or directory                    *
+ *   "" -> bash: : command not found                                  *
+ *   chmod -x exec, ./exec -> bash: ./minishellbis: Permission denied */
+static char	*ft_get_cmdpath(char *cmd, char **paths) //modif to do
 {
 	int		index;
 	char	*res;

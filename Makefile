@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+         #
+#    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/16 16:09:34 by romvan-d         ###   ########.fr        #
+#    Updated: 2023/01/17 09:55:58 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ FILES_BUILTINS = cd echo env env_utils export pwd unset
 
 FILES += $(addprefix Builtins/, $(FILES_BUILTINS))
 
-FILES_EXEC = exec_cmd
+FILES_EXEC = exec_cmd forkpipe
 
 FILES += $(addprefix Exec/, $(FILES_EXEC))
 

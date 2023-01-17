@@ -125,7 +125,7 @@ static void	transform_metachars(t_ms *ms, char *str)
 	ft_joinfree(ms, &str, &index);
 }
 
-void	lexer(char *rl, t_ms *ms)
+void	lexer(char *rl, t_ms *ms, int piping)
 {
 	int		index;
 	char	**lex;
@@ -156,7 +156,7 @@ void	lexer(char *rl, t_ms *ms)
 	else if (!ft_strncmp(lex[0], "env", 4))
 		exec_env(ms->envp, &ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "exit", 5))
-		close_program(ms, rl, lex);
+		close_program(ms, rl, lex, piping);
 	else if (ft_strchr(lex[0], '=') && lex[0][0] != '=')
 		exec_export(ms, lex[0], 0);
 	else

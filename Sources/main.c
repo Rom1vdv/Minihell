@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/16 14:42:07 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/17 10:37:38 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static void	loop(t_ms *ms)
 		ft_strcat(prompt, " $> ");
 		rl = readline(prompt);
 		if (!rl)	// == ctrl+D
-			close_program(ms, 0, 0);
+			close_program(ms, 0, 0, 0);
 		add_history(rl);
 		lexer_bonus(rl, ms);
 		free(rl);
@@ -108,12 +108,13 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	if (ac == 1)
 	{
+		// close(1); //use this to check errors are printed on stderr and not stdout
 		setup(&ms, envp);
 		loop(&ms);
 	}
 	else
 	{
-		printf("I identify as a argument-less executable, please refer to me as such.\n");
+		write(2, "I identify as a argument-less executable, please refer to me as such.\n", 70);
 		return (1);
 	}
 	return (0);

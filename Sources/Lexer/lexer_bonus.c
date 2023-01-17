@@ -14,7 +14,9 @@
 
 static int	parse_error(char *str)
 {
-	printf("parse error : %s\n", str);
+	write(2, "parse error : ", 14);
+	write(2, str, ft_strlen(str));
+	write(2, "\n", 1);
 	return (1);
 }
 
@@ -41,6 +43,7 @@ static int	check_quotes(char *str)
 		if (ft_strchr("'\"", str[index]))
 		{
 			quote = str[index++];
+			pipe = 0;
 			while (str[index] && str[index] != quote)
 				++index;
 			if (!str[index])
@@ -53,8 +56,23 @@ static int	check_quotes(char *str)
 	if (paranthesis)
 		return (parse_error("paranthesis"));
 	if (pipe)
-		return (parse_error("pipe"));
+		return (parse_error("'|'"));
 	return (0);
+}
+
+static void	exec_block(char *block, t_ms *ms, int piping)
+{
+	int	pid;
+
+	if (!piping)
+		return (lexer(block, ms, 0));
+	ft_fork(&pid);
+	if (!pid)
+	{
+		lexer(block, ms, 1);
+		exit(ms->ret_cmd);
+	}
+	ft_wait_child(pid, &ms->ret_cmd);
 }
 
 /* implementing && and || bonuses                            *
@@ -84,11 +102,12 @@ void	lexer_bonus(char *rl, t_ms *ms)
 		index = 0;
 		while (pipe_section[index])
 		{
-			lexer(pipe_section[index], ms);
+			//pipe stuff here
+			exec_block(pipe_section[index], ms, pipe_section[index + 1] != 0);
 			++index;
 		}
 		ft_free_arr(pipe_section);
 	}
 	else
-		lexer(rl, ms);
+		lexer(rl, ms, 0);
 }
