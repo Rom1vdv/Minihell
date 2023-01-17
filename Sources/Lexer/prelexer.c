@@ -12,10 +12,13 @@
 
 #include "../../Includes/minishell.h"
 
-static int	parse_error(char *str)
+static int	parse_error(char *str, char c)
 {
 	write(2, "parse error : ", 14);
-	write(2, str, ft_strlen(str));
+	if (str)
+		write(2, str, ft_strlen(str));
+	else
+		write(2, &c, 1);
 	write(2, "\n", 1);
 	return (1);
 }
@@ -26,37 +29,53 @@ static int	check_quotes(char *str)
 	char	quote;
 	char	paranthesis;
 	char	pipe;
+	int		redir;
 
 	paranthesis = 0;
 	pipe = -1;
+	redir = 0;
 	index = -1;
 	while (str[++index])
 	{
+		// printf("str at %d : %c\n", index, str[index]);
 		if (str[index] == '|')
 		{
 			if (pipe)
-				return (parse_error("'|'"));
+				return (parse_error("'|'", 0));
 			pipe = 1;
 		}
 		else if (!ft_strchr("| '\"", str[index]))
 			pipe = 0;
+		if (ft_strchr("><", str[index]))
+		{
+			if ((redir && (((redir > 0) && (str[index] == '<')) || (index > 0 && str[index - 1] == ' '))) || (index == 0 && str[index] == '>'))
+				return (parse_error(0, str[index]));
+			redir += (str[index] == '>') - (str[index] == '<');
+			if (redir * (1 - 2 * (redir < 0)) > 2)
+				return (parse_error(0, str[index]));
+		}
+		else if (!ft_strchr("<> '\"", str[index]))
+			redir = 0;
 		if (ft_strchr("'\"", str[index]))
 		{
 			quote = str[index++];
 			pipe = 0;
+			redir = 0;
 			while (str[index] && str[index] != quote)
 				++index;
 			if (!str[index])
-				return (parse_error("quotes"));
+				return (parse_error("quotes", 0));
 		}
 		else if (str[index] == ';')
-			return (parse_error("';'"));
+			return (parse_error("';'", 0));
 		paranthesis += (str[index] == '(') - (str[index] == ')');
 	}
 	if (paranthesis)
-		return (parse_error("paranthesis"));
+		return (parse_error("paranthesis", 0));
 	if (pipe)
-		return (parse_error("'|'"));
+		return (parse_error("'|'", 0));
+	if (redir)
+		return (parse_error(0, "<>"[redir > 0]));
 	return (0);
 }
 
@@ -77,7 +96,7 @@ static int	only_cat(char *str)
 	return (0);
 }
 
-static void	exec_pipe(char *block, t_ms *ms, int piping)
+void	exec_pipe(char *block, t_ms *ms, int piping)
 {
 	int	pid;
 
@@ -87,6 +106,7 @@ static void	exec_pipe(char *block, t_ms *ms, int piping)
 			return ;
 		ft_pipe(ms->pipeout);
 	}
+	// printf("cmd = %s\n", block);
 	// printf("pipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
 	ft_fork(&pid);
 	if (!pid)
@@ -133,11 +153,16 @@ void	lexer_bonus(char *rl, t_ms *ms)
 		ft_set_pipe(ms->pipeout, -1, -1);
 		while (pipe_section[index])
 		{
-			exec_pipe(pipe_section[index], ms, pipe_section[index + 1] != 0);
+			ft_handle_redirs(&pipe_section[index], ms, 1, pipe_section[index + 1] != 0);
+			// exec_pipe(pipe_section[index], ms, pipe_section[index + 1] != 0);
 			++index;
 		}
 	}
 	else
-		lexer(rl, ms, 0);
+	{
+		ft_set_pipe(ms->pipein, -1, -1);
+		ft_set_pipe(ms->pipeout, -1, -1);
+		ft_handle_redirs(&rl, ms, 0, 0);
+	}
 	ft_free_arr(pipe_section);
 }

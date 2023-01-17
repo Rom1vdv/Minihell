@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 11:33:52 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/17 17:51:31 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <sys/errno.h>
 # include <sys/wait.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 
 # define BLUE "\033[0;34m"
 # define CYAN "\033[0;36m"
@@ -60,6 +61,12 @@ void	signal_handler(int signo, siginfo_t *info, void *context);
 
 void	lexer(char *rl, t_ms *ms, int piping);
 void	lexer_bonus(char *rl, t_ms *ms);
+void	ft_handle_redirs(char **rl, t_ms *ms, int piping, int not_last_pipe);
+void	exec_pipe(char *block, t_ms *ms, int piping);
+void	here_doc(char *limiter, t_ms *ms, char *rl);
+void	ft_joinfree(t_ms *ms, char **strptr, int *index);
+void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote);
+
 void	exec_echo(char **lex, int *ret_cmd);
 void	exec_cd(char **lex, t_ms *ms);
 void	exec_pwd(int *ret_cmd);

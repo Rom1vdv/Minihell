@@ -12,7 +12,57 @@
 
 #include "../../Includes/minishell.h"
 
-static void	ft_joinfree(t_ms *ms, char **strptr, int *index)
+static void	ft_joinhome(t_ms *ms, char **strptr, int *index)
+{
+	char	*var;
+	char	*join;
+
+	ft_joinfree(ms, strptr, index);
+	var = ft_getenv(ms->envp, "HOME");
+	if (!var)
+		return ;
+	join = ft_strjoin(ms->rl, var);
+	free(ms->rl);
+	ms->rl = join;
+}
+
+/* using envp to transform $vars into their real value   *
+*                          ~ into HOME variable of env   *
+*                ignore ( and )                          */
+static void	transform_metachars(t_ms *ms, char *str)
+{
+	int		index;
+	char	quote;
+
+	ms->rl = NULL;
+	index = 0;
+	quote = 0;
+	while (str[index])
+	{
+		if (ft_strchr("'\"", str[index]))
+		{
+			if (!quote)
+				quote = str[index];
+			else if (str[index] == quote)
+				quote = 0;
+			if (quote && str[index] != quote)
+				++index;
+			else
+				ft_joinfree(ms, &str, &index);
+		}
+		else if (str[index] == '$' && (!quote || quote == '\"') && str[index + 1] != ' ' && str[index + 1])
+			ft_joinvar(ms, &str, &index, quote);
+		else if (str[index] == '~' && !quote && (index == 0 || str[index - 1] == ' ') && (!str[index + 1] || str[index + 1] == ' ' || str[index + 1] == '/'))
+			ft_joinhome(ms, &str, &index);
+		else if (ft_strchr("()", str[index]) && !quote)
+			ft_joinfree(ms, &str, &index);
+		else
+			++index;
+	}
+	ft_joinfree(ms, &str, &index);
+}
+
+void	ft_joinfree(t_ms *ms, char **strptr, int *index)
 {
 	char	increment;
 	char	*join;
@@ -27,7 +77,7 @@ static void	ft_joinfree(t_ms *ms, char **strptr, int *index)
 	*index = 0;
 }
 
-static void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote)
+void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote)
 {
 	int		kindex;
 	char	key[255];
@@ -72,57 +122,6 @@ static void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote)
 		ms->rl = join;
 	}
 
-}
-
-static void	ft_joinhome(t_ms *ms, char **strptr, int *index)
-{
-	char	*var;
-	char	*join;
-
-	ft_joinfree(ms, strptr, index);
-	var = ft_getenv(ms->envp, "HOME");
-	if (!var)
-		return ;
-	join = ft_strjoin(ms->rl, var);
-	free(ms->rl);
-	ms->rl = join;
-}
-
-/* using envp to transform $vars into their real value   *
-*                          ~ into HOME variable of env   *
-*                ignore ( and )                          */
-static void	transform_metachars(t_ms *ms, char *str)
-{
-	int		index;
-	char	quote;
-
-	ms->rl = NULL;
-	index = 0;
-	quote = 0;
-	while (str[index])
-	{
-		// printf("%d : %c\n", index, str[index]);
-		if (ft_strchr("'\"", str[index]))
-		{
-			if (!quote)
-				quote = str[index];
-			else if (str[index] == quote)
-				quote = 0;
-			if (quote && str[index] != quote)
-				++index;
-			else
-				ft_joinfree(ms, &str, &index);
-		}
-		else if (str[index] == '$' && (!quote || quote == '\"') && str[index + 1] != ' ' && str[index + 1])
-			ft_joinvar(ms, &str, &index, quote);
-		else if (str[index] == '~' && !quote && (index == 0 || str[index - 1] == ' ') && (!str[index + 1] || str[index + 1] == ' ' || str[index + 1] == '/'))
-			ft_joinhome(ms, &str, &index);
-		else if (ft_strchr("()", str[index]) && !quote)
-			ft_joinfree(ms, &str, &index);
-		else
-			++index;
-	}
-	ft_joinfree(ms, &str, &index);
 }
 
 void	lexer(char *rl, t_ms *ms, int piping)

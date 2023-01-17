@@ -6,7 +6,7 @@
 #    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/17 10:40:42 by yhuberla         ###   ########.fr        #
+#    Updated: 2023/01/17 17:30:07 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ FILES_BUILTINS = cd echo env env_utils export pwd unset
 
 FILES += $(addprefix Builtins/, $(FILES_BUILTINS))
 
-FILES_EXEC = exec_cmd forkpipe
+FILES_EXEC = exec_cmd forkpipe here_doc redirs
 
 FILES += $(addprefix Exec/, $(FILES_EXEC))
 
