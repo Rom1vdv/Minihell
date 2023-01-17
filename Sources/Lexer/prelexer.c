@@ -60,12 +60,33 @@ static int	check_quotes(char *str)
 	return (0);
 }
 
-static void	exec_block(char *block, t_ms *ms, int piping)
+static int	only_cat(char *str)
+{
+	int	index;
+
+	index = 0;
+	while (str[index] == ' ')
+		++index;
+	if (!ft_strncmp(&str[index], "cat", 3))
+	{
+		index += 3;
+		while (str[index] == ' ')
+			++index;
+		return (!str[index]);
+	}
+	return (0);
+}
+
+static void	exec_pipe(char *block, t_ms *ms, int piping)
 {
 	int	pid;
 
 	if (piping)
+	{
+		if (only_cat(block))
+			return ;
 		ft_pipe(ms->pipeout);
+	}
 	// printf("pipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
 	ft_fork(&pid);
 	if (!pid)
@@ -104,19 +125,19 @@ void	lexer_bonus(char *rl, t_ms *ms)
 		ms->ret_cmd = 1;
 		return ;
 	}
-	if (ft_strchr(rl, '|'))
+	pipe_section = ft_split_quotes(rl, '|'); // cat | cat | ls, what do we do ?
+	if (ft_arraylen(pipe_section) > 1)
 	{
-		pipe_section = ft_split(rl, '|');
 		index = 0;
 		ft_set_pipe(ms->pipein, -1, -1);
 		ft_set_pipe(ms->pipeout, -1, -1);
 		while (pipe_section[index])
 		{
-			exec_block(pipe_section[index], ms, pipe_section[index + 1] != 0);
+			exec_pipe(pipe_section[index], ms, pipe_section[index + 1] != 0);
 			++index;
 		}
-		ft_free_arr(pipe_section);
 	}
 	else
 		lexer(rl, ms, 0);
+	ft_free_arr(pipe_section);
 }
