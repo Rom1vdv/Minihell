@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 11:05:31 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/17 11:33:52 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <signal.h>
 # include <sys/errno.h>
 # include <sys/wait.h>
+#include <sys/stat.h>
 
 # define BLUE "\033[0;34m"
 # define CYAN "\033[0;36m"

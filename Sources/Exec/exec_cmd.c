@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 11:22:29 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/17 11:39:15 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,8 @@ static char	*ft_get_cmdpath(char *cmd, char **paths) //modif to do
 	char	*res;
 	char	*msg;
 
-	if (!access(cmd, X_OK))
-		return (cmd);
 	if (!access(cmd, F_OK))
-	{
-		msg = ft_strjoin(cmd, ": permission denied\n");
-		write(2, msg, ft_strlen(msg));
-		free(msg);
-		free(cmd);
-		exit(126);
-	}
+		return (cmd);
 	index = -1;
 	while (paths[++index])
 	{
@@ -48,6 +40,22 @@ static char	*ft_get_cmdpath(char *cmd, char **paths) //modif to do
 	free(msg);
 	free(cmd);
 	return (0);
+}
+
+static void	noaccess_file(char *path)
+{
+	struct stat	statbuf;
+
+	if (stat(path, &statbuf) == -1)
+		ft_perror("stat");
+	if ((statbuf.st_mode & S_IFMT) == S_IFDIR)
+	{
+		write(2, path, ft_strlen(path));
+		write(2, ": is a directory\n", 17);
+	}
+	else
+		perror(path);
+	exit(126);
 }
 
 void	exec_cmd(int *ret_cmd, char **envp, char *path_lst, char **cmds)
@@ -72,11 +80,8 @@ void	exec_cmd(int *ret_cmd, char **envp, char *path_lst, char **cmds)
 	if (!pid)
 	{
 		execve(cmds[0], cmds, envp);
-		if (errno == EACCES)
-		{
-			perror(cmds[0]);
-			exit(126);
-		}
+		if (errno == EACCES) // may want to check if cmds[0] is a dir to handle ~ for ex
+			noaccess_file(cmds[0]);
 		ft_perror(cmds[0]);
 	}
 	else
