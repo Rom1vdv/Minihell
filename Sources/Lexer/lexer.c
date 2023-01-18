@@ -109,7 +109,13 @@ void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote)
 	else
 	{
 		kindex = 0;
-		while ((*strptr)[*index] && (*strptr)[*index] != ' ' && (*strptr)[*index] != '$' && (*strptr)[*index] != quote)
+		if ((*strptr)[*index] >= '0' && (*strptr)[*index] <= '9')
+		{
+			(*index)++;
+			*strptr = &(*strptr)[*index];
+			return ;
+		}
+		while ((*strptr)[*index] && !ft_strchr(" $=/'\"", (*strptr)[*index]) && (*strptr)[*index] != quote) //! strchr
 			key[kindex++] = (*strptr)[(*index)++];
 		*strptr = &(*strptr)[*index];
 		*index = 0;
@@ -140,9 +146,10 @@ void	lexer(char *rl, t_ms *ms, int piping)
 		// printf("%d -> %s\n", index, lex[index]);
 		++index;
 	}
-	if (!ft_strncmp(lex[0], "test", 5))
-		test(ms);
-	else if (!ft_strncmp(lex[0], "echo", 5))
+	// if (!ft_strncmp(lex[0], "test", 5))
+	// 	test(ms);
+	// else 
+	if (!ft_strncmp(lex[0], "echo", 5))
 		exec_echo(lex, &ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "cd", 3))
 		exec_cd(lex, ms);
@@ -155,7 +162,7 @@ void	lexer(char *rl, t_ms *ms, int piping)
 	else if (!ft_strncmp(lex[0], "env", 4))
 		exec_env(ms->envp, &ms->ret_cmd);
 	else if (!ft_strncmp(lex[0], "exit", 5))
-		close_program(ms, rl, lex, piping);
+		exec_exit(lex, ms, rl, piping);
 	else if (ft_strchr(lex[0], '=') && lex[0][0] != '=')
 		exec_export(ms, lex[0], 0);
 	else

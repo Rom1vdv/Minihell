@@ -151,7 +151,7 @@ void	lexer_bonus(char *rl, t_ms *ms)
 		return ;
 	if (check_quotes(rl))
 	{
-		ms->ret_cmd = 1;
+		ms->ret_cmd = 258;
 		return ;
 	}
 	ft_set_pipe(ms->pipein, -1, -1);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
+#    By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/17 17:30:07 by yhuberla         ###   ########.fr        #
+#    Updated: 2023/01/18 16:30:59 by romvan-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ OBJS_DIR_Sources = Objs/Sources
 
 FILES = colors main test
 
-FILES_BUILTINS = cd echo env env_utils export pwd unset
+FILES_BUILTINS = cd echo env env_utils exit export pwd unset
 
 FILES += $(addprefix Builtins/, $(FILES_BUILTINS))
 

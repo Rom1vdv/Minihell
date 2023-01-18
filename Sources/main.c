@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 10:37:38 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:43:44 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ static void	setup(t_ms *ms, char **envp)
 	ms->envp_original = envp;
 	ms->envp = env_init(envp);
 	env_increment_shlvl(ms->envp);
-	set_col(GREEN);
-	greet_user(ms->envp);
-	set_col(WHITE);
-	printf("\n");
+	// set_col(GREEN);
+	// greet_user(ms->envp);
+	// set_col(WHITE);
+	// printf("\n");
 }
 
 static void	ft_catshortdir(char prompt[255])
@@ -100,12 +100,26 @@ static void	loop(t_ms *ms)
 	}
 }
 
+static int	ft_launch_minishell(char *av, char **envp)
+{
+	t_ms ms;
+	
+	setup(&ms, envp);
+	lexer_bonus(av, &ms);
+	return (ms.ret_cmd);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_ms	ms;
 
 	(void)ac;
 	(void)av;
+	if (ac >= 3 && !ft_strncmp(av[1], "-c", 3))
+  	{
+    	int exit_status = ft_launch_minishell(av[2], envp);
+    	exit(exit_status);
+ 	}
 	if (ac == 1)
 	{
 		// close(1); //use this to check errors are printed on stderr and not stdout

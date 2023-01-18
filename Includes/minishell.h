@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/18 14:55:05 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:30:34 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	exec_pwd(int *ret_cmd);
 void	exec_export(t_ms *ms, char *line, int exported);
 void	exec_unset(t_ms *ms, char *target);
 void	exec_env(t_envp *envp, int *ret_cmd);
+void	exec_exit(char **lex, t_ms *ms, char *rl, int piping);
 
 void	exec_cmd(int *ret_cmd, char **envp, char *path_lst, char **cmds);
 void	ft_wait_child(int pid, int *ret_cmd);

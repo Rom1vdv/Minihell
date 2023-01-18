@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/16 15:26:23 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:12:38 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@ static void	display_sorted_env(t_envp *envp)
 		while (tmp && tmp->ascii_pos != index)
 			tmp = tmp->next;
 		if (tmp && ft_strncmp(tmp->key, "_", 2))
-			printf("%s=%s\n", tmp->key, tmp->value);
+		{
+			if (tmp->value)
+				printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
+			else
+				printf("%s=\"\"\n", tmp->key);
+		}
 		++index;
 	}
 }
@@ -97,6 +102,15 @@ void	exec_export(t_ms *ms, char *line, int exported)
 	if (!line)
 	{
 		display_sorted_env(ms->envp);
+		return ;
+	}
+	if (ft_strchr("0123456789-=", line[0]) || ft_strchr(line, '-') || ft_strchr(line, '-') || ft_strchr(line, '\\') || ft_strchr(line, '.') || ft_strchr(line, '+') || ft_strchr(line, '$') || ft_strchr(line, '}') || ft_strchr(line, '{') || ft_strchr(line, '*')
+			 || ft_strchr(line, '#') || ft_strchr(line, '@') || ft_strchr(line, '!') || ft_strchr(line, '^') || ft_strchr(line, '~'))
+	{
+		write(2, "export: '", 10);
+		write(2, line, ft_strlen(line));
+		write(2, "': not a valid indentifier\n", 28);
+		ms->ret_cmd = 1 + (line[0] == '-');
 		return ;
 	}
 	value = ft_strchr(line, '=');

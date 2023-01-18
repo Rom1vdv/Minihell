@@ -37,12 +37,28 @@
 // 	}
 // }
 
+static int	ft_check_option(char *lex)
+{
+	int	index;
+
+	if (lex[0] != '-')
+		return (0);
+	index = 1;
+	while (lex[index])
+	{
+		if (lex[index] != 'n')
+			return (0);
+		++index;
+	}
+	return (1);
+}
 /**
  * It prints the arguments passed to it, with the option to not print a newline at the end
  * 
  * @param lex array of strings, each string is a word in the command line
  * @param args "-n hello world"
  */
+
 void	exec_echo(char **lex, int *ret_cmd)
 {
 	int		option;
@@ -50,8 +66,10 @@ void	exec_echo(char **lex, int *ret_cmd)
 
 	if (!lex[1])
 		return (ft_putendl(""));
-	option = (!ft_strncmp(lex[1], "-n", 3));
+	option = ft_check_option(lex[1]);//(!ft_strncmp(lex[1], "-n", 3));
 	index = option + 1;
+	while (lex[index] && ft_check_option(lex[index]))
+		++index;
 	while (lex[index])
 	{
 		printf("%s", lex[index]);

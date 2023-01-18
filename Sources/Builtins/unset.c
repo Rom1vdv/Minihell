@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 17:52:43 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:19:09 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,14 @@ void	exec_unset(t_ms *ms, char *target)
 	if (!ms || !ms->envp)
 		return ;
 	if (!target)
+		return ;
+	if (ft_strchr("0123456789-=", target[0]) || ft_strchr(target, '-') || ft_strchr(target, '-') || ft_strchr(target, '\\') || ft_strchr(target, '.') || ft_strchr(target, '+') || ft_strchr(target, '$') || ft_strchr(target, '}') || ft_strchr(target, '{') || ft_strchr(target, '*')
+			 || ft_strchr(target, '#') || ft_strchr(target, '@') || ft_strchr(target, '!') || ft_strchr(target, '^') || ft_strchr(target, '~') || ft_strchr(target, '='))
 	{
-		write(2, "unset: not enough arguments\n", 28);
-		ms->ret_cmd = 1;
+		write(2, "export: '", 10);
+		write(2, target, ft_strlen(target));
+		write(2, "': not a valid indentifier\n", 28);
+		ms->ret_cmd = 1 + (target[0] == '-');
 		return ;
 	}
 	ms->ret_cmd = 0;
