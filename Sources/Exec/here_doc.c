@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:22:32 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 18:17:58 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:47:52 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,21 @@ static void	here_doc_loop(char *limiter, int fd, t_ms *ms, int quotes)
 	free(line);
 }
 
-void	here_doc(char *limiter, t_ms *ms, char *rl)
+int	empty_cmd(char *str)
+{
+	int	index;
+
+	index = 0;
+	while (str[index])
+	{
+		if (str[index] != ' ')
+			return (0);
+		++index;
+	}
+	return (1);
+}
+
+void	here_doc(char *limiter, t_ms *ms, char *rl, int piping)
 {
 	int		fd;
 	int		quotes;
@@ -88,6 +102,9 @@ void	here_doc(char *limiter, t_ms *ms, char *rl)
 		unlink(".here_doc_tmp");
 		ft_perror("here_doc");
 	}
-	exec_pipe(rl, ms, 0);
+	if (!empty_cmd(rl))
+		exec_pipe(rl, ms, piping);
+	else
+		exec_pipe("cat", ms, piping);
 	unlink(".here_doc_tmp");
 }

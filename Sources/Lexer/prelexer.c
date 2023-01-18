@@ -48,7 +48,7 @@ static int	check_quotes(char *str)
 			pipe = 0;
 		if (ft_strchr("><", str[index]))
 		{
-			if ((redir && (((redir > 0) && (str[index] == '<')) || (index > 0 && str[index - 1] == ' '))) || (index == 0 && str[index] == '>'))
+			if (redir && (((redir > 0) && (str[index] == '<')) || (index > 0 && str[index - 1] == ' ')))
 				return (parse_error(0, str[index]));
 			redir += (str[index] == '>') - (str[index] == '<');
 			if (redir * (1 - 2 * (redir < 0)) > 2)
@@ -153,7 +153,8 @@ void	lexer_bonus(char *rl, t_ms *ms)
 		ft_set_pipe(ms->pipeout, -1, -1);
 		while (pipe_section[index])
 		{
-			ft_handle_redirs(&pipe_section[index], ms, 1, pipe_section[index + 1] != 0);
+			// printf("working with %s\n", pipe_section[index]);
+			ft_handle_redirs(pipe_section[index], ms, 1, pipe_section[index + 1] != 0);
 			// exec_pipe(pipe_section[index], ms, pipe_section[index + 1] != 0);
 			++index;
 		}
@@ -162,7 +163,7 @@ void	lexer_bonus(char *rl, t_ms *ms)
 	{
 		ft_set_pipe(ms->pipein, -1, -1);
 		ft_set_pipe(ms->pipeout, -1, -1);
-		ft_handle_redirs(&rl, ms, 0, 0);
+		ft_handle_redirs(rl, ms, 0, 0);
 	}
 	ft_free_arr(pipe_section);
 }

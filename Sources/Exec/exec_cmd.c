@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 11:39:15 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:11:03 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,21 @@ static char	*ft_get_cmdpath(char *cmd, char **paths) //modif to do
 	char	*res;
 	char	*msg;
 
-	if (!access(cmd, F_OK))
-		return (cmd);
-	index = -1;
-	while (paths[++index])
+	if (cmd && cmd[0])
 	{
-		res = ft_strjoins(3, paths[index], "/", cmd);
-		if (!access(res, X_OK))
+		if (!access(cmd, F_OK))
+			return (cmd);
+		index = -1;
+		while (paths[++index])
 		{
-			free(cmd);
-			return (res);
+			res = ft_strjoins(3, paths[index], "/", cmd);
+			if (!access(res, X_OK))
+			{
+				free(cmd);
+				return (res);
+			}
+			free(res);
 		}
-		free(res);
 	}
 	msg = ft_strjoin(cmd, ": command not found\n");
 	write(2, msg, ft_strlen(msg));

@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 17:51:31 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:52:13 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,10 @@ void	signal_handler(int signo, siginfo_t *info, void *context);
 
 void	lexer(char *rl, t_ms *ms, int piping);
 void	lexer_bonus(char *rl, t_ms *ms);
-void	ft_handle_redirs(char **rl, t_ms *ms, int piping, int not_last_pipe);
+void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe);
 void	exec_pipe(char *block, t_ms *ms, int piping);
-void	here_doc(char *limiter, t_ms *ms, char *rl);
+void	here_doc(char *limiter, t_ms *ms, char *rl, int piping);
+int		empty_cmd(char *str);
 void	ft_joinfree(t_ms *ms, char **strptr, int *index);
 void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote);
 
