@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/18 11:52:13 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:55:05 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_minishell {
 	int		ret_cmd;
 	int		pipein[2];
 	int		pipeout[2];
+	char	*file_name;
 	char	*rl;
 	char	**envp_original;
 	t_envp	*envp;

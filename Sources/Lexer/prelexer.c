@@ -108,6 +108,8 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 	}
 	// printf("cmd = %s\n", block);
 	// printf("pipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
+	// printf("is %d open ? %d\n", ms->pipein[0], fcntl(ms->pipein[0], F_GETFD) != -1);
+	// printf("is %d open ? %d\n", ms->pipeout[1], fcntl(ms->pipeout[1], F_GETFD) != -1);
 	ft_fork(&pid);
 	if (!pid)
 	{
@@ -118,10 +120,17 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 		lexer(block, ms, 1);
 		exit(ms->ret_cmd);
 	}
-	ft_close_pipe(ms->pipein);
-	ft_set_pipe(ms->pipein, ms->pipeout[0], ms->pipeout[1]);
+	if (ms->pipeout[0] != -1 || ms->pipeout[1] == -1)
+	{
+		// printf("DONTCOMEHERE\n");
+		ft_close_pipe(ms->pipein);
+		ft_set_pipe(ms->pipein, ms->pipeout[0], ms->pipeout[1]);
+	}
+	else //uncomment this after debug
+		ft_close_pipe(ms->pipeout);
 	ft_set_pipe(ms->pipeout, -1, -1);
 	ft_wait_child(pid, &ms->ret_cmd);
+	// printf("AFTERpipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
 }
 
 /* implementing && and || bonuses                            *
@@ -145,12 +154,12 @@ void	lexer_bonus(char *rl, t_ms *ms)
 		ms->ret_cmd = 1;
 		return ;
 	}
+	ft_set_pipe(ms->pipein, -1, -1);
+	ft_set_pipe(ms->pipeout, -1, -1);
 	pipe_section = ft_split_quotes(rl, '|'); // cat | cat | ls, what do we do ?
 	if (ft_arraylen(pipe_section) > 1)
 	{
 		index = 0;
-		ft_set_pipe(ms->pipein, -1, -1);
-		ft_set_pipe(ms->pipeout, -1, -1);
 		while (pipe_section[index])
 		{
 			// printf("working with %s\n", pipe_section[index]);
@@ -160,10 +169,9 @@ void	lexer_bonus(char *rl, t_ms *ms)
 		}
 	}
 	else
-	{
-		ft_set_pipe(ms->pipein, -1, -1);
-		ft_set_pipe(ms->pipeout, -1, -1);
 		ft_handle_redirs(rl, ms, 0, 0);
-	}
+	ft_close_pipe(ms->pipein);
+	ft_close_pipe(ms->pipeout);
 	ft_free_arr(pipe_section);
+	free(ms->file_name);
 }

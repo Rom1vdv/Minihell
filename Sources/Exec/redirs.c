@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:28:51 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/18 12:08:42 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:04:38 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 	char	save;
 	char	*file;
 
+	ms->file_name = 0;
 	if (!ft_strchr(rl, '<') && !ft_strchr(rl, '>'))
 	{
 		// printf("piping : %d, notlast : %d on %s\n", piping, not_last_pipe, rl);
@@ -30,10 +31,10 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 			return (exec_pipe(rl, ms, not_last_pipe));
 	}
 	index = 0;
-	save = 0;
 	while (rl[index])
 	{
-		// printf("|%s| at index %d : %c\n", rl, index, rl[index]);
+		save = 0;
+		// printf("|%s| at index %d : %c\n\n", rl, index, rl[index]);
 		if (rl[index] == '>')
 		{
 			append = (rl[index + 1] == '>');
@@ -43,13 +44,13 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 			while (rl[index] == ' ')
 				++index;
 			len = 0;
-			while (rl[index + len] && rl[index + len] != ' ')
+			while (rl[index + len] && !ft_strchr(" <>", rl[index + len]))
 				++len;
 			file = ft_malloc(sizeof(*file) * (len + 1), "redirs >");
 			sub_index = 0;
 			while (sub_index < len)
 				file[sub_index++] = rl[index++];
-			--index;
+			index-=2;
 			file[sub_index] = '\0';
 			if (!append)
 				ms->pipeout[1] = open(file, O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
@@ -57,15 +58,37 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 				ms->pipeout[1] = open(file, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			if (ms->pipeout[1] == -1)
 				perror(file);
+			// printf("file |%s| cmd |%s|\n", file, rl);
+			free(file);
 			if (!empty_cmd(rl))
-				exec_pipe(rl, ms, 0);
+			{
+				if (ms->file_name)
+				{
+					close(ms->pipein[0]);
+					ms->pipein[0] = open(ms->file_name, O_RDONLY);
+					if (ms->pipein[0] == -1)
+					{
+						perror(file);
+						ft_pipe(ms->pipein);
+						ms->ret_cmd = 1;
+					}
+					else
+						exec_pipe(rl, ms, 0);
+				}
+				else
+					exec_pipe(rl, ms, 0);
+			}
 			else
 			{
 				close(ms->pipeout[1]);
 				ms->pipeout[1] = -1;
 			}
-			ft_pipe(ms->pipein);
-			close(ms->pipein[1]);
+			if (piping && !ft_strchr(&rl[index], '<') && !ft_strchr(&rl[index], '>'))
+			{
+				// printf("piping in >, nonno\n");
+				ft_pipe(ms->pipein);
+				close(ms->pipein[1]);
+			}
 		}
 		else if (rl[index] == '<' && rl[index + 1] != '<' && rl[index + 1] != '>')
 		{
@@ -109,10 +132,15 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 					close(ms->pipein[0]);
 					ms->pipein[0] = -1;
 				}
-				ft_pipe(ms->pipein);
-				close(ms->pipein[1]);
+				if (!piping && (!ft_strchr(&rl[index], '<') && !ft_strchr(&rl[index], '>')))
+				{
+					ft_pipe(ms->pipein);
+					close(ms->pipein[1]);
+				}
 				// exec_pipe(rl, ms, piping && not_last_pipe);
 			}
+			ms->file_name = file;
+			printf("save = %c\n", save);
 			if (save)
 				rl[index + 1] = save;
 		}
