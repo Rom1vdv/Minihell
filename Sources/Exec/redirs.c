@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:28:51 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:53:55 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 11:19:45 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 			else if (!save)
 			{
 				// printf("piping %d rl is |%s| empty ? %d\n", not_last_pipe, rl, !empty_cmd(rl));
-				if (!empty_cmd(rl))
+				if (!empty_cmd(rl) && !ft_strchr(&rl[index], '<'))
 					exec_pipe(rl, ms, not_last_pipe);
 				else
 				{
