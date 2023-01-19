@@ -32,11 +32,11 @@ void	close_program(t_ms *ms, char *rl, char **lex, int piping)
 	(void)rl;
 	if (piping)
 		return ;
-	printf("\n");
-	set_col(RED);
-	greet_user(ms->envp);
-	set_col(WHITE);
-	printf("\n");
+	// printf("\n");
+	// set_col(RED);
+	// greet_user(ms->envp);
+	// set_col(WHITE);
+	// printf("\n");
 	free_envp(ms->envp);
 	ft_free_arr(lex);
 	exit(g_ret_cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:49:31 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:09:08 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,14 +135,8 @@ void	exec_cd(char **lex, t_ms *ms)
 		if (!directory)
 			return ;
 	}
-	else if (lexlen == 2)
+	else if (lexlen >= 2)
 		directory = lex[1];
-	else
-	{
-		write(2, "-minishell: cd: too many arguments\n", 35); //check if this is the behavior, spoiler alert : it is not
-		g_ret_cmd = 1;
-		return ;
-	}
 	ft_setenvpwd(ms->envp); //if pwd was unset, we reset it
 	if (ft_strncmp(directory, "-", 2))
 	{
