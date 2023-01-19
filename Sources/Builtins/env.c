@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:25:36 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:53:57 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 09:35:14 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,12 @@ void	exec_env(t_envp *envp)
 	{
 		// printf("%-3d-> ", envp->ascii_pos);
 		if (envp->exported)
-			printf("%s=%s\n", envp->key, envp->value);
+		{
+			if (envp->value)
+				printf("%s=%s\n", envp->key, envp->value);
+			else
+				printf("%s=\n", envp->key);
+		}
 		envp = envp->next;
 	}
 	g_ret_cmd = 0;

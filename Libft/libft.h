@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:41:11 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:23:22 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 09:55:14 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ size_t	ft_strlen(const char *str);
 // char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
 char	**ft_split_quotes(char *str, char c);
+char	**ft_split_first(char const *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoins(int ac, ...);
 char	*ft_strdup(const char *s1);

@@ -6,16 +6,16 @@
 #    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/28 12:41:01 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/19 08:25:52 by yhuberla         ###   ########.fr        #
+#    Updated: 2023/01/19 09:55:43 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
 FILES = ft_arraylen ft_atoi ft_bzero ft_free_arr ft_itoa ft_malloc ft_perror \
-		ft_putendl ft_split ft_split_quotes ft_strchr ft_strchr_quotes \
-		ft_strcat ft_strcpy ft_strdup ft_strjoin ft_strjoins ft_strlen \
-		ft_strncmp
+		ft_putendl ft_split ft_split_quotes ft_split_first ft_strchr \
+		ft_strchr_quotes ft_strcat ft_strcpy ft_strdup ft_strjoin ft_strjoins \
+		ft_strlen ft_strncmp
 
 SRCS = $(addsuffix .c, $(FILES))
 

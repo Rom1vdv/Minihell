@@ -180,7 +180,7 @@ void	lexer(char *rl, t_ms *ms, int piping)
 // 	if (str[*index + 1] == '?')
 // 	{
 // 		++(*index);
-// 		var = ft_itoa(ms->ret_cmd);
+// 		var = ft_itoa(g_ret_cmd);
 // 		if (var)
 // 		{
 // 			(*cpyndex) += ft_strlen(var);

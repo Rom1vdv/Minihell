@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:54:55 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 09:17:46 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*ft_get_cmdpath(char *cmd, char **paths) //modif to do
 			free(res);
 		}
 	}
-	msg = ft_strjoin(cmd, ": command not found\n");
+	msg = ft_strjoins(3, "-minishell: ", cmd, ": command not found\n");
 	write(2, msg, ft_strlen(msg));
 	free(msg);
 	free(cmd);

@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:53:54 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 10:16:36 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	display_sorted_env(t_envp *envp)
 			if (tmp->value)
 				printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
 			else
-				printf("%s=\"\"\n", tmp->key);
+				printf("declare -x %s=\"\"\n", tmp->key);
 		}
 		++index;
 	}
@@ -95,7 +95,9 @@ static void	ft_exportvar(t_envp *envp, char *target)
 
 void	exec_export(t_ms *ms, char *line, int exported)
 {
+	int		keylen;
 	char	*value;
+	char	*key;
 
 	if (!ms || !ms->envp)
 		return ;
@@ -104,23 +106,44 @@ void	exec_export(t_ms *ms, char *line, int exported)
 		display_sorted_env(ms->envp);
 		return ;
 	}
-	if (ft_strchr("0123456789-=", line[0]) || ft_strchr(line, '-') || ft_strchr(line, '-') || ft_strchr(line, '\\') || ft_strchr(line, '.') || ft_strchr(line, '+') || ft_strchr(line, '$') || ft_strchr(line, '}') || ft_strchr(line, '{') || ft_strchr(line, '*')
-			 || ft_strchr(line, '#') || ft_strchr(line, '@') || ft_strchr(line, '!') || ft_strchr(line, '^') || ft_strchr(line, '~'))
+	value = ft_strchr(line, '=');
+	key = ft_strdup(line);
+	key[ft_strlen(line) - ft_strlen(value)] = '\0';
+	keylen = ft_strlen(key);
+	if (keylen > 1 && key[keylen - 1] == '+')
 	{
-		write(2, "export: '", 10);
-		write(2, line, ft_strlen(line));
-		write(2, "': not a valid indentifier\n", 28);
-		g_ret_cmd = 1 + (line[0] == '-');
+		exported += 2;
+		key[keylen - 1] = '\0';
+		--keylen;
+	}
+	if (!keylen || ft_strchr("0123456789=", key[0]) || ft_strchr(key, '-') || ft_strchr(key, '\\') || ft_strchr(key, '.')
+			|| ft_strchr(key, '+') || ft_strchr(key, '$') || ft_strchr(key, '}') || ft_strchr(key, '{') || ft_strchr(key, '*')
+			|| ft_strchr(key, '#') || ft_strchr(key, '@') || ft_strchr(key, '!') || ft_strchr(key, '^') || ft_strchr(key, '~'))
+	{
+		free(key);
+		if (exported)
+		{
+			write(2, "-minishell: export: '", 21);
+			write(2, line, ft_strlen(line));
+			write(2, "': not a valid indentifier\n", 27);
+			g_ret_cmd = 1 + (line[0] == '-');
+		}
+		else
+		{
+			write(2, "-minishell: '", 13);
+			write(2, line, ft_strlen(line));
+			write(2, "': command not found\n", 21);
+			g_ret_cmd = 127;
+		}
 		return ;
 	}
 	g_ret_cmd = 0;
-	value = ft_strchr(line, '=');
 	if (!value)
 	{
 		ft_exportvar(ms->envp, line);
 		return ;
 	}
-	line[ft_strlen(line) - ft_strlen(value)] = '\0';
 	// ft_trimquotes(value);
-	ft_setenv(ms->envp, line, &value[1], exported);
+	ft_setenv(ms->envp, key, &value[1], exported);
+	free(key);
 }

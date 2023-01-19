@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:24:35 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/15 14:50:09 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/19 10:10:15 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_envp	*envp_new(char *line, int exported)
 	if (!line)
 		return (0);
 	res = ft_malloc(sizeof(*res), "env_init");
-	splt = ft_split(line, '=');
+	splt = ft_split_first(line, '=');
 	res->key = ft_strdup(splt[0]);
 	res->value = ft_strdup(splt[1]);
 	res->ascii_pos = 0;
@@ -85,11 +85,14 @@ void	ft_setenv(t_envp *envp, char *target, char *value, int exported)
 	{
 		if (!ft_strncmp(tmp->key, target, targetlen))
 		{
+			join = value;
+			if (exported > 1)
+				join = ft_strjoin(tmp->value, value);
 			free(tmp->value);
-			tmp->value = ft_strdup(value);
-			if (!tmp->exported && exported)
+			tmp->value = ft_strdup(join);
+			if (!tmp->exported && exported % 2)
 			{
-				tmp->exported = exported;
+				tmp->exported = exported % 2;
 				env_setascii(envp, tmp);
 			}
 			return ;
@@ -99,7 +102,7 @@ void	ft_setenv(t_envp *envp, char *target, char *value, int exported)
 		else
 		{
 			join = ft_strjoins(3, target, "=", value);
-			tmp->next = envp_new(join, exported);
+			tmp->next = envp_new(join, exported % 2);
 			env_setascii(envp, tmp->next);
 			return (free(join));
 		}
