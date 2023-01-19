@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/18 15:43:44 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:47:14 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@ static void	setup(t_ms *ms, char **envp)
 		ft_perror("sigaction");
 	ms->ret_cmd = 0;
 	ms->rl = 0;
-	ms->envp_original = envp;
 	ms->envp = env_init(envp);
 	env_increment_shlvl(ms->envp);
-	// set_col(GREEN);
-	// greet_user(ms->envp);
-	// set_col(WHITE);
-	// printf("\n");
+	set_col(GREEN);
+	greet_user(ms->envp);
+	set_col(WHITE);
+	printf("\n");
 }
 
 static void	ft_catshortdir(char prompt[255])
@@ -102,7 +101,7 @@ static void	loop(t_ms *ms)
 
 static int	ft_launch_minishell(char *av, char **envp)
 {
-	t_ms ms;
+	t_ms	ms;
 	
 	setup(&ms, envp);
 	lexer_bonus(av, &ms);

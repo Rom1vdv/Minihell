@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:41:11 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/15 12:18:09 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/19 08:23:22 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*ft_itoa(int n);
 // void	ft_arrayset(int *tab, int value, int size);
 // int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
+char	*ft_strchr_quotes(char *str, char c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_strcpy(char *dst, const char *src);
 void	ft_strcat(char *dst, const char *src);

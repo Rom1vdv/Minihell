@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:28:51 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/18 15:04:38 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:24:11 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 	int		len;
 	int		append;
 	char	save;
+	char	quote;
 	char	*file;
 
 	ms->file_name = 0;
-	if (!ft_strchr(rl, '<') && !ft_strchr(rl, '>'))
+	if (!ft_strchr_quotes(rl, '<') && !ft_strchr_quotes(rl, '>'))
 	{
 		// printf("piping : %d, notlast : %d on %s\n", piping, not_last_pipe, rl);
 		if (!piping)
@@ -33,6 +34,12 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 	index = 0;
 	while (rl[index])
 	{
+		if (ft_strchr("'\"", rl[index]))
+		{
+			quote = rl[index++];
+			while (rl[index] && rl[index] != quote)
+				++index;
+		}
 		save = 0;
 		// printf("|%s| at index %d : %c\n\n", rl, index, rl[index]);
 		if (rl[index] == '>')

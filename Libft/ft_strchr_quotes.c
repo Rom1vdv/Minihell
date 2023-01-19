@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_strchr_quotes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 15:31:57 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/18 18:00:20 by yhuberla         ###   ########.fr       */
+/*   Created: 2023/01/19 08:19:16 by yhuberla          #+#    #+#             */
+/*   Updated: 2023/01/19 08:26:17 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/minishell.h"
+#include "libft.h"
 
-/* SIGINT = ctrl+c */
-void	signal_handler(int signo, siginfo_t *info, void *context)
+char	*ft_strchr_quotes(char *str, char c)
 {
-	(void)context;
-	(void)signo;
-	(void)info;
-	if (signo == SIGINT) // +set cmd_ret to 130 -> is this the allowed global ?
+	size_t	index;
+	char	quote;
+
+	if (!str)
+		return (0);
+	index = 0;
+	while (str[index])
 	{
-		printf("\n");
-		rl_on_new_line();
-		// rl_replace_line("", 0);
-		rl_redisplay();
+		if (ft_strchr("'\"", str[index]))
+		{
+			quote = str[index++];
+			while (str[index] && str[index] != quote)
+				++index;
+		}
+		if (str[index] == c)
+			return (&str[index]);
+		++index;
 	}
-	else if (signo == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-		return ;
-	}
+	if (str[index] == c)
+		return (&str[index]);
+	return (0);
 }

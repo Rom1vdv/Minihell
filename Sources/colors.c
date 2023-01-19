@@ -32,11 +32,11 @@ void	close_program(t_ms *ms, char *rl, char **lex, int piping)
 	(void)rl;
 	if (piping)
 		return ;
-	// printf("\n");
-	// set_col(RED);
-	// greet_user(ms->envp);
-	// set_col(WHITE);
-	// printf("\n");
+	printf("\n");
+	set_col(RED);
+	greet_user(ms->envp);
+	set_col(WHITE);
+	printf("\n");
 	free_envp(ms->envp);
 	ft_free_arr(lex);
 	exit(ms->ret_cmd);
@@ -53,12 +53,12 @@ void	greet_user(t_envp *envp)
 	printf("/* ************************************************************************** */\n");
 	printf("/*                                                                            */\n");
 	printf("/*                                                        :::      ::::::::   */\n");
-	printf("/*   minishell               shlvl : %-18s :+:      :+:    :+:   */\n", ft_getenv(envp, "SHLVL"));
+	printf("/*   minishell                   shlvl : %-14s :+:      :+:    :+:   */\n", ft_getenv(envp, "SHLVL"));
 	printf("/*                                                    +:+ +:+         +:+     */\n");
 	printf("/*   By: romvan-d && yhuberla                       +#+  +:+       +#+        */\n");
 	printf("/*                                                +#+#+#+#+#+   +#+           */\n");
-	printf("/*   Created: 2023/01/10 09:47:48 by authors           #+#    #+#             */\n");
-	printf("/*   Updated: 2023/01/13 09:39:06 by authors          ###   ########.fr       */\n");
+	printf("/*   Created: 2023/01/10 09:47:48                      #+#    #+#             */\n");
+	printf("/*   Updated: 2023/01/18 18:00:52                     ###   ########.fr       */\n");
 	printf("/*                                                                            */\n");
 	printf("/* ************************************************************************** */\n");
 }

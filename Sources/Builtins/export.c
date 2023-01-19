@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/18 17:12:38 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:30:39 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	exec_export(t_ms *ms, char *line, int exported)
 		ms->ret_cmd = 1 + (line[0] == '-');
 		return ;
 	}
+	ms->ret_cmd = 0;
 	value = ft_strchr(line, '=');
 	if (!value)
 	{
@@ -122,5 +123,4 @@ void	exec_export(t_ms *ms, char *line, int exported)
 	line[ft_strlen(line) - ft_strlen(value)] = '\0';
 	// ft_trimquotes(value);
 	ft_setenv(ms->envp, line, &value[1], exported);
-	ms->ret_cmd = 0;
 }
