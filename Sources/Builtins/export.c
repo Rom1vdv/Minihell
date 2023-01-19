@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:30:39 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:53:54 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,10 @@ void	exec_export(t_ms *ms, char *line, int exported)
 		write(2, "export: '", 10);
 		write(2, line, ft_strlen(line));
 		write(2, "': not a valid indentifier\n", 28);
-		ms->ret_cmd = 1 + (line[0] == '-');
+		g_ret_cmd = 1 + (line[0] == '-');
 		return ;
 	}
-	ms->ret_cmd = 0;
+	g_ret_cmd = 0;
 	value = ft_strchr(line, '=');
 	if (!value)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:24:48 by romvan-d          #+#    #+#             */
-/*   Updated: 2023/01/18 16:38:58 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:57:17 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,18 @@ void	exec_exit(char **lex, t_ms *ms, char *rl, int piping)
 		if (index == 1)
 		{
 			if (check_exit_args(lex[index]))
-				ms->ret_cmd = 255;
+				g_ret_cmd = 255;
 			else
-				ms->ret_cmd = ft_atoi(lex[index]);
+				g_ret_cmd = ft_atoi(lex[index]);
 		}
 		++index;
 	}
-	if (ms->ret_cmd == 255)
+	if (g_ret_cmd == 255)
 		close_program(ms, rl, lex, piping);
 	if (index > 2)
 	{
 		write(2, "exit: too many arguments\n", 26);
-		ms->ret_cmd = 1;
+		g_ret_cmd = 1;
 	}
 	else
 		close_program(ms, rl, lex, piping);

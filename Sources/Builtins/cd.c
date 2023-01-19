@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 10:31:02 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:49:31 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	exec_cd(char **lex, t_ms *ms)
 	int		lexlen;
 	char	*directory;
 
-	ms->ret_cmd = 0;
+	g_ret_cmd = 0;
 	curpath[0] = '\0';
 	lexlen = ft_arraylen(lex);
 	if (lexlen == 1)
@@ -140,7 +140,7 @@ void	exec_cd(char **lex, t_ms *ms)
 	else
 	{
 		write(2, "-minishell: cd: too many arguments\n", 35); //check if this is the behavior, spoiler alert : it is not
-		ms->ret_cmd = 1;
+		g_ret_cmd = 1;
 		return ;
 	}
 	ft_setenvpwd(ms->envp); //if pwd was unset, we reset it
@@ -155,7 +155,7 @@ void	exec_cd(char **lex, t_ms *ms)
 			directory = ft_strjoin("-minishell: cd: ", lex[1]);
 			perror(directory);
 			free(directory);
-			ms->ret_cmd = 1;
+			g_ret_cmd = 1;
 			return ;
 		}
 		if (curpath[0] != '/')
@@ -172,7 +172,7 @@ void	exec_cd(char **lex, t_ms *ms)
 		if (!curpath[0])
 		{
 			write(2, "-minishell: cd: OLDPWD not set\n", 31);
-			ms->ret_cmd = 1;
+			g_ret_cmd = 1;
 			return ;
 		}
 	}
@@ -182,7 +182,7 @@ void	exec_cd(char **lex, t_ms *ms)
 		directory = ft_strjoin("-minishell: cd: ", directory);
 		perror(directory);
 		free(directory);
-		ms->ret_cmd = 1;
+		g_ret_cmd = 1;
 	}
 	else
 	{

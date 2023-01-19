@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:28:51 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:24:11 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:53:55 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 					{
 						perror(file);
 						ft_pipe(ms->pipein);
-						ms->ret_cmd = 1;
+						g_ret_cmd = 1;
 					}
 					else
 						exec_pipe(rl, ms, 0);
@@ -127,7 +127,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 			{
 				perror(file);
 				ft_pipe(ms->pipein);
-				ms->ret_cmd = 1;
+				g_ret_cmd = 1;
 			}
 			else if (!save)
 			{

@@ -39,7 +39,7 @@ void	close_program(t_ms *ms, char *rl, char **lex, int piping)
 	printf("\n");
 	free_envp(ms->envp);
 	ft_free_arr(lex);
-	exit(ms->ret_cmd);
+	exit(g_ret_cmd);
 }
 
 /* any call to this function must be followed by a printf("\n"); */

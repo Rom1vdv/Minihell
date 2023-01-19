@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:47:14 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:55:58 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	setup(t_ms *ms, char **envp)
 		ft_perror("sigaction");
 	if (sigaction(SIGQUIT, &act, NULL) == -1)
 		ft_perror("sigaction");
-	ms->ret_cmd = 0;
+	g_ret_cmd = 0;
 	ms->rl = 0;
 	ms->envp = env_init(envp);
 	env_increment_shlvl(ms->envp);
@@ -73,7 +73,7 @@ static void	loop(t_ms *ms)
 			logname[18] = '\0';
 			ft_strcat(logname, "..");
 		}
-		if (!ms->ret_cmd)
+		if (!g_ret_cmd)
 		{
 			ft_strcpy(prompt, PURPLE);
 			ft_strcat(prompt, "○ ");
@@ -105,7 +105,7 @@ static int	ft_launch_minishell(char *av, char **envp)
 	
 	setup(&ms, envp);
 	lexer_bonus(av, &ms);
-	return (ms.ret_cmd);
+	return (g_ret_cmd);
 }
 
 int	main(int ac, char **av, char **envp)

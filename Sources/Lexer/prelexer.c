@@ -118,7 +118,7 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 		ft_dup2(ms->pipeout, 1);
 		ft_close_pipe(ms->pipeout);
 		lexer(block, ms, 1);
-		exit(ms->ret_cmd);
+		exit(g_ret_cmd);
 	}
 	if (ms->pipeout[0] != -1 || ms->pipeout[1] == -1)
 	{
@@ -129,7 +129,7 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 	else //uncomment this after debug
 		ft_close_pipe(ms->pipeout);
 	ft_set_pipe(ms->pipeout, -1, -1);
-	ft_wait_child(pid, &ms->ret_cmd);
+	ft_wait_child(pid);
 	// printf("AFTERpipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
 }
 
@@ -151,7 +151,7 @@ void	lexer_bonus(char *rl, t_ms *ms)
 		return ;
 	if (check_quotes(rl))
 	{
-		ms->ret_cmd = 258;
+		g_ret_cmd = 258;
 		return ;
 	}
 	ft_set_pipe(ms->pipein, -1, -1);

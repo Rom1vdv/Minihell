@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/18 17:19:09 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:53:53 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ void	exec_unset(t_ms *ms, char *target)
 		write(2, "export: '", 10);
 		write(2, target, ft_strlen(target));
 		write(2, "': not a valid indentifier\n", 28);
-		ms->ret_cmd = 1 + (target[0] == '-');
+		g_ret_cmd = 1 + (target[0] == '-');
 		return ;
 	}
-	ms->ret_cmd = 0;
+	g_ret_cmd = 0;
 	targetlen = ft_strlen(target) + 1;
 	if (!ft_strncmp(ms->envp->key, target, targetlen))
 	{

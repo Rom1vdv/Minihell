@@ -6,13 +6,13 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 09:54:19 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/17 16:43:34 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:53:51 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-void	ft_wait_child(int pid, int *ret_cmd)
+void	ft_wait_child(int pid)
 {
 	int	wait;
 	int	status;
@@ -21,7 +21,7 @@ void	ft_wait_child(int pid, int *ret_cmd)
 	if (wait == -1)
 		return ;
 	if (WIFEXITED(status))
-		*ret_cmd = WEXITSTATUS(status);
+		g_ret_cmd = WEXITSTATUS(status);
 }
 
 void	ft_fork(int *child_pid)

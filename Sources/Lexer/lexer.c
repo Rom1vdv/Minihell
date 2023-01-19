@@ -87,7 +87,7 @@ void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote)
 	ft_joinfree(ms, strptr, index);
 	if ((*strptr)[*index] == '?')
 	{
-		var = ft_itoa(ms->ret_cmd);
+		var = ft_itoa(g_ret_cmd);
 		*strptr = &(*strptr)[*index + 1];
 		*index = 0;
 		join = ft_strjoin(ms->rl, var);
@@ -146,21 +146,18 @@ void	lexer(char *rl, t_ms *ms, int piping)
 		// printf("%d -> %s\n", index, lex[index]);
 		++index;
 	}
-	// if (!ft_strncmp(lex[0], "test", 5))
-	// 	test(ms);
-	// else 
 	if (!ft_strncmp(lex[0], "echo", 5))
-		exec_echo(lex, &ms->ret_cmd);
+		exec_echo(lex);
 	else if (!ft_strncmp(lex[0], "cd", 3))
 		exec_cd(lex, ms);
 	else if (!ft_strncmp(lex[0], "pwd", 4))
-		exec_pwd(&ms->ret_cmd);
+		exec_pwd();
 	else if (!ft_strncmp(lex[0], "export", 7))
 		exec_export(ms, lex[1], 1);
 	else if (!ft_strncmp(lex[0], "unset", 6))
 		exec_unset(ms, lex[1]);
 	else if (!ft_strncmp(lex[0], "env", 4))
-		exec_env(ms->envp, &ms->ret_cmd);
+		exec_env(ms->envp);
 	else if (!ft_strncmp(lex[0], "exit", 5))
 		exec_exit(lex, ms, rl, piping);
 	else if (ft_strchr(lex[0], '=') && lex[0][0] != '=')
@@ -168,7 +165,7 @@ void	lexer(char *rl, t_ms *ms, int piping)
 	else
 	{
 		envp_dup = env_dup(ms->envp);
-		exec_cmd(&ms->ret_cmd, envp_dup, ft_getenv(ms->envp, "PATH"), lex);
+		exec_cmd(envp_dup, ft_getenv(ms->envp, "PATH"), lex);
 		ft_free_arr(envp_dup);
 	}
 	ft_free_arr(lex);

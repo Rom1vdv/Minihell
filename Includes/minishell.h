@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:47:06 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/19 08:53:14 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,14 @@ typedef struct s_envp {
 }				t_envp;
 
 typedef struct s_minishell {
-	int		ret_cmd;
 	int		pipein[2];
 	int		pipeout[2];
 	char	*file_name;
 	char	*rl;
 	t_envp	*envp;
 }				t_ms;
+
+int	g_ret_cmd;
 
 void	signal_handler(int signo, siginfo_t *info, void *context);
 
@@ -68,16 +69,16 @@ int		empty_cmd(char *str);
 void	ft_joinfree(t_ms *ms, char **strptr, int *index);
 void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote);
 
-void	exec_echo(char **lex, int *ret_cmd);
+void	exec_echo(char **lex);
 void	exec_cd(char **lex, t_ms *ms);
-void	exec_pwd(int *ret_cmd);
+void	exec_pwd(void);
 void	exec_export(t_ms *ms, char *line, int exported);
 void	exec_unset(t_ms *ms, char *target);
-void	exec_env(t_envp *envp, int *ret_cmd);
+void	exec_env(t_envp *envp);
 void	exec_exit(char **lex, t_ms *ms, char *rl, int piping);
 
-void	exec_cmd(int *ret_cmd, char **envp, char *path_lst, char **cmds);
-void	ft_wait_child(int pid, int *ret_cmd);
+void	exec_cmd(char **envp, char *path_lst, char **cmds);
+void	ft_wait_child(int pid);
 void	ft_fork(int *child_pid);
 void	ft_pipe(int pipefd[2]);
 void	ft_close_pipe(int pipefd[2]);
@@ -97,7 +98,5 @@ void	env_increment_shlvl(t_envp *envp);
 void	set_col(char *col);
 void	greet_user(t_envp *envp);
 void	close_program(t_ms *ms, char *rl, char **lex, int piping);
-
-void	test(t_ms *ms);
 
 #endif

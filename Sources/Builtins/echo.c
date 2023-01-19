@@ -59,7 +59,7 @@ static int	ft_check_option(char *lex)
  * @param args "-n hello world"
  */
 
-void	exec_echo(char **lex, int *ret_cmd)
+void	exec_echo(char **lex)
 {
 	int		option;
 	int		index;
@@ -79,7 +79,7 @@ void	exec_echo(char **lex, int *ret_cmd)
 	}
 	if (!option)
 		printf("\n");
-	*ret_cmd = 0;
+	g_ret_cmd = 0;
 }
 
 // static void	print_echo(char **lex, int option) -> doesn't work for "echo 'one    two'"...
