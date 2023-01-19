@@ -66,8 +66,8 @@ static int	check_quotes(char *str)
 			if (!str[index])
 				return (parse_error("quotes", 0));
 		}
-		else if (str[index] == ';')
-			return (parse_error("';'", 0));
+		// else if (str[index] == ';')
+		// 	return (parse_error("';'", 0));
 		paranthesis += (str[index] == '(') - (str[index] == ')');
 	}
 	if (paranthesis)
@@ -145,7 +145,9 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 void	lexer_bonus(char *rl, t_ms *ms)
 {
 	int		index;
+	int		semicolons_index;
 	char	**pipe_section;
+	char	**semicolons;
 
 	if (!rl[0])
 		return ;
@@ -154,24 +156,31 @@ void	lexer_bonus(char *rl, t_ms *ms)
 		g_ret_cmd = 258;
 		return ;
 	}
-	ft_set_pipe(ms->pipein, -1, -1);
-	ft_set_pipe(ms->pipeout, -1, -1);
-	pipe_section = ft_split_quotes(rl, '|'); // cat | cat | ls, what do we do ?
-	if (ft_arraylen(pipe_section) > 1)
+	semicolons_index = 0;
+	semicolons = ft_split_quotes(rl, ';');
+	while (semicolons[semicolons_index])
 	{
-		index = 0;
-		while (pipe_section[index])
+		ft_set_pipe(ms->pipein, -1, -1);
+		ft_set_pipe(ms->pipeout, -1, -1);
+		pipe_section = ft_split_quotes(semicolons[semicolons_index], '|'); // cat | cat | ls, what do we do ?
+		if (ft_arraylen(pipe_section) > 1)
 		{
-			// printf("working with %s\n", pipe_section[index]);
-			ft_handle_redirs(pipe_section[index], ms, 1, pipe_section[index + 1] != 0);
-			// exec_pipe(pipe_section[index], ms, pipe_section[index + 1] != 0);
-			++index;
+			index = 0;
+			while (pipe_section[index])
+			{
+				// printf("working with %s\n", pipe_section[index]);
+				ft_handle_redirs(pipe_section[index], ms, 1, pipe_section[index + 1] != 0);
+				// exec_pipe(pipe_section[index], ms, pipe_section[index + 1] != 0);
+				++index;
+			}
 		}
+		else
+			ft_handle_redirs(semicolons[semicolons_index], ms, 0, 0);
+		ft_close_pipe(ms->pipein);
+		ft_close_pipe(ms->pipeout);
+		ft_free_arr(pipe_section);
+		free(ms->file_name);
+		++semicolons_index;
 	}
-	else
-		ft_handle_redirs(rl, ms, 0, 0);
-	ft_close_pipe(ms->pipein);
-	ft_close_pipe(ms->pipeout);
-	ft_free_arr(pipe_section);
-	free(ms->file_name);
+	ft_free_arr(semicolons);
 }
