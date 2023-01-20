@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 10:28:53 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:41:31 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	noaccess_file(char *path)
 	exit(126);
 }
 
-void	exec_cmd(char **envp, char *path_lst, char **cmds)
+void	exec_cmd(char **envp, char *path_lst, char **cmds, int infork)
 {
 	int	pid;
 	char	**paths;
@@ -79,14 +79,24 @@ void	exec_cmd(char **envp, char *path_lst, char **cmds)
 		g_ret_cmd = 127;
 		return ;
 	}
-	ft_fork(&pid);
-	if (!pid)
+	if (!infork)
+	{
+		ft_fork(&pid);
+		if (!pid)
+		{
+			execve(cmds[0], cmds, envp);
+			if (errno == EACCES) // may want to check if cmds[0] is a dir to handle ~ for ex
+				noaccess_file(cmds[0]);
+			ft_perror(cmds[0]);
+		}
+		else
+			ft_wait_child(pid);
+	}
+	else
 	{
 		execve(cmds[0], cmds, envp);
 		if (errno == EACCES) // may want to check if cmds[0] is a dir to handle ~ for ex
 			noaccess_file(cmds[0]);
 		ft_perror(cmds[0]);
 	}
-	else
-		ft_wait_child(pid);
 }

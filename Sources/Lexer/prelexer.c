@@ -79,39 +79,73 @@ static int	check_quotes(char *str)
 	return (0);
 }
 
-static int	only_cat(char *str)
-{
-	int	index;
+// static int	only_cat(char *str)
+// {
+// 	int	index;
 
-	index = 0;
-	while (str[index] == ' ')
-		++index;
-	if (!ft_strncmp(&str[index], "cat", 3))
+// 	index = 0;
+// 	while (str[index] == ' ')
+// 		++index;
+// 	if (!ft_strncmp(&str[index], "cat", 3))
+// 	{
+// 		index += 3;
+// 		while (str[index] == ' ')
+// 			++index;
+// 		return (!str[index]);
+// 	}
+// 	return (0);
+// }
+
+static void	ft_addpid(t_ms *ms)
+{
+	t_pid	*tmp;
+
+	tmp = ft_malloc(sizeof(*tmp), "addpid");
+	tmp->next = 0;
+	if (!ms->last_pid)
 	{
-		index += 3;
-		while (str[index] == ' ')
-			++index;
-		return (!str[index]);
+		ms->pids = tmp;
+		ms->last_pid = tmp;
 	}
-	return (0);
+	else
+	{
+		ms->last_pid->next = tmp;
+		ms->last_pid = ms->last_pid->next;
+	}
+}
+
+static void	ft_wait_pids(t_ms *ms)
+{
+	t_pid	*tmp;
+
+		// printf("debug\n");
+	while (ms->pids)
+	{
+		// printf("wait\n");
+		tmp = ms->pids;
+		ms->pids = ms->pids->next;
+		ft_wait_child(tmp->value);
+		free(tmp);
+	}
+	ms->pids = 0;
+	ms->last_pid = 0;
 }
 
 void	exec_pipe(char *block, t_ms *ms, int piping)
 {
-	int	pid;
-
 	if (piping)
 	{
-		if (only_cat(block))
-			return ;
+		// if (only_cat(block))
+		// 	return ;
 		ft_pipe(ms->pipeout);
 	}
+	ft_addpid(ms);
 	// printf("cmd = %s\n", block);
 	// printf("pipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
 	// printf("is %d open ? %d\n", ms->pipein[0], fcntl(ms->pipein[0], F_GETFD) != -1);
 	// printf("is %d open ? %d\n", ms->pipeout[1], fcntl(ms->pipeout[1], F_GETFD) != -1);
-	ft_fork(&pid);
-	if (!pid)
+	ft_fork(&ms->last_pid->value);
+	if (!ms->last_pid->value)
 	{
 		ft_dup2(ms->pipein, 0);
 		ft_close_pipe(ms->pipein);
@@ -129,7 +163,7 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 	else //uncomment this after debug
 		ft_close_pipe(ms->pipeout);
 	ft_set_pipe(ms->pipeout, -1, -1);
-	ft_wait_child(pid);
+	// ft_wait_child(pid);
 	// printf("AFTERpipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
 }
 
@@ -180,6 +214,7 @@ void	lexer_bonus(char *rl, t_ms *ms)
 		ft_close_pipe(ms->pipeout);
 		ft_free_arr(pipe_section);
 		free(ms->file_name);
+		ft_wait_pids(ms);
 		++semicolons_index;
 	}
 	ft_free_arr(semicolons);

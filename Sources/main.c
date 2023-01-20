@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 10:45:35 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:47:12 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static void	setup(t_ms *ms, char **envp)
 	g_ret_cmd = 0;
 	ms->rl = 0;
 	ms->envp = env_init(envp);
+	ms->pids = 0;
+	ms->last_pid = 0;
 	env_increment_shlvl(ms->envp);
 	set_col(GREEN);
 	greet_user(ms->envp);

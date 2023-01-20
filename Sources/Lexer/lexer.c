@@ -165,7 +165,7 @@ void	lexer(char *rl, t_ms *ms, int piping)
 	else
 	{
 		envp_dup = env_dup(ms->envp);
-		exec_cmd(envp_dup, ft_getenv(ms->envp, "PATH"), lex);
+		exec_cmd(envp_dup, ft_getenv(ms->envp, "PATH"), lex, piping);
 		ft_free_arr(envp_dup);
 	}
 	ft_free_arr(lex);

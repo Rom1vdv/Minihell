@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:28:51 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 11:07:03 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:40:18 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 	{
 		// printf("piping : %d, notlast : %d on %s\n", piping, not_last_pipe, rl);
 		if (!piping)
-			return (lexer(rl, ms, piping));
+			return (lexer(rl, ms, 0));
 		else
 			return (exec_pipe(rl, ms, not_last_pipe));
 	}
