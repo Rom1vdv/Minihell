@@ -30,10 +30,12 @@ static int	check_quotes(char *str)
 	char	paranthesis;
 	char	pipe;
 	int		redir;
+	int		semicolon;
 
 	paranthesis = 0;
 	pipe = -1;
 	redir = 0;
+	semicolon = 0;
 	index = -1;
 	while (str[++index])
 	{
@@ -66,14 +68,14 @@ static int	check_quotes(char *str)
 			if (!str[index])
 				return (parse_error("quotes", 0));
 		}
-		else if (str[index] == ';')
+		if (str[index] == ';')
 		{
-			++index;
-			while (str[index] == ' ')
-				++index;
-			if (str[index] == ';')
+			if (!semicolon)
 				return (parse_error("';'", 0));
+			semicolon = 0;
 		}
+		else if (str[index] != ' ')
+			semicolon = 1;
 		paranthesis += (str[index] == '(') - (str[index] == ')');
 	}
 	if (paranthesis)
