@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 16:59:55 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/20 17:48:58 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	lexer(char *rl, t_ms *ms, int piping);
 void	lexer_bonus(char *rl, t_ms *ms);
 void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe);
 void	exec_pipe(char *block, t_ms *ms, int piping);
-void	here_doc(char *limiter, t_ms *ms, char *rl, int piping);
+void	here_doc(char *limiter, t_ms *ms);
 int		empty_cmd(char *str);
 void	ft_joinfree(t_ms *ms, char **strptr, int *index);
 void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote);

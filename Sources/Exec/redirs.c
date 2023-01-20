@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:28:51 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 11:40:18 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/20 18:23:36 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 			while (rl[index] == ' ')
 				++index;
 			len = 0;
-			while (rl[index + len] && rl[index + len] != ' ')
+			while (rl[index + len] && !ft_strchr(" <>", rl[index + len]))
 				++len;
 			file = ft_malloc(sizeof(*file) * (len + 1), "redirs <");
 			sub_index = 0;
@@ -195,7 +195,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 			while (rl[index] == ' ')
 				++index;
 			len = 0;
-			while (rl[index + len] && rl[index + len] != ' ')
+			while (rl[index + len] && !ft_strchr(" <>", rl[index + len]))
 				++len;
 			file = ft_malloc(sizeof(*file) * (len + 1), "redirs <<");
 			sub_index = 0;
@@ -203,7 +203,34 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 				file[sub_index++] = rl[index++];
 			--index;
 			file[sub_index] = '\0';
-			here_doc(file, ms, rl, not_last_pipe);
+			here_doc(file, ms);
+			if (empty_cmd(rl))
+			{
+				rl = &rl[index + 1];
+				index = 0;
+				while (rl[index] && rl[index] != '<' && rl[index] != '>')
+					++index;
+				save = rl[index];
+				rl[index] = '\0';
+				--index;
+			}
+			printf("in here ! |%s| index %d, save %c\n", rl, index, save);
+			printf("%d && %d && %d\n", !ft_strchr(&rl[index], '<'), !ft_strchr(&rl[index], '>'), !ft_strchr("><", save));
+			if (!ft_strchr(&rl[index], '<') && !ft_strchr(&rl[index], '>') && (!ft_strchr("><", save) || !save))
+			{
+				printf("in here ! |%s|\n", rl);
+				if (!empty_cmd(rl))
+					exec_pipe(rl, ms, not_last_pipe);
+				else
+					exec_pipe("cat", ms, not_last_pipe);
+			}
+			else if (!ft_strchr(&rl[index], '>'))
+			{
+				close(ms->pipein[0]);
+				ms->pipein[0] = -1;
+			}
+			rl[index + 1] = save;
+			unlink(".here_doc_tmp");
 		}
 		else if (rl[index] == '<' && rl[index + 1] == '>')
 		{
