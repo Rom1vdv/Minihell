@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 08:53:53 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:58:00 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,12 @@ static void	ft_free_node_envp(t_envp *free_me)
 	free(free_me);
 }
 
-void	exec_unset(t_ms *ms, char *target)
+static void	handle_unset_args(t_ms *ms, char *target)
 {
 	int		targetlen;
 	t_envp	*tmp;
 	t_envp	*free_this;
 	
-	if (!ms || !ms->envp)
-		return ;
-	if (!target)
-		return ;
 	if (ft_strchr("0123456789-=", target[0]) || ft_strchr(target, '-') || ft_strchr(target, '-') || ft_strchr(target, '\\') || ft_strchr(target, '.') || ft_strchr(target, '+') || ft_strchr(target, '$') || ft_strchr(target, '}') || ft_strchr(target, '{') || ft_strchr(target, '*')
 			 || ft_strchr(target, '#') || ft_strchr(target, '@') || ft_strchr(target, '!') || ft_strchr(target, '^') || ft_strchr(target, '~') || ft_strchr(target, '='))
 	{
@@ -78,5 +74,21 @@ void	exec_unset(t_ms *ms, char *target)
 			return ;
 		}
 		tmp = tmp->next;
+	}
+}
+
+void	exec_unset(t_ms *ms, char **target_array)
+{
+	int	index;
+
+	index = 1;
+	if (!ms || !ms->envp)
+		return ;
+	if (!target_array[1])
+		return ;
+	while(target_array[index])
+	{
+		handle_unset_args(ms, target_array[index]);
+		++index;
 	}
 }

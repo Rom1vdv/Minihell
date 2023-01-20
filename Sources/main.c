@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 11:47:12 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:33:11 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,8 @@
 /* SIGINT = CTRL+C, */
 static void	setup(t_ms *ms, char **envp)
 {
-	struct sigaction act;
-
-	act.sa_flags = SA_SIGINFO;
-	act.sa_sigaction = &signal_handler;
-	if (sigaction(SIGINT, &act, NULL) == -1)
-		ft_perror("sigaction");
-	if (sigaction(SIGQUIT, &act, NULL) == -1)
-		ft_perror("sigaction");
+	ms->act_int.sa_flags = 0;
+	ms->act_quit.sa_flags = 0;
 	g_ret_cmd = 0;
 	ms->rl = 0;
 	ms->envp = env_init(envp);
@@ -92,6 +86,7 @@ static void	loop(t_ms *ms)
 		ft_strcat(prompt, " ");
 		ft_catshortdir(prompt);
 		ft_strcat(prompt, " $> ");
+		ft_set_signals(ms, 0);
 		rl = readline(prompt);
 		if (!rl)	// == ctrl+D
 			close_program(ms, 0, 0, 0);

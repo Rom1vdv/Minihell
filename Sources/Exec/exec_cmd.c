@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 11:41:31 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:12:50 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ static void	noaccess_file(char *path)
 	exit(126);
 }
 
-void	exec_cmd(char **envp, char *path_lst, char **cmds, int infork)
+void	exec_cmd(t_ms *ms, char *path_lst, char **cmds, int infork)
 {
-	int	pid;
+	int		pid;
 	char	**paths;
 
 	if (!cmds)
@@ -81,10 +81,11 @@ void	exec_cmd(char **envp, char *path_lst, char **cmds, int infork)
 	}
 	if (!infork)
 	{
+		ft_set_signals(ms, 1);
 		ft_fork(&pid);
 		if (!pid)
 		{
-			execve(cmds[0], cmds, envp);
+			execve(cmds[0], cmds, ms->envp_dup);
 			if (errno == EACCES) // may want to check if cmds[0] is a dir to handle ~ for ex
 				noaccess_file(cmds[0]);
 			ft_perror(cmds[0]);
@@ -94,7 +95,7 @@ void	exec_cmd(char **envp, char *path_lst, char **cmds, int infork)
 	}
 	else
 	{
-		execve(cmds[0], cmds, envp);
+		execve(cmds[0], cmds, ms->envp_dup);
 		if (errno == EACCES) // may want to check if cmds[0] is a dir to handle ~ for ex
 			noaccess_file(cmds[0]);
 		ft_perror(cmds[0]);

@@ -134,7 +134,6 @@ void	lexer(char *rl, t_ms *ms, int piping)
 {
 	int		index;
 	char	**lex;
-	char	**envp_dup;
 
 	lex = ft_split_quotes(rl, ' ');
 	index = 0;
@@ -153,20 +152,20 @@ void	lexer(char *rl, t_ms *ms, int piping)
 	else if (!ft_strncmp(lex[0], "pwd", 4))
 		exec_pwd();
 	else if (!ft_strncmp(lex[0], "export", 7))
-		exec_export(ms, lex[1], 1);
+		exec_export(ms, &lex[1], 1);
 	else if (!ft_strncmp(lex[0], "unset", 6))
-		exec_unset(ms, lex[1]);
+		exec_unset(ms, lex);
 	else if (!ft_strncmp(lex[0], "env", 4))
 		exec_env(ms->envp);
 	else if (!ft_strncmp(lex[0], "exit", 5))
 		exec_exit(lex, ms, rl, piping);
 	else if (ft_strchr(lex[0], '=') && lex[0][0] != '=')
-		exec_export(ms, lex[0], 0);
+		exec_export(ms, lex, 0);
 	else
 	{
-		envp_dup = env_dup(ms->envp);
-		exec_cmd(envp_dup, ft_getenv(ms->envp, "PATH"), lex, piping);
-		ft_free_arr(envp_dup);
+		ms->envp_dup = env_dup(ms->envp);
+		exec_cmd(ms, ft_getenv(ms->envp, "PATH"), lex, piping);
+		ft_free_arr(ms->envp_dup);
 	}
 	ft_free_arr(lex);
 }

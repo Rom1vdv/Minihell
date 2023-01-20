@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 10:16:36 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/20 17:02:50 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,19 +93,12 @@ static void	ft_exportvar(t_envp *envp, char *target)
 // 	value[cpyndex] = '\0';
 // }
 
-void	exec_export(t_ms *ms, char *line, int exported)
+static void	handle_export_args(t_ms *ms, char *line, int exported)
 {
 	int		keylen;
 	char	*value;
 	char	*key;
 
-	if (!ms || !ms->envp)
-		return ;
-	if (!line)
-	{
-		display_sorted_env(ms->envp);
-		return ;
-	}
 	value = ft_strchr(line, '=');
 	key = ft_strdup(line);
 	key[ft_strlen(line) - ft_strlen(value)] = '\0';
@@ -146,4 +139,24 @@ void	exec_export(t_ms *ms, char *line, int exported)
 	// ft_trimquotes(value);
 	ft_setenv(ms->envp, key, &value[1], exported);
 	free(key);
+}
+
+void	exec_export(t_ms *ms, char **line_array, int exported)
+{
+	int	index;
+
+	index = 0;
+	if (!ms || !ms->envp)
+		return ;
+	if (!line_array[1])
+	{
+		display_sorted_env(ms->envp);
+		return ;
+	}
+	while(line_array[index])
+	{
+		handle_export_args(ms, line_array[index], exported);
+		++index;
+	}
+	
 }

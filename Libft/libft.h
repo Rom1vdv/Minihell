@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:41:11 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 09:55:14 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/20 17:16:16 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	ft_bzero(void *s, size_t n);
 void	ft_free_arr(char **arr);
 
 int		ft_atoi(const char *str);
+int		ft_atoi_64bits(char *str);
 char	*ft_itoa(int n);
 // void	ft_arrayset(int *tab, int value, int size);
 // int		ft_strcmp(const char *s1, const char *s2);

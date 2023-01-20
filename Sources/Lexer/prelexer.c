@@ -141,6 +141,7 @@ static void	ft_wait_pids(t_ms *ms)
 
 void	exec_pipe(char *block, t_ms *ms, int piping)
 {
+	ft_set_signals(ms, 1);
 	if (piping)
 	{
 		// if (only_cat(block))
