@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 16:09:08 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:14:28 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,9 @@ static void	convert_canon(char *curpath)
 					curpath[cpyndex] = '\0';
 					--cpyndex;
 				}
-				while (cpyndex > 0 && curpath[cpyndex] != '/')
-				{
-					curpath[cpyndex] = '\0';
+				while (cpyndex > 1 && curpath[cpyndex] != '/')
 					--cpyndex;
-				}
+				curpath[cpyndex] = '\0';
 			}
 		}
 		else if (curpath[index] == '/' && cpyndex > 0 && (curpath[cpyndex - 1] == '/' || !curpath[index + 1]));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 15:38:36 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/20 10:45:35 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static void	setup(t_ms *ms, char **envp)
 	ms->rl = 0;
 	ms->envp = env_init(envp);
 	env_increment_shlvl(ms->envp);
-	// set_col(GREEN);
-	// greet_user(ms->envp);
-	// set_col(WHITE);
-	// printf("\n");
+	set_col(GREEN);
+	greet_user(ms->envp);
+	set_col(WHITE);
+	printf("\n");
 }
 
 static void	ft_catshortdir(char prompt[255])
@@ -45,7 +45,7 @@ static void	ft_catshortdir(char prompt[255])
 	start = end;
 	while (start > 0 && pwd[start] != '/')
 		--start;
-	if (pwd[start] == '/')
+	if (pwd[start] == '/' && end > 0)
 		++start;
 	if (end - start > 19)
 	{

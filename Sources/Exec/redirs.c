@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:28:51 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 11:19:45 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:07:03 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 	index = 0;
 	while (rl[index])
 	{
-		if (ft_strchr("'\"", rl[index]))
+		if (ft_strchr("'\"", rl[index])) // this is used in so many places it needs its own func
 		{
 			quote = rl[index++];
 			while (rl[index] && rl[index] != quote)
@@ -52,11 +52,34 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 				++index;
 			len = 0;
 			while (rl[index + len] && !ft_strchr(" <>", rl[index + len]))
+			{
+				if (ft_strchr("'\"", rl[index + len]))
+				{
+					quote = rl[index + len++];
+					while (rl[index + len] && rl[index + len] != quote)
+						++len;
+				}
 				++len;
+			}
 			file = ft_malloc(sizeof(*file) * (len + 1), "redirs >");
 			sub_index = 0;
-			while (sub_index < len)
-				file[sub_index++] = rl[index++];
+			quote = 0;
+			while (sub_index < len) // this too deverves its own function
+			{
+				if (ft_strchr("'\"", rl[index]))
+				{
+					len -= (!quote || quote == rl[index]);
+					if (!quote)
+						quote = rl[index];
+					else if (quote == rl[index])
+						quote = 0;
+					else
+						file[sub_index++] = rl[index];
+				}
+				else
+					file[sub_index++] = rl[index];
+				++index;
+			}
 			index-=2;
 			file[sub_index] = '\0';
 			if (!append)
@@ -109,7 +132,21 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 			file = ft_malloc(sizeof(*file) * (len + 1), "redirs <");
 			sub_index = 0;
 			while (sub_index < len)
-				file[sub_index++] = rl[index++];
+			{
+				if (ft_strchr("'\"", rl[index]))
+				{
+					len -= (!quote || quote == rl[index]);
+					if (!quote)
+						quote = rl[index];
+					else if (quote == rl[index])
+						quote = 0;
+					else
+						file[sub_index++] = rl[index];
+				}
+				else
+					file[sub_index++] = rl[index];
+				++index;
+			}
 			--index;
 			file[sub_index] = '\0';
 			if (empty_cmd(rl))
@@ -132,9 +169,9 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 			else if (!save)
 			{
 				// printf("piping %d rl is |%s| empty ? %d\n", not_last_pipe, rl, !empty_cmd(rl));
-				if (!empty_cmd(rl) && !ft_strchr(&rl[index], '<'))
+				if (!empty_cmd(rl) && !ft_strchr(&rl[index], '<') && !ft_strchr(&rl[index], '>'))
 					exec_pipe(rl, ms, not_last_pipe);
-				else
+				else if (!ft_strchr(&rl[index], '>'))
 				{
 					close(ms->pipein[0]);
 					ms->pipein[0] = -1;
@@ -147,7 +184,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 				// exec_pipe(rl, ms, piping && not_last_pipe);
 			}
 			ms->file_name = file;
-			printf("save = %c\n", save);
+			// printf("save = %c\n", save);
 			if (save)
 				rl[index + 1] = save;
 		}
