@@ -26,9 +26,26 @@ static void	ft_joinhome(t_ms *ms, char **strptr, int *index)
 	ms->rl = join;
 }
 
+static int	transform_meta_norm(t_ms *ms, char **str, int *index, char *quote)
+{
+	if (ft_strchr("'\"", (*str)[*index]))
+	{
+		if (!*quote)
+			*quote = (*str)[*index];
+		else if ((*str)[*index] == *quote)
+			*quote = 0;
+		if (*quote && (*str)[*index] != *quote)
+			++(*index);
+		else
+			ft_joinfree(ms, str, index);
+		return (1);
+	}
+	return (0);
+}
+
 /* using envp to transform $vars into their real value   *
 *                          ~ into HOME variable of env   *
-*                ignore ( and )                          */
+*                ignore ( and ) and ' and "              */
 static void	transform_metachars(t_ms *ms, char *str)
 {
 	int		index;
@@ -39,20 +56,15 @@ static void	transform_metachars(t_ms *ms, char *str)
 	quote = 0;
 	while (str[index])
 	{
-		if (ft_strchr("'\"", str[index]))
-		{
-			if (!quote)
-				quote = str[index];
-			else if (str[index] == quote)
-				quote = 0;
-			if (quote && str[index] != quote)
-				++index;
-			else
-				ft_joinfree(ms, &str, &index);
-		}
-		else if (str[index] == '$' && (!quote || quote == '\"') && str[index + 1] != ' ' && str[index + 1])
-			ft_joinvar(ms, &str, &index, quote);
-		else if (str[index] == '~' && !quote && (index == 0 || str[index - 1] == ' ') && (!str[index + 1] || str[index + 1] == ' ' || str[index + 1] == '/'))
+		if (transform_meta_norm(ms, &str, &index, &quote))
+			;
+		else if (str[index] == '$' && (!quote || quote == '\"')
+			&& str[index + 1] != ' ' && str[index + 1])
+			ft_joinvar(ms, &str, &index);
+		else if (str[index] == '~' && !quote
+			&& (index == 0 || str[index - 1] == ' ')
+			&& (!str[index + 1] || str[index + 1] == ' '
+				|| str[index + 1] == '/'))
 			ft_joinhome(ms, &str, &index);
 		else if (ft_strchr("()", str[index]) && !quote)
 			ft_joinfree(ms, &str, &index);
@@ -62,89 +74,8 @@ static void	transform_metachars(t_ms *ms, char *str)
 	ft_joinfree(ms, &str, &index);
 }
 
-void	ft_joinfree(t_ms *ms, char **strptr, int *index)
+static void	lexer_norm(t_ms *ms, char **lex, char *rl, int piping)
 {
-	char	increment;
-	char	*join;
-
-	increment = (*strptr)[*index];
-	(*strptr)[*index] = '\0';
-	join = ft_strjoin(ms->rl, *strptr);
-	free(ms->rl);
-	ms->rl = join;
-	if (increment)
-		*strptr = &(*strptr)[*index + 1];
-	*index = 0;
-}
-
-void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote)
-{
-	int		kindex;
-	char	key[255];
-	char	*var;
-	char	*join;
-
-	ft_joinfree(ms, strptr, index);
-	if ((*strptr)[*index] == '?')
-	{
-		var = ft_itoa(g_ret_cmd);
-		*strptr = &(*strptr)[*index + 1];
-		*index = 0;
-		join = ft_strjoin(ms->rl, var);
-		free(ms->rl);
-		ms->rl = join;
-		free(var);
-	}
-	else if ((*strptr)[*index] == '$')
-	{
-		var = ft_getenv(ms->envp, "SHLVL");
-		*strptr = &(*strptr)[*index + 1];
-		*index = 0;
-		if (!var)
-			return ;
-		join = ft_strjoin(ms->rl, var);
-		free(ms->rl);
-		ms->rl = join;
-	}
-	else
-	{
-		kindex = 0;
-		if ((*strptr)[*index] >= '0' && (*strptr)[*index] <= '9')
-		{
-			(*index)++;
-			*strptr = &(*strptr)[*index];
-			return ;
-		}
-		while ((*strptr)[*index] && !ft_strchr(" $=/'\"", (*strptr)[*index]) && (*strptr)[*index] != quote) //! strchr
-			key[kindex++] = (*strptr)[(*index)++];
-		*strptr = &(*strptr)[*index];
-		*index = 0;
-		key[kindex] = '\0';
-		var = ft_getenv(ms->envp, key);
-		if (!var)
-			return ;
-		join = ft_strjoin(ms->rl, var);
-		free(ms->rl);
-		ms->rl = join;
-	}
-
-}
-
-void	lexer(char *rl, t_ms *ms, int piping)
-{
-	int		index;
-	char	**lex;
-
-	lex = ft_split_quotes(rl, ' ');
-	index = 0;
-	while (lex[index])
-	{
-		transform_metachars(ms, lex[index]);
-		free(lex[index]);
-		lex[index] = ms->rl;
-		// printf("%d -> %s\n", index, lex[index]);
-		++index;
-	}
 	if (!ft_strncmp(lex[0], "echo", 5))
 		exec_echo(lex);
 	else if (!ft_strncmp(lex[0], "cd", 3))
@@ -167,111 +98,22 @@ void	lexer(char *rl, t_ms *ms, int piping)
 		exec_cmd(ms, ft_getenv(ms->envp, "PATH"), lex, piping);
 		ft_free_arr(ms->envp_dup);
 	}
-	ft_free_arr(lex);
 }
 
-// static int	ft_catvar(t_ms *ms, int *cpyndex, char *str, int *index, char quote) //5args, because f*ck the norm
-// {
-// 	char	key[255];
-// 	char	*var;
-// 	int		kindex;
+void	lexer(char *rl, t_ms *ms, int piping)
+{
+	int		index;
+	char	**lex;
 
-// 	if (str[*index + 1] == '?')
-// 	{
-// 		++(*index);
-// 		var = ft_itoa(g_ret_cmd);
-// 		if (var)
-// 		{
-// 			(*cpyndex) += ft_strlen(var);
-// 			if (*cpyndex > 1023)
-// 			{
-// 				free(var);
-// 				return (*cpyndex);
-// 			}
-// 			ft_strcpy(&ms->rl[*cpyndex - ft_strlen(var)], var);
-// 			free(var);
-// 		}
-// 	}
-// 	else if (str[*index + 1] == '$')
-// 	{
-// 		++(*index);
-// 		(*cpyndex) += 5;
-// 		if (*cpyndex > 1023)
-// 			return (*cpyndex);
-// 		ft_strcpy(&ms->rl[*cpyndex - 5], "79862");
-// 	}
-// 	else
-// 	{
-// 		++(*index);
-// 		kindex = 0;
-// 		while (str[*index] && str[*index] != ' ' && str[*index] != '$' && str[*index] != quote)
-// 			key[kindex++] = str[(*index)++];
-// 		--(*index);
-// 		key[kindex] = '\0';
-// 		var = ft_getenv(ms->envp, key);
-// 		if (var)
-// 		{
-// 			(*cpyndex) += ft_strlen(var);
-// 			if (*cpyndex > 1023)
-// 				return (*cpyndex);
-// 			ft_strcpy(&ms->rl[*cpyndex - ft_strlen(var)], var);
-// 		}
-// 	}
-// 	return (*cpyndex);
-// }
-
-// static int	ft_cathome(t_ms *ms, int *cpyndex)
-// {
-// 	char	*var;
-
-// 	var = ft_getenv(ms->envp, "HOME");
-// 	if (var)
-// 	{
-// 		(*cpyndex) += ft_strlen(var);
-// 		if (*cpyndex > 1023)
-// 			return (*cpyndex);
-// 		ft_strcpy(&ms->rl[*cpyndex - ft_strlen(var)], var);
-// 	}
-// 	return (*cpyndex);
-// }
-
-// static int	transform_metachars(t_ms *ms, char *str)
-// {
-// 	int		index;
-// 	int		cpyndex;
-// 	char	quote;
-
-// 	index = 0;
-// 	cpyndex = 0;
-// 	quote = 0;
-// 	while (str[index])
-// 	{
-// 		if (ft_strchr("'\"", str[index]))
-// 		{
-// 			if (!quote)
-// 				quote = str[index];
-// 			else if (str[index] == quote)
-// 				quote = 0;
-// 		}
-// 		if (str[index] == '$' && (!quote || quote == '\"') && str[index + 1] != ' ' && str[index + 1])
-// 		{
-// 			if (ft_catvar(ms, &cpyndex, str, &index, quote) > 1023)
-// 				return (cpyndex);
-// 		}
-// 		else if (str[index] == '~' && !quote && (index == 0 || str[index - 1] == ' ') && (!str[index + 1] || str[index + 1] == ' ' || str[index + 1] == '/'))
-// 		{
-// 			if (ft_cathome(ms, &cpyndex) > 1023)
-// 				return (cpyndex);
-// 		}
-// 		else if (ft_strchr("()", str[index]) && !quote);
-// 		else
-// 		{
-// 			ms->rl[cpyndex++] = str[index];
-// 			if (cpyndex > 1023)
-// 				return (cpyndex);
-// 		}
-// 		++index;
-// 	}
-// 	ms->rl[cpyndex] = '\0';
-// 	return (cpyndex);
-// }
+	lex = ft_split_quotes(rl, ' ');
+	index = 0;
+	while (lex[index])
+	{
+		transform_metachars(ms, lex[index]);
+		free(lex[index]);
+		lex[index] = ms->rl;
+		++index;
+	}
+	lexer_norm(ms, lex, rl, piping);
+	ft_free_arr(lex);
+}

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 21:53:57 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 23:14:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe);
 void	exec_pipe(char *block, t_ms *ms, int piping);
 void	here_doc(char *limiter, t_ms *ms);
 int		empty_cmd(char *str);
-void	ft_joinfree(t_ms *ms, char **strptr, int *index);
-void	ft_joinvar(t_ms *ms, char **strptr, int *index, char quote);
+void	ft_joinfree(t_ms *ms, char **str, int *index);
+void	ft_joinvar(t_ms *ms, char **str, int *index);
 
 void	exec_echo(char **lex);
 void	exec_cd(char **lex, t_ms *ms);

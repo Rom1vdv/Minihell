@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:22:32 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 21:41:22 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 23:04:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	transform_metachars(t_ms *ms, char *str, int quotes)
 	{
 		if (str[index] == '$' && str[index + 1] != ' ' && str[index + 1]
 			&& !quotes)
-			ft_joinvar(ms, &str, &index, 0);
+			ft_joinvar(ms, &str, &index);
 		else
 			++index;
 	}

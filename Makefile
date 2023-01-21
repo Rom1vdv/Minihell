@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/21 20:27:30 by marvin           ###   ########.fr        #
+#    Updated: 2023/01/21 22:37:12 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ FILES_SIGNAL = signal
 
 FILES += $(addprefix Signal/, $(FILES_SIGNAL))
 
-FILES_LEXER = lexer lexer_utils prelexer
+FILES_LEXER = lexer lexer_utils prelexer prelexer_utils
 
 FILES += $(addprefix Lexer/, $(FILES_LEXER))
 
