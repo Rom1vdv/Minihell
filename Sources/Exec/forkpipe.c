@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   forkpipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 09:54:19 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 16:13:25 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/21 17:20:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
-
-void	ft_wait_child(int pid)
-{
-	int	wait;
-	int	status;
-
-	wait = waitpid(pid, &status, 0);
-	if (wait == -1)
-		return ;
-	if (WIFEXITED(status))
-		g_ret_cmd = WEXITSTATUS(status);
-}
 
 void	ft_fork(int *child_pid)
 {
@@ -56,7 +44,6 @@ void	ft_dup2(int pipefd[2], int fd)
 {
 	int	dup_ret;
 
-	// printf("dup2 at %d : %d\n", fd, pipefd[fd]);
 	if (pipefd[fd] == -1)
 		return ;
 	dup_ret = dup2(pipefd[fd], fd);

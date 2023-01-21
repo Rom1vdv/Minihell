@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 16:35:10 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 17:40:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	exec_unset(t_ms *ms, char **target_array)
 			|| ft_strchr(t, '@') || ft_strchr(t, '!') || ft_strchr(t, '^')
 			|| ft_strchr(t, '~') || ft_strchr(t, '='))
 		{
-			write_stderr("-minishell: unset: ", t, EXPORT_ERR);
+			ft_stderr("-minishell: unset: ", t, EXPORT_ERR);
 			g_ret_cmd = 1 + (t[0] == '-');
 		}
 		else

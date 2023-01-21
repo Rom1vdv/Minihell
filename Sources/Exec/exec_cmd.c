@@ -3,29 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 16:12:50 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/21 17:58:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
 /* list of modifs to be done :                                        *
- *   ./ls -> bash: ./ls: No such file or directory                    *
- *   "" -> bash: : command not found                                  *
+ *   ./ls -> bash: ./ls: No such file or directory  DONE              *
+ *   "" -> bash: : command not found                DONE              *
  *   chmod -x exec, ./exec -> bash: ./minishellbis: Permission denied */
 static char	*ft_get_cmdpath(char *cmd, char **paths) //modif to do
 {
 	int		index;
-	char	*res;;
-	char	*msg;
+	char	*res;
 
-	if (cmd && cmd[0])
+	if (cmd[0])
 	{
-		if (!access(cmd, F_OK))
-			return (cmd);
 		index = -1;
 		while (paths[++index])
 		{
@@ -38,9 +35,7 @@ static char	*ft_get_cmdpath(char *cmd, char **paths) //modif to do
 			free(res);
 		}
 	}
-	msg = ft_strjoins(3, "-minishell: ", cmd, ": command not found\n");
-	write(2, msg, ft_strlen(msg));
-	free(msg);
+	ft_stderr("-minishell: ", cmd, ": command not found\n");
 	free(cmd);
 	return (0);
 }
@@ -52,33 +47,16 @@ static void	noaccess_file(char *path)
 	if (stat(path, &statbuf) == -1)
 		ft_perror("stat");
 	if ((statbuf.st_mode & S_IFMT) == S_IFDIR)
-	{
-		write(2, path, ft_strlen(path));
-		write(2, ": is a directory\n", 17);
-	}
+		ft_stderr("-minishell: ", path, ": is a directory\n");
 	else
 		perror(path);
 	exit(126);
 }
 
-void	exec_cmd(t_ms *ms, char *path_lst, char **cmds, int infork)
+static void	exec_cmd_norm(t_ms *ms, char **cmds, int infork)
 {
-	int		pid;
-	char	**paths;
+	int	pid;
 
-	if (!cmds)
-		return ;
-	if (path_lst)
-	{
-		paths = ft_split(path_lst, ':');
-		cmds[0] = ft_get_cmdpath(cmds[0], paths);
-		ft_free_arr(paths);
-	}
-	if (!cmds[0])
-	{
-		g_ret_cmd = 127;
-		return ;
-	}
 	if (!infork)
 	{
 		ft_set_signals(ms, 1);
@@ -86,7 +64,7 @@ void	exec_cmd(t_ms *ms, char *path_lst, char **cmds, int infork)
 		if (!pid)
 		{
 			execve(cmds[0], cmds, ms->envp_dup);
-			if (errno == EACCES) // may want to check if cmds[0] is a dir to handle ~ for ex
+			if (errno == EACCES)
 				noaccess_file(cmds[0]);
 			ft_perror(cmds[0]);
 		}
@@ -96,8 +74,49 @@ void	exec_cmd(t_ms *ms, char *path_lst, char **cmds, int infork)
 	else
 	{
 		execve(cmds[0], cmds, ms->envp_dup);
-		if (errno == EACCES) // may want to check if cmds[0] is a dir to handle ~ for ex
+		if (errno == EACCES)
 			noaccess_file(cmds[0]);
 		ft_perror(cmds[0]);
 	}
+}
+
+void	exec_cmd(t_ms *ms, char *path_lst, char **cmds, int infork)
+{
+	char	**paths;
+
+	if (!cmds)
+		return ;
+	if (path_lst)
+	{
+		paths = ft_split(path_lst, ':');
+		if (!access(cmds[0], F_OK))
+			;
+		else if (cmds[0][0] == '.')
+		{
+			ft_stderr("-minishell: ", cmds[0], ": No such file or directory\n");
+			free(cmds[0]);
+			cmds[0] = 0;
+		}
+		else
+			cmds[0] = ft_get_cmdpath(cmds[0], paths);
+		ft_free_arr(paths);
+	}
+	if (!cmds[0])
+	{
+		g_ret_cmd = 127;
+		return ;
+	}
+	exec_cmd_norm(ms, cmds, infork);
+}
+
+void	ft_wait_child(int pid)
+{
+	int	wait;
+	int	status;
+
+	wait = waitpid(pid, &status, 0);
+	if (wait == -1)
+		return ;
+	if (WIFEXITED(status))
+		g_ret_cmd = WEXITSTATUS(status);
 }

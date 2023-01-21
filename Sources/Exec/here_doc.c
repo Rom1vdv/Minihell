@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:22:32 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 17:49:07 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/21 17:47:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static void	transform_metachars(t_ms *ms, char *str, int quotes)
 	index = 0;
 	while (str[index])
 	{
-		// printf("%d : %c\n", index, str[index]);
-		if (str[index] == '$' && str[index + 1] != ' ' && str[index + 1] && !quotes)
+		if (str[index] == '$' && str[index + 1] != ' ' && str[index + 1]
+			&& !quotes)
 			ft_joinvar(ms, &str, &index, 0);
 		else
 			++index;

@@ -5,7 +5,7 @@
 /* error messages are formated as follow :            *
 *  -minishell: <cmd>: error message                   *
 *  this function reduces nbr of lines other functions */
-void	write_stderr(char *str, char *str1, char *str2)
+void	ft_stderr(char *str, char *str1, char *str2)
 {
 	write(2, str, ft_strlen(str));
 	write(2, str1, ft_strlen(str1));

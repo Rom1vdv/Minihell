@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 16:22:18 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 17:40:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,6 @@ void	env_increment_shlvl(t_envp *envp);
 void	set_col(char *col);
 void	greet_user(t_envp *envp);
 void	close_program(t_ms *ms, char *rl, char **lex, int piping);
-void	write_stderr(char *str, char *str1, char *str2);
+void	ft_stderr(char *str, char *str1, char *str2);
 
 #endif
