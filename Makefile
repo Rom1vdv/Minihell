@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/19 15:49:03 by romvan-d         ###   ########.fr        #
+#    Updated: 2023/01/21 17:02:41 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 OBJS_DIR = Objs
 OBJS_DIR_Sources = Objs/Sources
 
-FILES = colors main
+FILES = greet main utils
 
 FILES_BUILTINS = cd echo env env_utils exit export pwd unset
 

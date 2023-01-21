@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 17:48:58 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/21 16:22:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "../Libft/libft.h"
+# include "../Libft/libft.h"
 
 # include <stdio.h>
 # include <unistd.h>
@@ -31,8 +31,8 @@
 
 # include <sys/errno.h>
 # include <sys/wait.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
 # define BLUE "\033[0;34m"
 # define CYAN "\033[0;36m"
@@ -42,11 +42,14 @@
 # define WHITE "\033[0m"
 # define YELLOW "\033[0;33m"
 
+# define NUM_ERR ": numeric argument required\n"
+# define EXPORT_ERR "': not a valid indentifier\n"
+
 typedef struct s_envp {
-	char	*key;
-	char	*value;
-	int		ascii_pos;
-	int		exported;
+	char			*key;
+	char			*value;
+	int				ascii_pos;
+	int				exported;
 	struct s_envp	*next;
 }				t_envp;
 
@@ -56,16 +59,16 @@ typedef struct s_pid {
 }				t_pid;
 
 typedef struct s_minishell {
-	int				pipein[2];
-	int				pipeout[2];
-	char			*file_name;
-	char			*rl;
-	t_envp			*envp;
-	t_pid			*pids;
-	t_pid			*last_pid;
-	char			**envp_dup;
-	struct sigaction act_int;
-	struct sigaction act_quit;
+	int					pipein[2];
+	int					pipeout[2];
+	char				*file_name;
+	char				*rl;
+	t_envp				*envp;
+	t_pid				*pids;
+	t_pid				*last_pid;
+	char				**envp_dup;
+	struct sigaction	act_int;
+	struct sigaction	act_quit;
 }				t_ms;
 
 int	g_ret_cmd;
@@ -110,5 +113,6 @@ void	env_increment_shlvl(t_envp *envp);
 void	set_col(char *col);
 void	greet_user(t_envp *envp);
 void	close_program(t_ms *ms, char *rl, char **lex, int piping);
+void	write_stderr(char *str, char *str1, char *str2);
 
 #endif

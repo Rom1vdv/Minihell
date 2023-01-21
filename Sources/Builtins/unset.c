@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 16:58:00 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/21 16:35:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,36 +30,29 @@ static void	env_unsetascii(t_envp *envp, t_envp *target)
 	}
 }
 
-static void	ft_free_node_envp(t_envp *free_me)
+t_envp	*ft_free_node_envp(t_envp *tmp)
 {
+	t_envp	*free_me;
+
+	free_me = tmp;
+	tmp = tmp->next;
 	free(free_me->key);
 	free(free_me->value);
 	free(free_me);
+	return (tmp);
 }
 
 static void	handle_unset_args(t_ms *ms, char *target)
 {
 	int		targetlen;
 	t_envp	*tmp;
-	t_envp	*free_this;
-	
-	if (ft_strchr("0123456789-=", target[0]) || ft_strchr(target, '-') || ft_strchr(target, '-') || ft_strchr(target, '\\') || ft_strchr(target, '.') || ft_strchr(target, '+') || ft_strchr(target, '$') || ft_strchr(target, '}') || ft_strchr(target, '{') || ft_strchr(target, '*')
-			 || ft_strchr(target, '#') || ft_strchr(target, '@') || ft_strchr(target, '!') || ft_strchr(target, '^') || ft_strchr(target, '~') || ft_strchr(target, '='))
-	{
-		write(2, "export: '", 10);
-		write(2, target, ft_strlen(target));
-		write(2, "': not a valid indentifier\n", 28);
-		g_ret_cmd = 1 + (target[0] == '-');
-		return ;
-	}
+
 	g_ret_cmd = 0;
 	targetlen = ft_strlen(target) + 1;
 	if (!ft_strncmp(ms->envp->key, target, targetlen))
 	{
 		env_unsetascii(ms->envp, ms->envp);
-		free_this = ms->envp;
-		ms->envp = ms->envp->next;
-		ft_free_node_envp(free_this);
+		ms->envp = ft_free_node_envp(ms->envp);
 		return ;
 	}
 	tmp = ms->envp;
@@ -68,9 +61,7 @@ static void	handle_unset_args(t_ms *ms, char *target)
 		if (!ft_strncmp(tmp->next->key, target, targetlen))
 		{
 			env_unsetascii(ms->envp, tmp->next);
-			free_this = tmp->next;
-			tmp->next = tmp->next->next;
-			ft_free_node_envp(free_this);
+			tmp->next = ft_free_node_envp(tmp->next);
 			return ;
 		}
 		tmp = tmp->next;
@@ -79,16 +70,29 @@ static void	handle_unset_args(t_ms *ms, char *target)
 
 void	exec_unset(t_ms *ms, char **target_array)
 {
-	int	index;
+	int		index;
+	char	*t;
 
 	index = 1;
 	if (!ms || !ms->envp)
 		return ;
 	if (!target_array[1])
 		return ;
-	while(target_array[index])
+	while (target_array[index])
 	{
-		handle_unset_args(ms, target_array[index]);
+		t = target_array[index];
+		if (ft_strchr("0123456789-=", t[0]) || ft_strchr(t, '-')
+			|| ft_strchr(t, '-') || ft_strchr(t, '\\') || ft_strchr(t, '.')
+			|| ft_strchr(t, '+') || ft_strchr(t, '$') || ft_strchr(t, '}')
+			|| ft_strchr(t, '{') || ft_strchr(t, '*') || ft_strchr(t, '#')
+			|| ft_strchr(t, '@') || ft_strchr(t, '!') || ft_strchr(t, '^')
+			|| ft_strchr(t, '~') || ft_strchr(t, '='))
+		{
+			write_stderr("-minishell: unset: ", t, EXPORT_ERR);
+			g_ret_cmd = 1 + (t[0] == '-');
+		}
+		else
+			handle_unset_args(ms, target_array[index]);
 		++index;
 	}
 }

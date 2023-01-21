@@ -12,31 +12,6 @@
 
 #include "../../Includes/minishell.h"
 
-// static void	print_echo(char *str)
-// {
-// 	int		index;
-// 	char	quote;
-
-// 	index = 0;
-// 	quote = 0;
-// 	while (str[++index])
-// 	{
-// 		if (ft_strchr("'\"", str[index]))
-// 		{
-// 			if (!quote)
-// 				quote = str[index];
-// 			else if (str[index] == quote)
-// 				quote = 0;
-// 			else
-// 				write(1, &str[index], 1);
-// 		}
-// 		else if (quote || str[index] != ' ')
-// 			write(1, &str[index], 1);
-// 		else if (str[index - 1] != ' ')
-// 			write(1, " ", 1);
-// 	}
-// }
-
 static int	ft_check_option(char *lex)
 {
 	int	index;
@@ -52,12 +27,6 @@ static int	ft_check_option(char *lex)
 	}
 	return (1);
 }
-/**
- * It prints the arguments passed to it, with the option to not print a newline at the end
- * 
- * @param lex array of strings, each string is a word in the command line
- * @param args "-n hello world"
- */
 
 void	exec_echo(char **lex)
 {
@@ -66,7 +35,7 @@ void	exec_echo(char **lex)
 
 	if (!lex[1])
 		return (ft_putendl(""));
-	option = ft_check_option(lex[1]);//(!ft_strncmp(lex[1], "-n", 3));
+	option = ft_check_option(lex[1]);
 	index = option + 1;
 	while (lex[index] && ft_check_option(lex[index]))
 		++index;
@@ -81,33 +50,3 @@ void	exec_echo(char **lex)
 		printf("\n");
 	g_ret_cmd = 0;
 }
-
-// static void	print_echo(char **lex, int option) -> doesn't work for "echo 'one    two'"...
-// {
-// 	int		index;
-// 	int		sub_index;
-// 	char	quote;
-
-// 	quote = 0;
-// 	index = option;
-// 	while (lex[++index])
-// 	{
-// 		if (index > option + 1)
-// 			write(1, " ", 1);
-// 		sub_index = -1;
-// 		while (lex[index][++sub_index])
-// 		{
-// 			if (ft_strchr("'\"", lex[index][sub_index]))
-// 			{
-// 				if (!quote)
-// 					quote = lex[index][sub_index];
-// 				else if (lex[index][sub_index] == quote)
-// 					quote = 0;
-// 				else
-// 					write(1, &lex[index][sub_index], 1);
-// 			}
-// 			else
-// 				write(1, &lex[index][sub_index], 1);
-// 		}
-// 	}
-// }

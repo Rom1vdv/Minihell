@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 17:02:50 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:48:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	exec_export(t_ms *ms, char **line_array, int exported)
 	index = 0;
 	if (!ms || !ms->envp)
 		return ;
-	if (!line_array[1])
+	if (!line_array[0])
 	{
 		display_sorted_env(ms->envp);
 		return ;

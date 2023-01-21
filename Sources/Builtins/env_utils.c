@@ -3,14 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:24:35 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 10:10:15 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/21 17:03:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
+
+static void	ft_setenv_norm(t_envp *envp, t_envp *tmp, char *value, int exported)
+{
+	char	*join;
+
+	if (exported > 1)
+		join = ft_strjoin(tmp->value, value);
+	else
+		join = ft_strdup(value);
+	free(tmp->value);
+	tmp->value = ft_strdup(join);
+	if (!tmp->exported && exported % 2)
+	{
+		tmp->exported = exported % 2;
+		env_setascii(envp, tmp);
+	}
+	free(join);
+}
+
+void	ft_setenv(t_envp *envp, char *target, char *value, int exported)
+{
+	int		targetlen;
+	char	*join;
+	t_envp	*tmp;
+
+	if (!envp || !target || !value)
+		return ;
+	targetlen = ft_strlen(target) + 1;
+	tmp = envp;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->key, target, targetlen))
+			return (ft_setenv_norm(envp, tmp, value, exported));
+		if (tmp->next)
+			tmp = tmp->next;
+		else
+		{
+			join = ft_strjoins(3, target, "=", value);
+			tmp->next = envp_new(join, exported % 2);
+			env_setascii(envp, tmp->next);
+			return (free(join));
+		}
+	}
+}
 
 void	env_setascii(t_envp *envp, t_envp *target)
 {
@@ -69,59 +113,4 @@ t_envp	*env_init(char **envp)
 		++index;
 	}
 	return (res);
-}
-
-void	ft_setenv(t_envp *envp, char *target, char *value, int exported)
-{
-	int		targetlen;
-	char	*join;
-	t_envp	*tmp;
-
-	if (!envp || !target || !value)
-		return ;
-	targetlen = ft_strlen(target) + 1;
-	tmp = envp;
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->key, target, targetlen))
-		{
-			join = value;
-			if (exported > 1)
-				join = ft_strjoin(tmp->value, value);
-			free(tmp->value);
-			tmp->value = ft_strdup(join);
-			if (!tmp->exported && exported % 2)
-			{
-				tmp->exported = exported % 2;
-				env_setascii(envp, tmp);
-			}
-			return ;
-		}
-		if (tmp->next)
-			tmp = tmp->next;
-		else
-		{
-			join = ft_strjoins(3, target, "=", value);
-			tmp->next = envp_new(join, exported % 2);
-			env_setascii(envp, tmp->next);
-			return (free(join));
-		}
-	}
-}
-
-void	env_increment_shlvl(t_envp *envp)
-{
-	int		shlvl;
-	char	*value;
-	char	*new_value;
-
-	value = ft_getenv(envp, "SHLVL");
-	if (!value)
-		return (ft_setenv(envp, "SHLVL", "1", 1));
-	shlvl = ft_atoi(value);
-	if (shlvl < 0)
-		shlvl = -1;
-	new_value = ft_itoa(shlvl + 1);
-	ft_setenv(envp, "SHLVL", new_value, 1);
-	free(new_value);
 }

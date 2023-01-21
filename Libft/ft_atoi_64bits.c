@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi_64bits.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:11:36 by romvan-d          #+#    #+#             */
-/*   Updated: 2023/01/20 17:15:12 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:27:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,5 @@ int	ft_atoi_64bits(char *str)
 		if (res < save)
 			return (256);
 	}
-	return ((char) (res * sign));
+	return ((char)(res * sign));
 }

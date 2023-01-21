@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:31:57 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 17:31:41 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:30:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 /* SIGINT = ctrl+c */
 void	signal_handler(int signo)
 {
-	if (signo == SIGINT) // +set cmd_ret to 130 -> is this the allowed global ?
+	if (signo == SIGINT)
 	{
 		printf("\n");
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 		g_ret_cmd = 1;
 	}
@@ -33,12 +33,11 @@ void	signal_handler(int signo)
 
 void	signal_handler_process(int signo)
 {
-	if (signo == SIGINT) // +set cmd_ret to 130 -> is this the allowed global ?
+	if (signo == SIGINT)
 	{
 		printf("\n");
 		rl_on_new_line();
-		// rl_replace_line("", 0);
-		//rl_redisplay();
+		rl_replace_line("", 0);
 		g_ret_cmd = 130;
 	}
 	else if (signo == SIGQUIT)
@@ -53,6 +52,7 @@ void	signal_handler_process(int signo)
 void	ft_set_signals(t_ms *ms, int process)
 {
 	struct termios	term;
+
 	sigemptyset(&ms->act_int.sa_mask);
 	sigemptyset(&ms->act_quit.sa_mask);
 	if (process)
@@ -69,7 +69,6 @@ void	ft_set_signals(t_ms *ms, int process)
 		ft_perror("sigaction");
 	if (sigaction(SIGQUIT, &ms->act_quit, NULL) == -1)
 		ft_perror("sigaction");
-
 	tcgetattr(0, &term);
 	term.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &term);

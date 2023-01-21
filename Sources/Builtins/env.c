@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:25:36 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/19 09:35:14 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/21 16:36:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	exec_env(t_envp *envp)
 {
 	while (envp)
 	{
-		// printf("%-3d-> ", envp->ascii_pos);
 		if (envp->exported)
 		{
 			if (envp->value)
