@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 18:16:11 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 21:54:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*ft_get_cmdpath(char *cmd, char **paths) //modif to do
 			free(res);
 		}
 	}
-	ft_stderr("-minishell: ", cmd, ": command not found\n");
+	ft_stderr("-minishell: ", cmd, NOTFOUND_ERR);
 	free(cmd);
 	return (0);
 }
@@ -47,7 +47,7 @@ static void	noaccess_file(char *path)
 	if (stat(path, &statbuf) == -1)
 		ft_perror("stat");
 	if ((statbuf.st_mode & S_IFMT) == S_IFDIR)
-		ft_stderr("-minishell: ", path, ": is a directory\n");
+		ft_stderr("-minishell: ", path, ISDIR_ERR);
 	else
 		perror(path);
 	exit(126);
@@ -93,7 +93,7 @@ void	exec_cmd(t_ms *ms, char *path_lst, char **cmds, int infork)
 			;
 		else if (cmds[0][0] == '.')
 		{
-			ft_stderr("-minishell: ", cmds[0], ": No such file or directory\n");
+			ft_stderr("-minishell: ", cmds[0], NOFILE_ERR);
 			free(cmds[0]);
 			cmds[0] = 0;
 		}

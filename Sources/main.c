@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 18:11:34 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 20:36:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ static void	ft_catshortdir(char prompt[255])
 	ft_strcat(prompt, " $> ");
 }
 
-/* 	if (!rl) happens when ctrl+D is pressed */
+/* 	!rl happens when ctrl+D is pressed        *
+*   !rl[0] happens when input is only newline */
 static void	loop(t_ms *ms)
 {
 	char	*rl;
@@ -97,8 +98,11 @@ static void	loop(t_ms *ms)
 		rl = readline(prompt);
 		if (!rl)
 			close_program(ms, 0, 0, 0);
-		add_history(rl);
-		prelexer(rl, ms);
+		if (rl[0])
+		{
+			add_history(rl);
+			prelexer(rl, ms);
+		}
 		free(rl);
 	}
 }

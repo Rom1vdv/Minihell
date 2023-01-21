@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:22:32 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 17:47:29 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 21:41:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,25 @@ static void	transform_metachars(t_ms *ms, char *str, int quotes)
 	ft_joinfree(ms, &str, &index);
 }
 
-static int	ft_trimquotes(char *str)
+static int	ft_trimquotes(char *str, int index, int cpyndex)
 {
-	int	res;
-	int	index;
-	int	cpyndex;
+	int		res;
+	char	quote;
 
-	index = 0;
-	cpyndex = 0;
 	res = 0;
+	quote = 0;
 	while (str[index])
 	{
 		if (ft_strchr("'\"", str[index]))
+		{
 			res = 1;
+			if (!quote)
+				quote = str[index];
+			else if (str[index] == quote)
+				quote = 0;
+			else
+				str[cpyndex++] = str[index];
+		}
 		else
 			str[cpyndex++] = str[index];
 		++index;
@@ -88,7 +94,7 @@ void	here_doc(char *limiter, t_ms *ms)
 	int		fd;
 	int		quotes;
 
-	quotes = ft_trimquotes(limiter);
+	quotes = ft_trimquotes(limiter, 0, 0);
 	fd = open(".here_doc_tmp", O_WRONLY | O_TRUNC | O_CREAT,
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0)

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 15:48:11 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 22:05:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,13 @@ static void	display_sorted_env(t_envp *envp)
 	}
 }
 
-static void	ft_exportvar(t_envp *envp, char *target)
+static void	ft_exportvar(t_envp *envp, char *target, int targetlen)
 {
-	int		targetlen;
 	char	*join;
 	t_envp	*tmp;
 
 	if (!envp || !target)
 		return ;
-	targetlen = ft_strlen(target) + 1;
 	tmp = envp;
 	while (tmp)
 	{
@@ -66,32 +64,32 @@ static void	ft_exportvar(t_envp *envp, char *target)
 	}
 }
 
-// static void	ft_trimquotes(char *value) //did this for nothing
-// {
-// 	int		index;
-// 	int		cpyndex;
-// 	char	quote;
-
-// 	index = 1;
-// 	cpyndex = 1;
-// 	quote = 0;
-// 	while (value[index])
-// 	{
-// 		if (ft_strchr("'\"", value[index]))
-// 		{
-// 			if (!quote)
-// 				quote = value[index];
-// 			else if (value[index] == quote)
-// 				quote = 0;
-// 			else
-// 				value[cpyndex++] = value[index];
-// 		}
-// 		else
-// 			value[cpyndex++] = value[index];
-// 		++index;
-// 	}
-// 	value[cpyndex] = '\0';
-// }
+static int	valid_key(char *line, char *key, int keylen, int exported)
+{
+	if (!keylen || ft_strchr("0123456789=", key[0]) || ft_strchr(key, '-')
+		|| ft_strchr(key, '\\') || ft_strchr(key, '.') || ft_strchr(key, '+')
+		|| ft_strchr(key, '$') || ft_strchr(key, '}') || ft_strchr(key, '{')
+		|| ft_strchr(key, '*') || ft_strchr(key, '#') || ft_strchr(key, '@')
+		|| ft_strchr(key, '!') || ft_strchr(key, '^') || ft_strchr(key, '~'))
+	{
+		free(key);
+		if (exported)
+		{
+			ft_stderr("-minishell: export: ", line, EXPORT_ERR);
+			g_ret_cmd = 1 + (line[0] == '-');
+		}
+		else
+		{
+			if (line[0] == '.')
+				ft_stderr("-minishell: ", line, NOFILE_ERR);
+			else
+				ft_stderr("-minishell: ", line, NOTFOUND_ERR);
+			g_ret_cmd = 127;
+		}
+		return (0);
+	}
+	return (1);
+}
 
 static void	handle_export_args(t_ms *ms, char *line, int exported)
 {
@@ -109,34 +107,14 @@ static void	handle_export_args(t_ms *ms, char *line, int exported)
 		key[keylen - 1] = '\0';
 		--keylen;
 	}
-	if (!keylen || ft_strchr("0123456789=", key[0]) || ft_strchr(key, '-') || ft_strchr(key, '\\') || ft_strchr(key, '.')
-			|| ft_strchr(key, '+') || ft_strchr(key, '$') || ft_strchr(key, '}') || ft_strchr(key, '{') || ft_strchr(key, '*')
-			|| ft_strchr(key, '#') || ft_strchr(key, '@') || ft_strchr(key, '!') || ft_strchr(key, '^') || ft_strchr(key, '~'))
-	{
-		free(key);
-		if (exported)
-		{
-			write(2, "-minishell: export: '", 21);
-			write(2, line, ft_strlen(line));
-			write(2, "': not a valid indentifier\n", 27);
-			g_ret_cmd = 1 + (line[0] == '-');
-		}
-		else
-		{
-			write(2, "-minishell: '", 13);
-			write(2, line, ft_strlen(line));
-			write(2, "': command not found\n", 21);
-			g_ret_cmd = 127;
-		}
+	if (!valid_key(line, key, keylen, exported))
 		return ;
-	}
 	g_ret_cmd = 0;
 	if (!value)
 	{
-		ft_exportvar(ms->envp, line);
+		ft_exportvar(ms->envp, line, ft_strlen(line) + 1);
 		return ;
 	}
-	// ft_trimquotes(value);
 	ft_setenv(ms->envp, key, &value[1], exported);
 	free(key);
 }
@@ -153,10 +131,9 @@ void	exec_export(t_ms *ms, char **line_array, int exported)
 		display_sorted_env(ms->envp);
 		return ;
 	}
-	while(line_array[index])
+	while (line_array[index])
 	{
 		handle_export_args(ms, line_array[index], exported);
 		++index;
 	}
-	
 }

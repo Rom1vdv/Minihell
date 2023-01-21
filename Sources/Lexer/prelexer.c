@@ -12,79 +12,50 @@
 
 #include "../../Includes/minishell.h"
 
-static int	parse_error(char *str, char c)
-{
-	write(2, "-minishell: parse error : ", 27);
-	if (str)
-		write(2, str, ft_strlen(str));
-	else
-		write(2, &c, 1);
-	write(2, "\n", 1);
-	return (1);
-}
-
-		// printf("str at %d : %c\n", index, str[index]);
-static int	check_quotes(char *str)
+static void	exec_block(t_ms *ms, char *block)
 {
 	int		index;
-	char	quote;
-	char	paranthesis;
-	char	pipe;
-	int		redir;
-	int		semicolon;
+	char	**pipes;
 
-	paranthesis = 0;
-	pipe = -1;
-	redir = 0;
-	semicolon = 0;
-	index = -1;
-	while (str[++index])
+	ft_set_pipe(ms->pipein, -1, -1);
+	ft_set_pipe(ms->pipeout, -1, -1);
+	pipes = ft_split_quotes(block, '|');
+	if (ft_arraylen(pipes) > 1)
 	{
-		if (str[index] == '|')
+		index = 0;
+		while (pipes[index])
 		{
-			if (pipe)
-				return (parse_error("'|'", 0));
-			pipe = 1;
+			ft_handle_redirs(pipes[index], ms, 1, pipes[index + 1] != 0);
+			++index;
 		}
-		else if (!ft_strchr("| '\"", str[index]))
-			pipe = 0;
-		if (ft_strchr("><", str[index]))
-		{
-			if (redir && (((redir > 0) && (str[index] == '<')) || (index > 0 && str[index - 1] == ' ')))
-				return (parse_error(0, str[index]));
-			redir += (str[index] == '>') - (str[index] == '<');
-			if (redir * (1 - 2 * (redir < 0)) > 2)
-				return (parse_error(0, str[index]));
-		}
-		else if (!ft_strchr("<> '\"", str[index]))
-			redir = 0;
-		if (ft_strchr("'\"", str[index]))
-		{
-			quote = str[index++];
-			pipe = 0;
-			redir = 0;
-			while (str[index] && str[index] != quote)
-				++index;
-			if (!str[index])
-				return (parse_error("quotes", 0));
-		}
-		if (str[index] == ';')
-		{
-			if (!semicolon)
-				return (parse_error("';'", 0));
-			semicolon = 0;
-		}
-		else if (str[index] != ' ')
-			semicolon = 1;
-		paranthesis += (str[index] == '(') - (str[index] == ')');
 	}
-	if (paranthesis)
-		return (parse_error("paranthesis", 0));
-	if (pipe)
-		return (parse_error("'|'", 0));
-	if (redir)
-		return (parse_error(0, "<>"[redir > 0]));
-	return (0);
+	else
+		ft_handle_redirs(block, ms, 0, 0);
+	ft_close_pipe(ms->pipein);
+	ft_close_pipe(ms->pipeout);
+	ft_free_arr(pipes);
+	free(ms->file_name);
+	ft_wait_pids(ms);
+}
+
+void	prelexer(char *rl, t_ms *ms)
+{
+	int		index;
+	char	**semicolons;
+
+	if (check_parse_error(rl))
+	{
+		g_ret_cmd = 258;
+		return ;
+	}
+	index = 0;
+	semicolons = ft_split_quotes(rl, ';');
+	while (semicolons[index])
+	{
+		exec_block(ms, semicolons[index]);
+		++index;
+	}
+	ft_free_arr(semicolons);
 }
 
 	// printf("cmd = %s\n", block);
@@ -119,46 +90,4 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 	else
 		ft_close_pipe(ms->pipeout);
 	ft_set_pipe(ms->pipeout, -1, -1);
-}
-
-void	prelexer(char *rl, t_ms *ms)
-{
-	int		index;
-	int		semicolons_index;
-	char	**pipes;
-	char	**semicolons;
-
-	if (!rl[0])
-		return ;
-	if (check_quotes(rl))
-	{
-		g_ret_cmd = 258;
-		return ;
-	}
-	semicolons_index = 0;
-	semicolons = ft_split_quotes(rl, ';');
-	while (semicolons[semicolons_index])
-	{
-		ft_set_pipe(ms->pipein, -1, -1);
-		ft_set_pipe(ms->pipeout, -1, -1);
-		pipes = ft_split_quotes(semicolons[semicolons_index], '|');
-		if (ft_arraylen(pipes) > 1)
-		{
-			index = 0;
-			while (pipes[index])
-			{
-				ft_handle_redirs(pipes[index], ms, 1, pipes[index + 1] != 0);
-				++index;
-			}
-		}
-		else
-			ft_handle_redirs(semicolons[semicolons_index], ms, 0, 0);
-		ft_close_pipe(ms->pipein);
-		ft_close_pipe(ms->pipeout);
-		ft_free_arr(pipes);
-		free(ms->file_name);
-		ft_wait_pids(ms);
-		++semicolons_index;
-	}
-	ft_free_arr(semicolons);
 }

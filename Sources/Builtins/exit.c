@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:24:48 by romvan-d          #+#    #+#             */
-/*   Updated: 2023/01/21 17:40:09 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 20:23:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	exec_exit(char **lex, t_ms *ms, char *rl, int piping)
 		else
 			g_ret_cmd = ft_atoi_64bits(lex[1]);
 	}
-	if (g_ret_cmd >= 255)
+	if (g_ret_cmd >= 255 && lex[1])
 	{
 		g_ret_cmd = 255;
 		ft_stderr("-minishell: exit: ", lex[1], NUM_ERR);

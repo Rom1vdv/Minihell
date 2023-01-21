@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 18:17:14 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 21:53:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,21 @@
 # define WHITE "\033[0m"
 # define YELLOW "\033[0;33m"
 
-# define NUM_ERR ": numeric argument required\n"
 # define EXPORT_ERR "': not a valid indentifier\n"
+# define ISDIR_ERR ": is a directory\n"
+# define NOFILE_ERR ": No such file or directory\n"
+# define NOTFOUND_ERR ": command not found\n"
+# define NUM_ERR ": numeric argument required\n"
+
+typedef struct s_parsing {
+	int		paranthesis;
+	int		pipe;
+	char	quote;
+	int		redir;
+	int		semicolon;
+
+}				t_parsing;
+
 
 typedef struct s_envp {
 	char			*key;
@@ -77,6 +90,7 @@ void	ft_set_signals(t_ms *ms, int process);
 
 void	lexer(char *rl, t_ms *ms, int piping);
 void	prelexer(char *rl, t_ms *ms);
+int		check_parse_error(char *str);
 void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe);
 void	exec_pipe(char *block, t_ms *ms, int piping);
 void	here_doc(char *limiter, t_ms *ms);
