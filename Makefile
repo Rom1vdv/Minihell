@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/21 17:02:41 by marvin           ###   ########.fr        #
+#    Updated: 2023/01/21 18:17:32 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ FILES_BUILTINS = cd echo env env_utils exit export pwd unset
 
 FILES += $(addprefix Builtins/, $(FILES_BUILTINS))
 
-FILES_EXEC = exec_cmd forkpipe here_doc redirs
+FILES_EXEC = exec_cmd forkpipe here_doc pids redirs
 
 FILES += $(addprefix Exec/, $(FILES_EXEC))
 

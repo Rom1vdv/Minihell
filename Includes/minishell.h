@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 17:40:09 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 18:17:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	g_ret_cmd;
 void	ft_set_signals(t_ms *ms, int process);
 
 void	lexer(char *rl, t_ms *ms, int piping);
-void	lexer_bonus(char *rl, t_ms *ms);
+void	prelexer(char *rl, t_ms *ms);
 void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe);
 void	exec_pipe(char *block, t_ms *ms, int piping);
 void	here_doc(char *limiter, t_ms *ms);
@@ -93,12 +93,15 @@ void	exec_env(t_envp *envp);
 void	exec_exit(char **lex, t_ms *ms, char *rl, int piping);
 
 void	exec_cmd(t_ms *ms, char *path_lst, char **cmds, int infork);
-void	ft_wait_child(int pid);
 void	ft_fork(int *child_pid);
 void	ft_pipe(int pipefd[2]);
 void	ft_close_pipe(int pipefd[2]);
 void	ft_set_pipe(int pipefd[2], int in, int out);
 void	ft_dup2(int pipefd[2], int fd);
+
+void	ft_wait_child(int pid);
+void	ft_addpid(t_ms *ms);
+void	ft_wait_pids(t_ms *ms);
 
 t_envp	*env_init(char **envp);
 t_envp	*envp_new(char *line, int exported);

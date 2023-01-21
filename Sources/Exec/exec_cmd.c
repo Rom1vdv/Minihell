@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 17:58:18 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 18:16:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,16 +107,4 @@ void	exec_cmd(t_ms *ms, char *path_lst, char **cmds, int infork)
 		return ;
 	}
 	exec_cmd_norm(ms, cmds, infork);
-}
-
-void	ft_wait_child(int pid)
-{
-	int	wait;
-	int	status;
-
-	wait = waitpid(pid, &status, 0);
-	if (wait == -1)
-		return ;
-	if (WIFEXITED(status))
-		g_ret_cmd = WEXITSTATUS(status);
 }

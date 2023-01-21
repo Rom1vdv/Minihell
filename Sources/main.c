@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:26:08 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 15:46:16 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/21 18:11:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	loop(t_ms *ms)
 		if (!rl)
 			close_program(ms, 0, 0, 0);
 		add_history(rl);
-		lexer_bonus(rl, ms);
+		prelexer(rl, ms);
 		free(rl);
 	}
 }
@@ -110,7 +110,7 @@ int	main(int ac, char **av, char **envp)
 	if (ac >= 3 && !ft_strncmp(av[1], "-c", 3))
 	{
 		setup(&ms, envp);
-		lexer_bonus(av[2], &ms);
+		prelexer(av[2], &ms);
 		return (g_ret_cmd);
 	}
 	if (ac == 1)

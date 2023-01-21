@@ -14,7 +14,7 @@
 
 static int	parse_error(char *str, char c)
 {
-	write(2, "parse error : ", 14);
+	write(2, "-minishell: parse error : ", 27);
 	if (str)
 		write(2, str, ft_strlen(str));
 	else
@@ -23,6 +23,7 @@ static int	parse_error(char *str, char c)
 	return (1);
 }
 
+		// printf("str at %d : %c\n", index, str[index]);
 static int	check_quotes(char *str)
 {
 	int		index;
@@ -39,7 +40,6 @@ static int	check_quotes(char *str)
 	index = -1;
 	while (str[++index])
 	{
-		// printf("str at %d : %c\n", index, str[index]);
 		if (str[index] == '|')
 		{
 			if (pipe)
@@ -87,72 +87,19 @@ static int	check_quotes(char *str)
 	return (0);
 }
 
-// static int	only_cat(char *str)
-// {
-// 	int	index;
-
-// 	index = 0;
-// 	while (str[index] == ' ')
-// 		++index;
-// 	if (!ft_strncmp(&str[index], "cat", 3))
-// 	{
-// 		index += 3;
-// 		while (str[index] == ' ')
-// 			++index;
-// 		return (!str[index]);
-// 	}
-// 	return (0);
-// }
-
-static void	ft_addpid(t_ms *ms)
-{
-	t_pid	*tmp;
-
-	tmp = ft_malloc(sizeof(*tmp), "addpid");
-	tmp->next = 0;
-	if (!ms->last_pid)
-	{
-		ms->pids = tmp;
-		ms->last_pid = tmp;
-	}
-	else
-	{
-		ms->last_pid->next = tmp;
-		ms->last_pid = ms->last_pid->next;
-	}
-}
-
-static void	ft_wait_pids(t_ms *ms)
-{
-	t_pid	*tmp;
-
-		// printf("debug\n");
-	while (ms->pids)
-	{
-		// printf("wait\n");
-		tmp = ms->pids;
-		ms->pids = ms->pids->next;
-		ft_wait_child(tmp->value);
-		free(tmp);
-	}
-	ms->pids = 0;
-	ms->last_pid = 0;
-}
-
+	// printf("cmd = %s\n", block);
+	// printf("pipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], 
+		//ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
+	// printf("is %d open ? %d\n", ms->pipein[0], fcntl(ms->pipein[0], 
+		//F_GETFD) != -1);
+	// printf("is %d open ? %d\n", ms->pipeout[1], fcntl(ms->pipeout[1], 
+		//F_GETFD) != -1);
 void	exec_pipe(char *block, t_ms *ms, int piping)
 {
 	ft_set_signals(ms, 1);
 	if (piping)
-	{
-		// if (only_cat(block))
-		// 	return ;
 		ft_pipe(ms->pipeout);
-	}
 	ft_addpid(ms);
-	// printf("cmd = %s\n", block);
-	// printf("pipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
-	// printf("is %d open ? %d\n", ms->pipein[0], fcntl(ms->pipein[0], F_GETFD) != -1);
-	// printf("is %d open ? %d\n", ms->pipeout[1], fcntl(ms->pipeout[1], F_GETFD) != -1);
 	ft_fork(&ms->last_pid->value);
 	if (!ms->last_pid->value)
 	{
@@ -163,33 +110,22 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 		lexer(block, ms, 1);
 		exit(g_ret_cmd);
 	}
-	if (ms->pipeout[0] != -1 || ms->pipeout[1] == -1 || (ms->pipeout[1] != -1 && !piping))
+	if (ms->pipeout[0] != -1 || ms->pipeout[1] == -1
+		|| (ms->pipeout[1] != -1 && !piping))
 	{
-		// printf("DONTCOMEHERE\n");
 		ft_close_pipe(ms->pipein);
 		ft_set_pipe(ms->pipein, ms->pipeout[0], ms->pipeout[1]);
 	}
-	else //uncomment this after debug
+	else
 		ft_close_pipe(ms->pipeout);
 	ft_set_pipe(ms->pipeout, -1, -1);
-	// ft_wait_child(pid);
-	// printf("AFTERpipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
 }
 
-/* implementing && and || bonuses                            *
-*  cmd && cmd2 -> cmd2 is exec only if exit code of cmd == 0 *
-*  cmd || cmd2 -> cmd2 is exec only if exit code of cmd != 0 *
-*  cmd & cmd2  -> ???                                        *
-*  cmd | cmd2  -> just a pipe, do nothing here               *
-*  cmd &&& cmd2 -> parse error near `&'                      *
-*  cmd ||| cmd2 -> parse error near `|'                      *
-*  cmd & & cmd2 -> parse error near '&'                      *
-*  cmd | | cmd2 -> parse error near '|'                      */
-void	lexer_bonus(char *rl, t_ms *ms)
+void	prelexer(char *rl, t_ms *ms)
 {
 	int		index;
 	int		semicolons_index;
-	char	**pipe_section;
+	char	**pipes;
 	char	**semicolons;
 
 	if (!rl[0])
@@ -205,15 +141,13 @@ void	lexer_bonus(char *rl, t_ms *ms)
 	{
 		ft_set_pipe(ms->pipein, -1, -1);
 		ft_set_pipe(ms->pipeout, -1, -1);
-		pipe_section = ft_split_quotes(semicolons[semicolons_index], '|'); // cat | cat | ls, what do we do ?
-		if (ft_arraylen(pipe_section) > 1)
+		pipes = ft_split_quotes(semicolons[semicolons_index], '|');
+		if (ft_arraylen(pipes) > 1)
 		{
 			index = 0;
-			while (pipe_section[index])
+			while (pipes[index])
 			{
-				// printf("working with %s\n", pipe_section[index]);
-				ft_handle_redirs(pipe_section[index], ms, 1, pipe_section[index + 1] != 0);
-				// exec_pipe(pipe_section[index], ms, pipe_section[index + 1] != 0);
+				ft_handle_redirs(pipes[index], ms, 1, pipes[index + 1] != 0);
 				++index;
 			}
 		}
@@ -221,7 +155,7 @@ void	lexer_bonus(char *rl, t_ms *ms)
 			ft_handle_redirs(semicolons[semicolons_index], ms, 0, 0);
 		ft_close_pipe(ms->pipein);
 		ft_close_pipe(ms->pipeout);
-		ft_free_arr(pipe_section);
+		ft_free_arr(pipes);
 		free(ms->file_name);
 		ft_wait_pids(ms);
 		++semicolons_index;
