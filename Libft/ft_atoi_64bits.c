@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:11:36 by romvan-d          #+#    #+#             */
-/*   Updated: 2023/01/21 15:27:34 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/22 16:17:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_atoi_64bits(char *str)
 	{
 		save = res;
 		res = res * 10 + str[index ++] - '0';
-		if (res < save)
+		if (res - (sign == -1) < save)
 			return (256);
 	}
 	return ((char)(res * sign));

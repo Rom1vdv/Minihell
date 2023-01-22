@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:24:35 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 17:03:29 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/22 16:27:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ t_envp	*env_init(char **envp)
 	if (!envp || !envp[0])
 		return (0);
 	res = envp_new(envp[0], 1);
+	++res->ascii_pos;
 	tmp = res;
 	index = 1;
 	while (envp[index])

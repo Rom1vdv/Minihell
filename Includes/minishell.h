@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/22 15:19:03 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/22 16:10:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define WHITE "\033[0m"
 # define YELLOW "\033[0;33m"
 
-# define EXPORT_ERR "': not a valid indentifier\n"
+# define EXPORT_ERR "': not a valid identifier\n"
 # define ISDIR_ERR ": is a directory\n"
 # define NOFILE_ERR ": No such file or directory\n"
 # define NOTFOUND_ERR ": command not found\n"

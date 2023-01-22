@@ -59,7 +59,7 @@ static void	transform_metachars(t_ms *ms, char *str)
 		if (transform_meta_norm(ms, &str, &index, &quote))
 			;
 		else if (str[index] == '$' && (!quote || quote == '\"')
-			&& str[index + 1] != ' ' && str[index + 1])
+			&& !ft_strchr("\" ", str[index + 1]))
 			ft_joinvar(ms, &str, &index);
 		else if (str[index] == '~' && !quote
 			&& (index == 0 || str[index - 1] == ' ')
@@ -103,17 +103,28 @@ static void	lexer_norm(t_ms *ms, char **lex, char *rl, int piping)
 void	lexer(char *rl, t_ms *ms, int piping)
 {
 	int		index;
+	int		sub_index;
+	int		quote;
 	char	**lex;
 
 	lex = ft_split_quotes(rl, ' ');
 	index = 0;
 	while (lex[index])
 	{
+		quote = !ft_strchr("'\"", lex[index][0]);
 		transform_metachars(ms, lex[index]);
 		free(lex[index]);
 		lex[index] = ms->rl;
-		++index;
+		if (!lex[index][0] && quote)
+		{
+			sub_index = index - 1;
+			while (lex[++sub_index])
+				lex[sub_index] = lex[sub_index + 1];
+		}
+		else
+			++index;
 	}
-	lexer_norm(ms, lex, rl, piping);
+	if (lex[0])
+		lexer_norm(ms, lex, rl, piping);
 	ft_free_arr(lex);
 }
