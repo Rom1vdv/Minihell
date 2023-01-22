@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:12:26 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 17:40:09 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/22 14:49:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exec_unset(t_ms *ms, char **target_array)
 	while (target_array[index])
 	{
 		t = target_array[index];
-		if (ft_strchr("0123456789-=", t[0]) || ft_strchr(t, '-')
+		if (ft_strchr("0123456789-=", t[0]) || ft_strchr(t, ':')
 			|| ft_strchr(t, '-') || ft_strchr(t, '\\') || ft_strchr(t, '.')
 			|| ft_strchr(t, '+') || ft_strchr(t, '$') || ft_strchr(t, '}')
 			|| ft_strchr(t, '{') || ft_strchr(t, '*') || ft_strchr(t, '#')

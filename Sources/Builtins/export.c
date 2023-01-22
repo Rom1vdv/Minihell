@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 22:05:06 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/22 14:48:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ static int	valid_key(char *line, char *key, int keylen, int exported)
 		|| ft_strchr(key, '\\') || ft_strchr(key, '.') || ft_strchr(key, '+')
 		|| ft_strchr(key, '$') || ft_strchr(key, '}') || ft_strchr(key, '{')
 		|| ft_strchr(key, '*') || ft_strchr(key, '#') || ft_strchr(key, '@')
-		|| ft_strchr(key, '!') || ft_strchr(key, '^') || ft_strchr(key, '~'))
+		|| ft_strchr(key, '!') || ft_strchr(key, '^') || ft_strchr(key, '~')
+		|| ft_strchr(key, ':'))
 	{
 		free(key);
 		if (exported)

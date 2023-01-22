@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 23:14:15 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/22 15:19:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_parsing {
 
 }				t_parsing;
 
-
 typedef struct s_envp {
 	char			*key;
 	char			*value;
@@ -100,6 +99,9 @@ void	ft_joinvar(t_ms *ms, char **str, int *index);
 
 void	exec_echo(char **lex);
 void	exec_cd(char **lex, t_ms *ms);
+void	cd_catpath(char curpath[255], char *directory, t_envp *envp, int index);
+void	cd_catpwd(char curpath[255], t_envp *envp);
+void	cd_convert_canon(char *curpath);
 void	exec_pwd(void);
 void	exec_export(t_ms *ms, char **line_array, int exported);
 void	exec_unset(t_ms *ms, char **target_array);

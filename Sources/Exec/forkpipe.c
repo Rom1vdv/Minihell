@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 09:54:19 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 17:20:40 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/22 15:10:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ void	ft_pipe(int pipefd[2])
 
 void	ft_close_pipe(int pipefd[2])
 {
-	close(pipefd[0]);
-	close(pipefd[1]);
+	if (pipefd[0] != -1)
+		close(pipefd[0]);
+	if (pipefd[1] != -1)
+		close(pipefd[1]);
 }
 
 void	ft_set_pipe(int pipefd[2], int in, int out)

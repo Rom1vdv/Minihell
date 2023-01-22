@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/21 22:37:12 by marvin           ###   ########.fr        #
+#    Updated: 2023/01/22 14:33:54 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ OBJS_DIR_Sources = Objs/Sources
 
 FILES = greet main utils
 
-FILES_BUILTINS = cd echo env env_utils exit export pwd unset
+FILES_BUILTINS = cd cd_utils echo env env_utils exit export pwd unset
 
 FILES += $(addprefix Builtins/, $(FILES_BUILTINS))
 
