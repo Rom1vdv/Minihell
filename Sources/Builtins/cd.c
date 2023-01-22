@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/22 15:28:37 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/22 17:28:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exec_cd(char **lex, t_ms *ms)
 	{
 		directory = ft_getenv(ms->envp, "HOME");
 		if (!directory)
-			return ;
+			return (ft_stderr("-minishell: cd: HOME not set\n", 0, 0));
 	}
 	else if (lexlen >= 2)
 		directory = lex[1];

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/22 16:10:31 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/22 17:20:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	g_ret_cmd;
 
 void	ft_set_signals(t_ms *ms, int process);
 
-void	lexer(char *rl, t_ms *ms, int piping);
+void	lexer(char *rl, t_ms *ms, int index, int piping);
 void	prelexer(char *rl, t_ms *ms);
 int		check_parse_error(char *str);
 void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe);

@@ -78,7 +78,7 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 		ft_close_pipe(ms->pipein);
 		ft_dup2(ms->pipeout, 1);
 		ft_close_pipe(ms->pipeout);
-		lexer(block, ms, 1);
+		lexer(block, ms, 0, 1);
 		exit(g_ret_cmd);
 	}
 	if (ms->pipeout[0] != -1 || ms->pipeout[1] == -1

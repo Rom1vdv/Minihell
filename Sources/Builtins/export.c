@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/22 14:48:09 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/22 17:43:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ static void	handle_export_args(t_ms *ms, char *line, int exported)
 	}
 	if (!valid_key(line, key, keylen, exported))
 		return ;
-	g_ret_cmd = 0;
 	if (!value)
 	{
 		ft_exportvar(ms->envp, line, ft_strlen(line) + 1);
@@ -127,6 +126,7 @@ void	exec_export(t_ms *ms, char **line_array, int exported)
 	index = 0;
 	if (!ms || !ms->envp)
 		return ;
+	g_ret_cmd = 0;
 	if (!line_array[0])
 	{
 		display_sorted_env(ms->envp);

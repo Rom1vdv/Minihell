@@ -16,9 +16,9 @@ static int	ft_check_option(char *lex)
 {
 	int	index;
 
-	if (lex[0] != '-')
+	if (lex[0] != '-' || lex[1] != 'n')
 		return (0);
-	index = 1;
+	index = 2;
 	while (lex[index])
 	{
 		if (lex[index] != 'n')

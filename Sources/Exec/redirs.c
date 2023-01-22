@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:28:51 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 18:23:36 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/22 17:19:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 	{
 		// printf("piping : %d, notlast : %d on %s\n", piping, not_last_pipe, rl);
 		if (!piping)
-			return (lexer(rl, ms, 0));
+			return (lexer(rl, ms, 0, 0));
 		else
 			return (exec_pipe(rl, ms, not_last_pipe));
 	}

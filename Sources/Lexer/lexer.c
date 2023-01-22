@@ -100,15 +100,13 @@ static void	lexer_norm(t_ms *ms, char **lex, char *rl, int piping)
 	}
 }
 
-void	lexer(char *rl, t_ms *ms, int piping)
+void	lexer(char *rl, t_ms *ms, int index, int piping)
 {
-	int		index;
 	int		sub_index;
 	int		quote;
 	char	**lex;
 
 	lex = ft_split_quotes(rl, ' ');
-	index = 0;
 	while (lex[index])
 	{
 		quote = !ft_strchr("'\"", lex[index][0]);
@@ -126,5 +124,7 @@ void	lexer(char *rl, t_ms *ms, int piping)
 	}
 	if (lex[0])
 		lexer_norm(ms, lex, rl, piping);
+	else
+		g_ret_cmd = 0;
 	ft_free_arr(lex);
 }

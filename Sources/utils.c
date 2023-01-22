@@ -10,6 +10,7 @@ void	ft_stderr(char *str, char *str1, char *str2)
 	write(2, str, ft_strlen(str));
 	write(2, str1, ft_strlen(str1));
 	write(2, str2, ft_strlen(str2));
+	g_ret_cmd = 1;
 }
 
 void	env_increment_shlvl(t_envp *envp)
