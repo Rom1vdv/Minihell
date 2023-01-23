@@ -25,12 +25,12 @@ static void	exec_block(t_ms *ms, char *block)
 		index = 0;
 		while (pipes[index])
 		{
-			ft_handle_redirs(pipes[index], ms, 1, pipes[index + 1] != 0);
+			ft_handle_redirs(pipes[index], ms, pipes[index + 1] != 0);
 			++index;
 		}
 	}
 	else
-		ft_handle_redirs(block, ms, 0, 0);
+		ft_handle_redirs(block, ms, 0);
 	ft_close_pipe(ms->pipein);
 	ft_close_pipe(ms->pipeout);
 	ft_free_arr(pipes);

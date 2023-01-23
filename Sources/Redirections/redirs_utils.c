@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:28:54 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 10:58:51 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:28:01 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static void	redirs_getfile(t_redirs *red, t_ms *ms, char *rl)
 	red->file[red->findex] = '\0';
 	--red->index;
 	transform_metachars(ms, red->file);
-	free(red->file);
 }
 
 void	redirs_rights(t_redirs *redir, t_ms *ms, char *rl)
@@ -55,6 +54,8 @@ void	redirs_rights(t_redirs *redir, t_ms *ms, char *rl)
 	while (rl[redir->index] == ' ')
 		++redir->index;
 	redirs_getfile(redir, ms, rl);
+	free(red->file);
+	red->file = ms->rl;
 	open_file(redir, ms, mode);
 	free(ms->rl);
 }
@@ -65,6 +66,8 @@ void	redirs_left(t_redirs *redir, t_ms *ms, char *rl)
 	while (rl[redir->index] == ' ')
 		++redir->index;
 	redirs_getfile(redir, ms, rl);
+	free(red->file);
+	red->file = ms->rl;
 	open_file(redir, ms, L);
 	free(ms->rl);
 }
@@ -97,6 +100,8 @@ void	redirs_leftright(t_redirs *redir, t_ms *ms, char *rl)
 	while (rl[redir->index] == ' ')
 		++redir->index;
 	redirs_getfile(redir, ms, rl);
+	free(red->file);
+	red->file = ms->rl;
 	open_file(redir, ms, L);
 	free(ms->rl);
 }

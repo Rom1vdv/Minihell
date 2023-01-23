@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 08:56:27 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 11:01:58 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:17:30 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,24 @@ static int	redirs_main(t_redirs *redir, t_ms *ms, char *rl)
 	return (1);
 }
 
-void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
+static void	ft_handle_redirs_norm(char *rl, t_ms *ms, int piping, int here_doc)
+{
+	if (!empty_cmd(rl))
+	{
+		if (ms->pipeout[1] != -1)
+		{
+			exec_pipe(rl, ms, 0);
+			ft_pipe(ms->pipein);
+			close(ms->pipein[1]);
+		}
+		else
+			exec_pipe(rl, ms, piping);
+	}
+	if (here_doc)
+		unlink(".here_doc_tmp");
+}
+
+void	ft_handle_redirs(char *rl, t_ms *ms, int piping)
 {
 	t_redirs	redir;
 
@@ -54,7 +71,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 		if (!piping)
 			return (lexer(rl, ms, 0, 0));
 		else
-			return (exec_pipe(rl, ms, not_last_pipe));
+			return (exec_pipe(rl, ms, piping));
 	}
 	redir.here_doc = 0;
 	redir.index = 0;
@@ -70,17 +87,5 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 		++redir.index;
 	}
 	rl[redir.cpyndex] = '\0';
-	if (!empty_cmd(rl))
-	{
-		if (ms->pipeout[1] != -1)
-		{
-			exec_pipe(rl, ms, 0);
-			ft_pipe(ms->pipein);
-			close(ms->pipein[1]);
-		}
-		else
-			exec_pipe(rl, ms, not_last_pipe);
-	}
-	if (redir.here_doc)
-		unlink(".here_doc_tmp");
+	ft_handle_redirs_norm(rl, ms, piping, redir.here_doc);
 }

@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 10:54:35 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:16:21 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	transform_metachars(t_ms *ms, char *str);
 void	ft_joinfree(t_ms *ms, char **str, int *index);
 void	ft_joinvar(t_ms *ms, char **str, int *index);
 
-void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe);
+void	ft_handle_redirs(char *rl, t_ms *ms, int piping);
 void	redirs_rights(t_redirs *redir, t_ms *ms, char *rl);
 void	redirs_left(t_redirs *redir, t_ms *ms, char *rl);
 void	redirs_leftleft(t_redirs *redir, t_ms *ms, char *rl);
