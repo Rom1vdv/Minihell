@@ -77,10 +77,7 @@ static void	ft_catshortdir(char prompt[255])
 		pwd[start + 18] = '\0';
 		ft_strcat(pwd, "..");
 	}
-	ft_strcat(prompt, WHITE);
-	ft_strcat(prompt, " ");
 	ft_strcat(prompt, &pwd[start]);
-	ft_strcat(prompt, " $> ");
 }
 
 /* 	!rl happens when ctrl+D is pressed        *
@@ -93,7 +90,10 @@ static void	loop(t_ms *ms)
 	while (1)
 	{
 		ft_catlogname(prompt, ft_getenv(ms->envp, "LOGNAME"));
+		ft_strcat(prompt, WHITE);
+		ft_strcat(prompt, " ");
 		ft_catshortdir(prompt);
+		ft_strcat(prompt, " $> ");
 		ft_set_signals(ms, 0);
 		rl = readline(prompt);
 		if (!rl)
