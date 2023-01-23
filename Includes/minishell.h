@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/22 17:20:32 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/23 10:54:35 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,30 @@
 # define NOTFOUND_ERR ": command not found\n"
 # define NUM_ERR ": numeric argument required\n"
 
+typedef enum e_redirs {
+	R,
+	L,
+	RR,
+	LL,
+	LR
+}			t_enum;
+
 typedef struct s_parsing {
 	int		paranthesis;
 	int		pipe;
 	char	quote;
 	int		redir;
 	int		semicolon;
-
 }				t_parsing;
+
+typedef struct s_redirs {
+	int		index;
+	int		cpyndex;
+	int		findex;
+	int		here_doc;
+	char	quote;
+	char	*file;
+}				t_redirs;
 
 typedef struct s_envp {
 	char			*key;
@@ -73,7 +89,6 @@ typedef struct s_pid {
 typedef struct s_minishell {
 	int					pipein[2];
 	int					pipeout[2];
-	char				*file_name;
 	char				*rl;
 	t_envp				*envp;
 	t_pid				*pids;
@@ -90,12 +105,19 @@ void	ft_set_signals(t_ms *ms, int process);
 void	lexer(char *rl, t_ms *ms, int index, int piping);
 void	prelexer(char *rl, t_ms *ms);
 int		check_parse_error(char *str);
-void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe);
 void	exec_pipe(char *block, t_ms *ms, int piping);
 void	here_doc(char *limiter, t_ms *ms);
 int		empty_cmd(char *str);
+void	transform_metachars(t_ms *ms, char *str);
 void	ft_joinfree(t_ms *ms, char **str, int *index);
 void	ft_joinvar(t_ms *ms, char **str, int *index);
+
+void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe);
+void	redirs_rights(t_redirs *redir, t_ms *ms, char *rl);
+void	redirs_left(t_redirs *redir, t_ms *ms, char *rl);
+void	redirs_leftleft(t_redirs *redir, t_ms *ms, char *rl);
+void	redirs_leftright(t_redirs *redir, t_ms *ms, char *rl);
+void	open_file(t_redirs *redir, t_ms *ms, t_enum mode);
 
 void	exec_echo(char **lex);
 void	exec_cd(char **lex, t_ms *ms);

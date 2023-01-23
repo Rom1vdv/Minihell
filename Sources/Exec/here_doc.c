@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:22:32 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 23:04:47 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/23 10:14:10 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static void	transform_metachars(t_ms *ms, char *str, int quotes)
+static void	transform_meta_heredoc(t_ms *ms, char *str, int quotes)
 {
 	int		index;
 
@@ -67,9 +67,10 @@ static void	here_doc_loop(char *limiter, int fd, t_ms *ms, int quotes)
 			ft_perror("gnl");
 		if (!ft_strncmp(limiter, line, ft_strlen(limiter) + 1))
 			break ;
-		transform_metachars(ms, line, quotes);
+		transform_meta_heredoc(ms, line, quotes);
 		write(fd, ms->rl, ft_strlen(ms->rl));
 		write(fd, "\n", 1);
+		free(ms->rl);
 		free(line);
 	}
 	free(line);
@@ -101,11 +102,4 @@ void	here_doc(char *limiter, t_ms *ms)
 		ft_perror("here_doc");
 	here_doc_loop(limiter, fd, ms, quotes);
 	close(fd);
-	ms->pipein[0] = open(".here_doc_tmp", O_RDONLY,
-			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	if (ms->pipein[0] < 0)
-	{
-		unlink(".here_doc_tmp");
-		ft_perror("here_doc");
-	}
 }

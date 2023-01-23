@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 14:23:30 by yhuberla          #+#    #+#              #
-#    Updated: 2023/01/22 14:33:54 by marvin           ###   ########.fr        #
+#    Updated: 2023/01/23 10:24:01 by yhuberla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ FILES_BUILTINS = cd cd_utils echo env env_utils exit export pwd unset
 
 FILES += $(addprefix Builtins/, $(FILES_BUILTINS))
 
-FILES_EXEC = exec_cmd forkpipe here_doc pids redirs
+FILES_EXEC = exec_cmd forkpipe here_doc pids
 
 FILES += $(addprefix Exec/, $(FILES_EXEC))
 
@@ -31,6 +31,10 @@ FILES += $(addprefix Signal/, $(FILES_SIGNAL))
 FILES_LEXER = lexer lexer_utils prelexer prelexer_utils
 
 FILES += $(addprefix Lexer/, $(FILES_LEXER))
+
+FILES_REDIRECTIONS = redirs redirs_utils redirs_open
+
+FILES += $(addprefix Redirections/, $(FILES_REDIRECTIONS))
 
 Sources = $(addprefix Sources/, $(addsuffix .c, $(FILES)))
 
@@ -61,6 +65,7 @@ $(OBJS_DIR_Sources):
 	@mkdir -p $(OBJS_DIR)/Sources/Exec
 	@mkdir -p $(OBJS_DIR)/Sources/Signal
 	@mkdir -p $(OBJS_DIR)/Sources/Lexer
+	@mkdir -p $(OBJS_DIR)/Sources/Redirections
 
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(READLINE) $(LIBFT) -I Includes
@@ -80,6 +85,10 @@ $(OBJS_DIR)/Sources/Signal/%.o: Sources/Signal/%.c
 $(OBJS_DIR)/Sources/Lexer/%.o: Sources/Lexer/%.c
 	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Opt/readline/include -c $< -o $(<:.c=.o)
 	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Lexer
+
+$(OBJS_DIR)/Sources/Redirections/%.o: Sources/Redirections/%.c
+	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Opt/readline/include -c $< -o $(<:.c=.o)
+	@mv $(<:.c=.o) $(OBJS_DIR)/Sources/Redirections
 
 $(OBJS_DIR)/Sources/%.o: Sources/%.c
 	$(CC) $(CFLAGS) -I /Users/$(USER)/.brew/Opt/readline/include -c $< -o $(<:.c=.o)

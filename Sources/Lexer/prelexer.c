@@ -34,7 +34,6 @@ static void	exec_block(t_ms *ms, char *block)
 	ft_close_pipe(ms->pipein);
 	ft_close_pipe(ms->pipeout);
 	ft_free_arr(pipes);
-	free(ms->file_name);
 	ft_wait_pids(ms);
 }
 

@@ -43,10 +43,36 @@ static int	transform_meta_norm(t_ms *ms, char **str, int *index, char *quote)
 	return (0);
 }
 
+static void	lexer_norm(t_ms *ms, char **lex, char *rl, int piping)
+{
+	if (!ft_strncmp(lex[0], "echo", 5))
+		exec_echo(lex);
+	else if (!ft_strncmp(lex[0], "cd", 3))
+		exec_cd(lex, ms);
+	else if (!ft_strncmp(lex[0], "pwd", 4))
+		exec_pwd();
+	else if (!ft_strncmp(lex[0], "export", 7))
+		exec_export(ms, &lex[1], 1);
+	else if (!ft_strncmp(lex[0], "unset", 6))
+		exec_unset(ms, lex);
+	else if (!ft_strncmp(lex[0], "env", 4))
+		exec_env(ms->envp);
+	else if (!ft_strncmp(lex[0], "exit", 5))
+		exec_exit(lex, ms, rl, piping);
+	else if (ft_strchr(lex[0], '=') && lex[0][0] != '=')
+		exec_export(ms, lex, 0);
+	else
+	{
+		ms->envp_dup = env_dup(ms->envp);
+		exec_cmd(ms, ft_getenv(ms->envp, "PATH"), lex, piping);
+		ft_free_arr(ms->envp_dup);
+	}
+}
+
 /* using envp to transform $vars into their real value   *
 *                          ~ into HOME variable of env   *
 *                ignore ( and ) and ' and "              */
-static void	transform_metachars(t_ms *ms, char *str)
+void	transform_metachars(t_ms *ms, char *str)
 {
 	int		index;
 	char	quote;
@@ -72,32 +98,6 @@ static void	transform_metachars(t_ms *ms, char *str)
 			++index;
 	}
 	ft_joinfree(ms, &str, &index);
-}
-
-static void	lexer_norm(t_ms *ms, char **lex, char *rl, int piping)
-{
-	if (!ft_strncmp(lex[0], "echo", 5))
-		exec_echo(lex);
-	else if (!ft_strncmp(lex[0], "cd", 3))
-		exec_cd(lex, ms);
-	else if (!ft_strncmp(lex[0], "pwd", 4))
-		exec_pwd();
-	else if (!ft_strncmp(lex[0], "export", 7))
-		exec_export(ms, &lex[1], 1);
-	else if (!ft_strncmp(lex[0], "unset", 6))
-		exec_unset(ms, lex);
-	else if (!ft_strncmp(lex[0], "env", 4))
-		exec_env(ms->envp);
-	else if (!ft_strncmp(lex[0], "exit", 5))
-		exec_exit(lex, ms, rl, piping);
-	else if (ft_strchr(lex[0], '=') && lex[0][0] != '=')
-		exec_export(ms, lex, 0);
-	else
-	{
-		ms->envp_dup = env_dup(ms->envp);
-		exec_cmd(ms, ft_getenv(ms->envp, "PATH"), lex, piping);
-		ft_free_arr(ms->envp_dup);
-	}
 }
 
 void	lexer(char *rl, t_ms *ms, int index, int piping)
