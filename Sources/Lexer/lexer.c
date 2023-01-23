@@ -85,7 +85,7 @@ void	transform_metachars(t_ms *ms, char *str)
 		if (transform_meta_norm(ms, &str, &index, &quote))
 			;
 		else if (str[index] == '$' && (!quote || quote == '\"')
-			&& !ft_strchr("\" ", str[index + 1]))
+			&& !ft_strchr("\" =", str[index + 1]))
 			ft_joinvar(ms, &str, &index);
 		else if (str[index] == '~' && !quote
 			&& (index == 0 || str[index - 1] == ' ')

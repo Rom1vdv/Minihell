@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 08:56:27 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 11:17:30 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/23 12:02:50 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	ft_handle_redirs_norm(char *rl, t_ms *ms, int piping, int here_doc)
 		unlink(".here_doc_tmp");
 }
 
-void	ft_handle_redirs(char *rl, t_ms *ms, int piping)
+void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 {
 	t_redirs	redir;
 
@@ -71,7 +71,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping)
 		if (!piping)
 			return (lexer(rl, ms, 0, 0));
 		else
-			return (exec_pipe(rl, ms, piping));
+			return (exec_pipe(rl, ms, not_last_pipe));
 	}
 	redir.here_doc = 0;
 	redir.index = 0;
@@ -87,5 +87,5 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping)
 		++redir.index;
 	}
 	rl[redir.cpyndex] = '\0';
-	ft_handle_redirs_norm(rl, ms, piping, redir.here_doc);
+	ft_handle_redirs_norm(rl, ms, piping + not_last_pipe, redir.here_doc);
 }

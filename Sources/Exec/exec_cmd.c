@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 21:54:09 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/23 11:55:49 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static void	exec_cmd_norm(t_ms *ms, char **cmds, int infork)
 {
 	int	pid;
 
+	printf("infork : %d", infork);
 	if (!infork)
 	{
 		ft_set_signals(ms, 1);

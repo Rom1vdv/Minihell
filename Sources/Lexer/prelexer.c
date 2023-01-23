@@ -25,12 +25,12 @@ static void	exec_block(t_ms *ms, char *block)
 		index = 0;
 		while (pipes[index])
 		{
-			ft_handle_redirs(pipes[index], ms, pipes[index + 1] != 0);
+			ft_handle_redirs(pipes[index], ms, 1, pipes[index + 1] != 0);
 			++index;
 		}
 	}
 	else
-		ft_handle_redirs(block, ms, 0);
+		ft_handle_redirs(block, ms, 0, 0);
 	ft_close_pipe(ms->pipein);
 	ft_close_pipe(ms->pipeout);
 	ft_free_arr(pipes);
@@ -58,8 +58,8 @@ void	prelexer(char *rl, t_ms *ms)
 }
 
 	// printf("cmd = %s\n", block);
-	// printf("pipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0], 
-		//ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
+	// printf("pipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0],
+	// 	ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
 	// printf("is %d open ? %d\n", ms->pipein[0], fcntl(ms->pipein[0], 
 		//F_GETFD) != -1);
 	// printf("is %d open ? %d\n", ms->pipeout[1], fcntl(ms->pipeout[1], 
@@ -67,7 +67,7 @@ void	prelexer(char *rl, t_ms *ms)
 void	exec_pipe(char *block, t_ms *ms, int piping)
 {
 	ft_set_signals(ms, 1);
-	if (piping)
+	if (piping && ms->pipeout[1] == -1)
 		ft_pipe(ms->pipeout);
 	ft_addpid(ms);
 	ft_fork(&ms->last_pid->value);
@@ -80,8 +80,7 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 		lexer(block, ms, 0, 1);
 		exit(g_ret_cmd);
 	}
-	if (ms->pipeout[0] != -1 || ms->pipeout[1] == -1
-		|| (ms->pipeout[1] != -1 && !piping))
+	if (ms->pipeout[0] != -1 || (ms->pipeout[1] != -1))
 	{
 		ft_close_pipe(ms->pipein);
 		ft_set_pipe(ms->pipein, ms->pipeout[0], ms->pipeout[1]);

@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:28:54 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 11:28:01 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:33:52 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	redirs_rights(t_redirs *redir, t_ms *ms, char *rl)
 	while (rl[redir->index] == ' ')
 		++redir->index;
 	redirs_getfile(redir, ms, rl);
-	free(red->file);
-	red->file = ms->rl;
+	free(redir->file);
+	redir->file = ms->rl;
 	open_file(redir, ms, mode);
 	free(ms->rl);
 }
@@ -66,8 +66,8 @@ void	redirs_left(t_redirs *redir, t_ms *ms, char *rl)
 	while (rl[redir->index] == ' ')
 		++redir->index;
 	redirs_getfile(redir, ms, rl);
-	free(red->file);
-	red->file = ms->rl;
+	free(redir->file);
+	redir->file = ms->rl;
 	open_file(redir, ms, L);
 	free(ms->rl);
 }
@@ -100,8 +100,8 @@ void	redirs_leftright(t_redirs *redir, t_ms *ms, char *rl)
 	while (rl[redir->index] == ' ')
 		++redir->index;
 	redirs_getfile(redir, ms, rl);
-	free(red->file);
-	red->file = ms->rl;
+	free(redir->file);
+	redir->file = ms->rl;
 	open_file(redir, ms, L);
 	free(ms->rl);
 }

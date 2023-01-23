@@ -23,10 +23,10 @@ static void	setup(t_ms *ms, char **envp)
 	ms->pids = 0;
 	ms->last_pid = 0;
 	env_increment_shlvl(ms->envp);
-	set_col(GREEN);
-	greet_user(ms->envp);
-	set_col(WHITE);
-	printf("\n");
+	// set_col(GREEN);
+	// greet_user(ms->envp);
+	// set_col(WHITE);
+	// printf("\n");
 }
 
 static void	ft_catlogname(char prompt[255], char *env_logname)
