@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 08:56:27 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/24 15:18:27 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/24 19:21:58 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,5 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 		++redir.index;
 	}
 	rl[redir.cpyndex] = '\0';
-	ft_handle_redirs_exec(rl, ms, piping + not_last_pipe, redir.here_doc);
+	ft_handle_redirs_exec(rl, ms, not_last_pipe, redir.here_doc);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_open.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:23:10 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/24 13:40:03 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/24 19:16:22 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void	open_file_left(t_redirs *redir, t_ms *ms, t_enum mode)
 
 void	open_file(t_redirs *redir, t_ms *ms, t_enum mode)
 {
+	ft_wait_pids(ms);
 	if ((mode == R || mode == RR))
 	{
 		if (ms->pipeout[1] != -1)
