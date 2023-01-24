@@ -35,10 +35,7 @@ static int	transform_meta_norm(t_ms *ms, char **str, int *index, char *quote)
 			*quote = (*str)[*index];
 		else if ((*str)[*index] == *quote)
 			*quote = 0;
-		// if (*quote && (*str)[*index] != *quote)
 		++(*index);
-		// else
-			// ft_joinfree(ms, str, index);
 		return (1);
 	}
 	return (0);
@@ -68,29 +65,6 @@ static void	lexer_norm(t_ms *ms, char **lex, char *rl, int piping)
 		exec_cmd(ms, ft_getenv(ms->envp, "PATH"), lex, piping);
 		ft_free_arr(ms->envp_dup);
 	}
-}
-
-static void	ft_trimquotes(char *str, int index, int cpyndex)
-{
-	char	quote;
-
-	quote = 0;
-	while (str[index])
-	{
-		if (ft_strchr("'\"", str[index]))
-		{
-			if (!quote)
-				quote = str[index];
-			else if (str[index] == quote)
-				quote = 0;
-			else
-				str[cpyndex++] = str[index];
-		}
-		else
-			str[cpyndex++] = str[index];
-		++index;
-	}
-	str[cpyndex] = '\0';
 }
 
 /* using envp to transform $vars into their real value   *
@@ -126,24 +100,14 @@ void	transform_metachars(t_ms *ms, char *str)
 
 void	lexer(char *rl, t_ms *ms, int index, int piping)
 {
-	int		sub_index;
-	int		quote;
 	char	**lex;
-	
+
 	transform_metachars(ms, rl);
 	lex = ft_split_quotes_set(ms->rl, " \t");
 	free(ms->rl);
 	while (lex[index])
 	{
-		quote = !ft_strchr("'\"", lex[index][0]);
 		ft_trimquotes(lex[index], 0, 0);
-		if (!lex[index][0])
-		{
-			sub_index = index-- - 1;
-			free(lex[sub_index + 1]);
-			while (lex[++sub_index])
-				lex[sub_index] = lex[sub_index + 1];
-		}
 		++index;
 	}
 	if (lex[0])

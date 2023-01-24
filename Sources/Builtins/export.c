@@ -6,7 +6,7 @@
 /*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/24 17:12:40 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/24 18:50:56 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static void	handle_export_args(t_ms *ms, char *line, int exported)
 		--keylen;
 	}
 	if (!valid_key(line, key, keylen, exported))
-		return (free(key));
+		return ;
 	if (!value)
 	{
 		ft_exportvar(ms->envp, line, ft_strlen(line) + 1);

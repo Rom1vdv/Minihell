@@ -6,7 +6,7 @@
 /*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/24 14:10:03 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/24 19:02:57 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define WHITE "\033[0m"
 # define YELLOW "\033[0;33m"
 
-# define EXPORT_ERR "': not a valid identifier\n"
+# define EXPORT_ERR ": not a valid identifier\n"
 # define ISDIR_ERR ": is a directory\n"
 # define NOFILE_ERR ": No such file or directory\n"
 # define NOTFOUND_ERR ": command not found\n"
@@ -107,6 +107,7 @@ void	lexer(char *rl, t_ms *ms, int index, int piping);
 void	prelexer(char *rl, t_ms *ms);
 int		check_parse_error(char *str);
 void	exec_pipe(char *block, t_ms *ms, int piping);
+int		ft_trimquotes(char *str, int index, int cpyndex);
 void	here_doc(char *limiter, t_ms *ms);
 int		empty_cmd(char *str);
 void	transform_metachars(t_ms *ms, char *str);
