@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:28:54 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 11:33:52 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:40:45 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,20 +74,12 @@ void	redirs_left(t_redirs *redir, t_ms *ms, char *rl)
 
 void	redirs_leftleft(t_redirs *redir, t_ms *ms, char *rl)
 {
-	int		len;
-
 	redir->index += 2;
 	while (rl[redir->index] == ' ')
 		++redir->index;
-	len = 0;
-	while (rl[redir->index + len] && !ft_strchr(" <>", rl[redir->index + len]))
-		++len;
-	redir->file = ft_malloc(sizeof(*redir->file) * (len + 1), "redirs <<");
-	redir->findex = 0;
-	while (redir->findex < len)
-		redir->file[redir->findex++] = rl[redir->index++];
-	--redir->index;
-	redir->file[redir->findex] = '\0';
+	redirs_getfile(redir, ms, rl);
+	free(redir->file);
+	redir->file = ms->rl;
 	here_doc(redir->file, ms);
 	free(redir->file);
 	open_file(redir, ms, LL);
@@ -96,12 +88,22 @@ void	redirs_leftleft(t_redirs *redir, t_ms *ms, char *rl)
 
 void	redirs_leftright(t_redirs *redir, t_ms *ms, char *rl)
 {
+	int	fd;
+
 	redir->index += 2;
 	while (rl[redir->index] == ' ')
 		++redir->index;
 	redirs_getfile(redir, ms, rl);
 	free(redir->file);
 	redir->file = ms->rl;
+	fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	if (fd == -1)
+	{
+		ms->error_file = 1;
+		return ;
+	}
+	close(fd);
 	open_file(redir, ms, L);
 	free(ms->rl);
 }

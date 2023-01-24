@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 12:03:06 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/24 14:10:03 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef enum e_redirs {
 }			t_enum;
 
 typedef struct s_parsing {
-	int		paranthesis;
+	int		parenthesis;
 	int		pipe;
 	char	quote;
 	int		redir;
@@ -93,14 +93,15 @@ typedef struct s_minishell {
 	t_envp				*envp;
 	t_pid				*pids;
 	t_pid				*last_pid;
+	char				**pipes;
+	char				**semicolons;
 	char				**envp_dup;
-	struct sigaction	act_int;
-	struct sigaction	act_quit;
+	int					error_file;
 }				t_ms;
 
 int	g_ret_cmd;
 
-void	ft_set_signals(t_ms *ms, int process);
+void	ft_set_signals(int process);
 
 void	lexer(char *rl, t_ms *ms, int index, int piping);
 void	prelexer(char *rl, t_ms *ms);

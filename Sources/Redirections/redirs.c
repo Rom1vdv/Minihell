@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 08:56:27 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 12:02:50 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:18:27 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	redirs_quote(t_redirs *redir, char *rl)
 	return (0);
 }
 
-static int	redirs_main(t_redirs *redir, t_ms *ms, char *rl)
+static int	redirs_no_quotes(t_redirs *redir, t_ms *ms, char *rl)
 {
 	if (rl[redir->index] == '>')
 		redirs_rights(redir, ms, rl);
@@ -45,7 +45,7 @@ static int	redirs_main(t_redirs *redir, t_ms *ms, char *rl)
 	return (1);
 }
 
-static void	ft_handle_redirs_norm(char *rl, t_ms *ms, int piping, int here_doc)
+static void	ft_handle_redirs_exec(char *rl, t_ms *ms, int piping, int here_doc)
 {
 	if (!empty_cmd(rl))
 	{
@@ -66,6 +66,7 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 {
 	t_redirs	redir;
 
+	ms->error_file = 0;
 	if (!ft_strchr_quotes(rl, '<') && !ft_strchr_quotes(rl, '>'))
 	{
 		if (!piping)
@@ -80,12 +81,12 @@ void	ft_handle_redirs(char *rl, t_ms *ms, int piping, int not_last_pipe)
 	{
 		if (redirs_quote(&redir, rl))
 			;
-		else if (redirs_main(&redir, ms, rl))
+		else if (redirs_no_quotes(&redir, ms, rl))
 			;
 		else
 			rl[redir.cpyndex++] = rl[redir.index];
 		++redir.index;
 	}
 	rl[redir.cpyndex] = '\0';
-	ft_handle_redirs_norm(rl, ms, piping + not_last_pipe, redir.here_doc);
+	ft_handle_redirs_exec(rl, ms, piping + not_last_pipe, redir.here_doc);
 }

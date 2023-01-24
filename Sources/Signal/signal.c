@@ -3,72 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:31:57 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 08:44:44 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/24 13:23:09 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-/* SIGINT = ctrl+c */
-void	signal_handler(int signo)
+static void	restore_prompt(int sig)
 {
-	if (signo == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		// rl_replace_line("", 0);
-		rl_redisplay();
-		g_ret_cmd = 1;
-	}
-	else if (signo == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-		return ;
-	}
+	g_ret_cmd = 1;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	(void)sig;
 }
 
-void	signal_handler_process(int signo)
+static void	ctrl_c(int sig)
 {
-	if (signo == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		// rl_replace_line("", 0);
-		g_ret_cmd = 130;
-	}
-	else if (signo == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-		g_ret_cmd = 131;
-		return ;
-	}
+	g_ret_cmd = 130;
+	(void)sig;
 }
 
-void	ft_set_signals(t_ms *ms, int process)
+static void	back_slash(int sig)
+{
+	g_ret_cmd = 131;
+	(void)sig;
+}
+
+void	ft_set_signals(int process)
 {
 	struct termios	term;
 
-	sigemptyset(&ms->act_int.sa_mask);
-	sigemptyset(&ms->act_quit.sa_mask);
-	if (process)
+	if (process == 0)
 	{
-		ms->act_int.sa_handler = signal_handler_process;
-		ms->act_quit.sa_handler = signal_handler_process;
+		signal(SIGINT, restore_prompt);
+		signal(SIGQUIT, SIG_IGN);
 	}
-	else
+	if (process == 1)
 	{
-		ms->act_int.sa_handler = signal_handler;
-		ms->act_quit.sa_handler = signal_handler;
+		signal(SIGINT, ctrl_c);
+		signal(SIGQUIT, back_slash);
 	}
-	if (sigaction(SIGINT, &ms->act_int, NULL) == -1)
-		ft_perror("sigaction");
-	if (sigaction(SIGQUIT, &ms->act_quit, NULL) == -1)
-		ft_perror("sigaction");
 	tcgetattr(0, &term);
 	term.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &term);

@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:24:35 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/22 16:27:19 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/24 15:21:29 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static void	ft_setenv_norm(t_envp *envp, t_envp *tmp, char *value, int exported)
+static void	ft_setenv_match(t_envp *envp, t_envp *tmp, char *value, int export)
 {
 	char	*join;
 
-	if (exported > 1)
+	if (export > 1)
 		join = ft_strjoin(tmp->value, value);
 	else
 		join = ft_strdup(value);
 	free(tmp->value);
 	tmp->value = ft_strdup(join);
-	if (!tmp->exported && exported % 2)
+	if (!tmp->exported && export % 2)
 	{
-		tmp->exported = exported % 2;
+		tmp->exported = export % 2;
 		env_setascii(envp, tmp);
 	}
 	free(join);
@@ -43,7 +43,7 @@ void	ft_setenv(t_envp *envp, char *target, char *value, int exported)
 	while (tmp)
 	{
 		if (!ft_strncmp(tmp->key, target, targetlen))
-			return (ft_setenv_norm(envp, tmp, value, exported));
+			return (ft_setenv_match(envp, tmp, value, exported));
 		if (tmp->next)
 			tmp = tmp->next;
 		else

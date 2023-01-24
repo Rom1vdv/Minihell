@@ -15,13 +15,13 @@
 /* SIGINT = CTRL+C, */
 static void	setup(t_ms *ms, char **envp)
 {
-	ms->act_int.sa_flags = 0;
-	ms->act_quit.sa_flags = 0;
 	g_ret_cmd = 0;
 	ms->rl = 0;
 	ms->envp = env_init(envp);
 	ms->pids = 0;
 	ms->last_pid = 0;
+	ms->pipes = 0;
+	ms->semicolons = 0;
 	env_increment_shlvl(ms->envp);
 	// set_col(GREEN);
 	// greet_user(ms->envp);
@@ -94,7 +94,9 @@ static void	loop(t_ms *ms)
 		ft_strcat(prompt, " ");
 		ft_catshortdir(prompt);
 		ft_strcat(prompt, " $> ");
-		ft_set_signals(ms, 0);
+		ft_set_signals(0);
+		ms->pipes = 0;
+		ms->semicolons = 0;
 		rl = readline(prompt);
 		if (!rl)
 			close_program(ms, 0, 0, 0);

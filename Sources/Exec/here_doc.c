@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:22:32 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 10:14:10 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/24 18:05:38 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ static void	here_doc_loop(char *limiter, int fd, t_ms *ms, int quotes)
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (!line)
-			ft_perror("gnl");
 		if (!ft_strncmp(limiter, line, ft_strlen(limiter) + 1))
 			break ;
 		transform_meta_heredoc(ms, line, quotes);

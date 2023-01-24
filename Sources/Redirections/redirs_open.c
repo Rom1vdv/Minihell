@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_open.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:23:10 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 11:12:49 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/24 13:40:03 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static void	open_file_norm(t_redirs *redir, t_ms *ms, t_enum mode)
+static void	open_file_left(t_redirs *redir, t_ms *ms, t_enum mode)
 {
 	if (ms->pipein[0] != -1)
 	{
@@ -29,12 +29,16 @@ static void	open_file_norm(t_redirs *redir, t_ms *ms, t_enum mode)
 		ms->pipein[0] = open(".here_doc_tmp", O_RDONLY);
 	if (ms->pipein[0] == -1 && mode == LL)
 	{
+		ms->error_file = 1;
 		redir->here_doc = 0;
 		unlink(".here_doc_tmp");
 		perror("here_doc");
 	}
 	else if (ms->pipein[0] == -1)
+	{
+		ms->error_file = 1;
 		perror(redir->file);
+	}
 }
 
 void	open_file(t_redirs *redir, t_ms *ms, t_enum mode)
@@ -50,8 +54,11 @@ void	open_file(t_redirs *redir, t_ms *ms, t_enum mode)
 			ms->pipeout[1] = open(redir->file, O_WRONLY | O_APPEND | O_CREAT,
 					S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 		if (ms->pipeout[1] == -1)
+		{
+			ms->error_file = 1;
 			perror(redir->file);
+		}
 	}
 	else if (mode == L || mode == LL)
-		open_file_norm(redir, ms, mode);
+		open_file_left(redir, ms, mode);
 }

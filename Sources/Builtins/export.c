@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/22 17:43:22 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/24 17:12:40 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,11 @@ static void	handle_export_args(t_ms *ms, char *line, int exported)
 		--keylen;
 	}
 	if (!valid_key(line, key, keylen, exported))
-		return ;
+		return (free(key));
 	if (!value)
 	{
 		ft_exportvar(ms->envp, line, ft_strlen(line) + 1);
-		return ;
+		return (free(key));
 	}
 	ft_setenv(ms->envp, key, &value[1], exported);
 	free(key);

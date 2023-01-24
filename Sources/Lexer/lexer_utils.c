@@ -24,6 +24,7 @@ static void	ft_joinvar_norm2(t_ms *ms, char **str, int *index)
 	{
 		(*index)++;
 		*str = &(*str)[*index];
+		*index = 0;
 		return ;
 	}
 	while ((*str)[*index] && !ft_strchr(" !&´^@$+°-#=~/:'\"", (*str)[*index]))

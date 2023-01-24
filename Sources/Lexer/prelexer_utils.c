@@ -65,9 +65,9 @@ static int	check_parse_error_norm(t_parsing *parse, char *str, int *index)
 	}
 	else if (!ft_strchr("<> ", str[*index]))
 		parse->redir = 0;
-	if (str[*index] == ')' && !parse->paranthesis)
-		return (parse_error("paranthesis", 0));
-	parse->paranthesis += (str[*index] == '(') - (str[*index] == ')');
+	if (str[*index] == ')' && !parse->parenthesis)
+		return (parse_error("parenthesis", 0));
+	parse->parenthesis += (str[*index] == '(') - (str[*index] == ')');
 	return (check_parse_error_norm2(parse, str[*index]));
 }
 
@@ -77,7 +77,7 @@ int	check_parse_error(char *str)
 	int			index;
 	t_parsing	parse;
 
-	parse.paranthesis = 0;
+	parse.parenthesis = 0;
 	parse.pipe = -1;
 	parse.redir = 0;
 	parse.semicolon = 0;
@@ -88,8 +88,8 @@ int	check_parse_error(char *str)
 			return (1);
 		++index;
 	}
-	if (parse.paranthesis)
-		return (parse_error("paranthesis", 0));
+	if (parse.parenthesis)
+		return (parse_error("parenthesis", 0));
 	if (parse.pipe)
 		return (parse_error("'|'", 0));
 	if (parse.redir)

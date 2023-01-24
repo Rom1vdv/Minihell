@@ -3,20 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/23 12:06:48 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/24 13:22:45 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-/* list of modifs to be done :                                        *
- *   ./ls -> bash: ./ls: No such file or directory  DONE              *
- *   "" -> bash: : command not found                DONE              *
- *   chmod -x exec, ./exec -> bash: ./minishellbis: Permission denied */
-static char	*ft_get_cmdpath(char *cmd, char **paths) //modif to do
+static char	*ft_get_cmdpath(char *cmd, char **paths)
 {
 	int		index;
 	char	*res;
@@ -59,7 +55,7 @@ static void	exec_cmd_norm(t_ms *ms, char **cmds, int infork)
 
 	if (!infork)
 	{
-		ft_set_signals(ms, 1);
+		ft_set_signals(1);
 		ft_fork(&pid);
 		if (!pid)
 		{

@@ -6,7 +6,7 @@
 /*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:41:11 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/20 17:16:16 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:14:44 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ size_t	ft_strlen(const char *str);
 char	**ft_split(char const *s, char c);
 char	**ft_split_quotes(char *str, char c);
 char	**ft_split_first(char const *s, char c);
+char	**ft_split_quotes_set(char const *s, char *set);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoins(int ac, ...);
 char	*ft_strdup(const char *s1);

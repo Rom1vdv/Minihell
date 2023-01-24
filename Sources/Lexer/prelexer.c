@@ -15,17 +15,17 @@
 static void	exec_block(t_ms *ms, char *block)
 {
 	int		index;
-	char	**pipes;
 
 	ft_set_pipe(ms->pipein, -1, -1);
 	ft_set_pipe(ms->pipeout, -1, -1);
-	pipes = ft_split_quotes(block, '|');
-	if (ft_arraylen(pipes) > 1)
+	ms->pipes = ft_split_quotes(block, '|');
+	if (ft_arraylen(ms->pipes) > 1)
 	{
 		index = 0;
-		while (pipes[index])
+		while (ms->pipes[index])
 		{
-			ft_handle_redirs(pipes[index], ms, 1, pipes[index + 1] != 0);
+			ft_handle_redirs(ms->pipes[index], ms, 1,
+				ms->pipes[index + 1] != 0);
 			++index;
 		}
 	}
@@ -33,14 +33,13 @@ static void	exec_block(t_ms *ms, char *block)
 		ft_handle_redirs(block, ms, 0, 0);
 	ft_close_pipe(ms->pipein);
 	ft_close_pipe(ms->pipeout);
-	ft_free_arr(pipes);
+	ft_free_arr(ms->pipes);
 	ft_wait_pids(ms);
 }
 
 void	prelexer(char *rl, t_ms *ms)
 {
 	int		index;
-	char	**semicolons;
 
 	if (check_parse_error(rl))
 	{
@@ -48,13 +47,13 @@ void	prelexer(char *rl, t_ms *ms)
 		return ;
 	}
 	index = 0;
-	semicolons = ft_split_quotes(rl, ';');
-	while (semicolons[index])
+	ms->semicolons = ft_split_quotes(rl, ';');
+	while (ms->semicolons[index])
 	{
-		exec_block(ms, semicolons[index]);
+		exec_block(ms, ms->semicolons[index]);
 		++index;
 	}
-	ft_free_arr(semicolons);
+	ft_free_arr(ms->semicolons);
 }
 
 	// printf("cmd = %s\n", block);
@@ -66,7 +65,7 @@ void	prelexer(char *rl, t_ms *ms)
 		//F_GETFD) != -1);
 void	exec_pipe(char *block, t_ms *ms, int piping)
 {
-	ft_set_signals(ms, 1);
+	ft_set_signals(1);
 	if (piping && ms->pipeout[1] == -1)
 		ft_pipe(ms->pipeout);
 	ft_addpid(ms);
@@ -77,7 +76,10 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 		ft_close_pipe(ms->pipein);
 		ft_dup2(ms->pipeout, 1);
 		ft_close_pipe(ms->pipeout);
-		lexer(block, ms, 0, 1);
+		if (!ms->error_file)
+			lexer(block, ms, 0, 1);
+		else
+			g_ret_cmd = 1;
 		exit(g_ret_cmd);
 	}
 	if (ms->pipeout[0] != -1 || (ms->pipeout[1] != -1))
