@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:24:48 by romvan-d          #+#    #+#             */
-/*   Updated: 2023/01/22 17:29:52 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/24 12:43:52 by romvan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	exec_exit(char **lex, t_ms *ms, char *rl, int piping)
 	if (g_ret_cmd >= 255 && lex[1])
 	{
 		ft_stderr("-minishell: exit: ", lex[1], NUM_ERR);
-		g_ret_cmd = 2;
+		g_ret_cmd = 258;
 		close_program(ms, rl, lex, piping);
 	}
 	if (lex[1] && lex[2])
