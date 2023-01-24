@@ -56,13 +56,13 @@ void	prelexer(char *rl, t_ms *ms)
 	ft_free_arr(ms->semicolons);
 }
 
-	// printf("cmd = %s\n", block);
+	// printf("piping %d, cmd = %s\n", piping, block);
 	// printf("pipein : [%d, %d], pipeout : [%d, %d]\n", ms->pipein[0],
 	// 	ms->pipein[1], ms->pipeout[0], ms->pipeout[1]);
 	// printf("is %d open ? %d\n", ms->pipein[0], fcntl(ms->pipein[0], 
-		//F_GETFD) != -1);
+	// 	F_GETFD) != -1);
 	// printf("is %d open ? %d\n", ms->pipeout[1], fcntl(ms->pipeout[1], 
-		//F_GETFD) != -1);
+	// 	F_GETFD) != -1);
 void	exec_pipe(char *block, t_ms *ms, int piping)
 {
 	ft_set_signals(1);
@@ -82,11 +82,9 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 			g_ret_cmd = 1;
 		exit(g_ret_cmd);
 	}
+	ft_close_pipe(ms->pipein);
 	if (ms->pipeout[0] != -1 || (ms->pipeout[1] != -1))
-	{
-		ft_close_pipe(ms->pipein);
 		ft_set_pipe(ms->pipein, ms->pipeout[0], ms->pipeout[1]);
-	}
 	else
 		ft_close_pipe(ms->pipeout);
 	ft_set_pipe(ms->pipeout, -1, -1);
