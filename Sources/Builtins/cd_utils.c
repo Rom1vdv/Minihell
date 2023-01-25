@@ -12,7 +12,7 @@
 
 #include "../../Includes/minishell.h"
 
-static int	cdpath_norm(char curpath[255], char **paths, char *direc, int index)
+static int	cdpath_match(char curpath[255], char **paths, char *direc, int index)
 {
 	char	*path;
 	DIR		*dir;
@@ -36,7 +36,7 @@ static int	cdpath_norm(char curpath[255], char **paths, char *direc, int index)
 	return (0);
 }
 
-static void	cd_convert_canon_norm(char *curpath, int *index, int *cpyndex)
+static void	cd_handle_dots(char *curpath, int *index, int *cpyndex)
 {
 	if (curpath[*index + 1] == '/')
 		++(*index);
@@ -66,7 +66,7 @@ void	cd_convert_canon(char *curpath)
 	while (curpath[index])
 	{
 		if (curpath[index] == '.')
-			cd_convert_canon_norm(curpath, &index, &cpyndex);
+			cd_handle_dots(curpath, &index, &cpyndex);
 		else if (curpath[index] == '/' && cpyndex > 0
 			&& (curpath[cpyndex - 1] == '/' || !curpath[index + 1]))
 			;
@@ -93,7 +93,7 @@ void	cd_catpath(char curpath[255], char *directory, t_envp *envp, int index)
 		paths = ft_split(path, ':');
 		while (paths[++index])
 		{
-			if (cdpath_norm(curpath, paths, directory, index))
+			if (cdpath_match(curpath, paths, directory, index))
 				return ;
 		}
 		ft_free_arr(paths);

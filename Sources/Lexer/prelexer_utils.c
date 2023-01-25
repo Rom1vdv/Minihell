@@ -23,7 +23,7 @@ static int	parse_error(char *str, char c)
 	return (1);
 }
 
-static int	check_parse_error_norm2(t_parsing *parse, char c)
+static int	semicolons_pipes(t_parsing *parse, char c)
 {
 	if (c == ';')
 	{
@@ -44,7 +44,7 @@ static int	check_parse_error_norm2(t_parsing *parse, char c)
 	return (0);
 }
 
-static int	check_parse_error_norm(t_parsing *parse, char *str, int *index)
+static int	quotes_redirs_parenthesis(t_parsing *parse, char *str, int *index)
 {
 	if (ft_strchr("'\"", str[*index]))
 	{
@@ -68,7 +68,7 @@ static int	check_parse_error_norm(t_parsing *parse, char *str, int *index)
 	if (str[*index] == ')' && !parse->parenthesis)
 		return (parse_error("parenthesis", 0));
 	parse->parenthesis += (str[*index] == '(') - (str[*index] == ')');
-	return (check_parse_error_norm2(parse, str[*index]));
+	return (semicolons_pipes(parse, str[*index]));
 }
 
 		// printf("str at %d : %c\n", index, str[index]);
@@ -84,7 +84,7 @@ int	check_parse_error(char *str)
 	index = 0;
 	while (str[index])
 	{
-		if (check_parse_error_norm(&parse, str, &index))
+		if (quotes_redirs_parenthesis(&parse, str, &index))
 			return (1);
 		++index;
 	}

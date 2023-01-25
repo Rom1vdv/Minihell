@@ -26,7 +26,7 @@ static void	ft_joinhome(t_ms *ms, char **strptr, int *index)
 	ms->rl = join;
 }
 
-static int	transform_meta_norm(t_ms *ms, char **str, int *index, char *quote)
+static int	transform_meta_quotes(t_ms *ms, char **str, int *index, char *quote)
 {
 	(void)ms;
 	if (ft_strchr("'\"", (*str)[*index]))
@@ -41,7 +41,7 @@ static int	transform_meta_norm(t_ms *ms, char **str, int *index, char *quote)
 	return (0);
 }
 
-static void	lexer_norm(t_ms *ms, char **lex, char *rl, int piping)
+static void	lexer_cases(t_ms *ms, char **lex, char *rl, int piping)
 {
 	if (!ft_strncmp(lex[0], "echo", 5))
 		exec_echo(lex);
@@ -80,7 +80,7 @@ void	transform_metachars(t_ms *ms, char *str)
 	quote = 0;
 	while (str[index])
 	{
-		if (transform_meta_norm(ms, &str, &index, &quote))
+		if (transform_meta_quotes(ms, &str, &index, &quote))
 			;
 		else if (str[index] == '$' && (!quote || quote == '\"')
 			&& !ft_strchr("\" =", str[index + 1]))
@@ -111,7 +111,7 @@ void	lexer(char *rl, t_ms *ms, int index, int piping)
 		++index;
 	}
 	if (lex[0])
-		lexer_norm(ms, lex, rl, piping);
+		lexer_cases(ms, lex, rl, piping);
 	else
 		g_ret_cmd = 0;
 	ft_free_arr(lex);

@@ -12,7 +12,7 @@
 
 #include "../../Includes/minishell.h"
 
-static void	ft_joinvar_norm2(t_ms *ms, char **str, int *index)
+static void	replace_arg(t_ms *ms, char **str, int *index)
 {
 	int		kindex;
 	char	key[255];
@@ -40,7 +40,7 @@ static void	ft_joinvar_norm2(t_ms *ms, char **str, int *index)
 	ms->rl = join;
 }
 
-static void	ft_joinvar_norm(t_ms *ms, char **str, int *index)
+static void	ft_dollars(t_ms *ms, char **str, int *index)
 {
 	char	*var;
 	char	*join;
@@ -57,7 +57,7 @@ static void	ft_joinvar_norm(t_ms *ms, char **str, int *index)
 		ms->rl = join;
 	}
 	else
-		ft_joinvar_norm2(ms, str, index);
+		replace_arg(ms, str, index);
 }
 
 void	ft_joinvar(t_ms *ms, char **str, int *index)
@@ -77,7 +77,7 @@ void	ft_joinvar(t_ms *ms, char **str, int *index)
 		free(var);
 	}
 	else
-		ft_joinvar_norm(ms, str, index);
+		ft_dollars(ms, str, index);
 }
 
 void	ft_joinfree(t_ms *ms, char **str, int *index)

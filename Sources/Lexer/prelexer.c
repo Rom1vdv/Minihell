@@ -87,7 +87,7 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 		exit(g_ret_cmd);
 	}
 	ft_close_pipe(ms->pipein);
-	if (ms->pipeout[0] != -1 || (ms->pipeout[1] != -1))
+	if (ms->pipeout[0] != -1)
 		ft_set_pipe(ms->pipein, ms->pipeout[0], ms->pipeout[1]);
 	else
 		ft_close_pipe(ms->pipeout);

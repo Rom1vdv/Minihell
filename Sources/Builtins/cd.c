@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/22 17:28:57 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/25 17:29:15 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
 // do we step 9 in https://man7.org/linux/man-pages/man1/cd.1p.html ????
-static void	exec_cd_norm3(t_ms *ms, char curpath[255], char *directory)
+static void	jump_to_dir(t_ms *ms, char curpath[255], char *directory)
 {
 	if (chdir(curpath) == -1)
 	{
@@ -32,7 +32,7 @@ static void	exec_cd_norm3(t_ms *ms, char curpath[255], char *directory)
 		printf("%s\n", curpath);
 }
 
-static int	exec_cd_norm2(t_ms *ms, char curpath[255])
+static int	exec_cd_previous(t_ms *ms, char curpath[255])
 {
 	ft_strcpy(curpath, ft_getenv(ms->envp, "OLDPWD"));
 	if (!curpath[0])
@@ -44,7 +44,7 @@ static int	exec_cd_norm2(t_ms *ms, char curpath[255])
 	return (0);
 }
 
-static int	exec_cd_norm(t_ms *ms, char **lex, char *direc, char curpath[255])
+static int	cd_default_case(t_ms *ms, char **lex, char *direc, char curpath[255])
 {
 	if (ft_strchr("/.", direc[0]))
 		ft_strcpy(curpath, direc);
@@ -88,10 +88,10 @@ void	exec_cd(char **lex, t_ms *ms)
 	ft_setenvpwd(ms->envp);
 	if (ft_strncmp(directory, "-", 2))
 	{
-		if (exec_cd_norm(ms, lex, directory, curpath))
+		if (cd_default_case(ms, lex, directory, curpath))
 			return ;
 	}
-	else if (exec_cd_norm2(ms, curpath))
+	else if (exec_cd_previous(ms, curpath))
 		return ;
-	exec_cd_norm3(ms, curpath, directory);
+	jump_to_dir(ms, curpath, directory);
 }

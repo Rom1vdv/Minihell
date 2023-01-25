@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/25 16:31:24 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:33:31 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	noaccess_file(char *path)
 	exit(126);
 }
 
-static void	exec_cmd_norm(t_ms *ms, char **cmds, int infork)
+static void	call_execve(t_ms *ms, char **cmds, int infork)
 {
 	int	pid;
 
@@ -103,5 +103,5 @@ void	exec_cmd(t_ms *ms, char *path_lst, char **cmds, int infork)
 		g_ret_cmd = 127;
 		return ;
 	}
-	exec_cmd_norm(ms, cmds, infork);
+	call_execve(ms, cmds, infork);
 }
