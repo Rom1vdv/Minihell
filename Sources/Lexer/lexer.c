@@ -108,6 +108,9 @@ void	lexer(char *rl, t_ms *ms, int index, int piping)
 	while (lex[index])
 	{
 		ft_trimquotes(lex[index], 0, 0);
+		//After the preceding expansions, all unquoted occurrences of the
+		//characters ‘\’, ‘'’, and ‘"’ THAT DID NOT RESULT FROM ONE OF THE
+		//ABOVE EXPANSIONS are removed
 		++index;
 	}
 	if (lex[0])
