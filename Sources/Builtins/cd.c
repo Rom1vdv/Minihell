@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:20:16 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/25 17:29:15 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:59:35 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	exec_cd_previous(t_ms *ms, char curpath[255])
 	return (0);
 }
 
-static int	cd_default_case(t_ms *ms, char **lex, char *direc, char curpath[255])
+static int	cdefault_case(t_ms *ms, char **lex, char *direc, char curpath[255])
 {
 	if (ft_strchr("/.", direc[0]))
 		ft_strcpy(curpath, direc);
@@ -88,7 +88,7 @@ void	exec_cd(char **lex, t_ms *ms)
 	ft_setenvpwd(ms->envp);
 	if (ft_strncmp(directory, "-", 2))
 	{
-		if (cd_default_case(ms, lex, directory, curpath))
+		if (cdefault_case(ms, lex, directory, curpath))
 			return ;
 	}
 	else if (exec_cd_previous(ms, curpath))

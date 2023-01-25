@@ -12,15 +12,15 @@
 
 #include "../../Includes/minishell.h"
 
-static int	cdpath_match(char curpath[255], char **paths, char *direc, int index)
+static int	cdpath_match(char curpath[255], char **paths, char *direc, int indx)
 {
 	char	*path;
 	DIR		*dir;
 
-	if (paths[index][ft_strlen(paths[index]) - 1] == '/')
-		path = ft_strjoin(paths[index], direc);
+	if (paths[indx][ft_strlen(paths[indx]) - 1] == '/')
+		path = ft_strjoin(paths[indx], direc);
 	else
-		path = ft_strjoins(3, paths[index], "/", direc);
+		path = ft_strjoins(3, paths[indx], "/", direc);
 	dir = opendir(path);
 	if (dir)
 	{
