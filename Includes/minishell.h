@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/24 19:02:57 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:12:32 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	env_setascii(t_envp *envp, t_envp *target);
 char	*ft_getenv(t_envp *envp, char *target);
 void	ft_setenv(t_envp *envp, char *target, char *value, int exported);
 void	ft_setenvpwd(t_envp *envp);
-int		ft_envplen(t_envp *envp);
+int		ft_envplen(t_envp *envp, int dup);
 void	env_increment_shlvl(t_envp *envp);
 
 void	set_col(char *col);

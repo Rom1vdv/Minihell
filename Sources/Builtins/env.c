@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:25:36 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/21 16:36:04 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/25 15:14:07 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	exec_env(t_envp *envp)
 {
 	while (envp)
 	{
-		if (envp->exported)
+		if (envp->exported == 1)
 		{
 			if (envp->value)
 				printf("%s=%s\n", envp->key, envp->value);
@@ -54,14 +54,14 @@ void	ft_setenvpwd(t_envp *envp)
 		ft_setenv(envp, "PWD", pwd, 1);
 }
 
-int	ft_envplen(t_envp *envp)
+int	ft_envplen(t_envp *envp, int dup)
 {
 	int	res;
 
 	res = 0;
 	while (envp)
 	{
-		if (envp->exported)
+		if ((envp->exported == 1 && dup) || (envp->exported && !dup))
 			++res;
 		envp = envp->next;
 	}
@@ -74,12 +74,12 @@ char	**env_dup(t_envp *envp)
 	int		envlen;
 	char	**res;
 
-	envlen = ft_envplen(envp);
+	envlen = ft_envplen(envp, 1);
 	res = ft_malloc(sizeof(*res) * (envlen + 1), "env_dup");
 	index = 0;
 	while (envp)
 	{
-		if (envp->exported)
+		if (envp->exported == 1)
 			res[index++] = ft_strjoins(3, envp->key, "=", envp->value);
 		envp = envp->next;
 	}

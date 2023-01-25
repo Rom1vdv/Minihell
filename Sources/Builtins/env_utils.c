@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 11:24:35 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/24 15:21:29 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:12:54 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void	ft_setenv_match(t_envp *envp, t_envp *tmp, char *value, int export)
 		tmp->exported = export % 2;
 		env_setascii(envp, tmp);
 	}
+	else if (tmp->exported == -1)
+		tmp->exported = 1;
 	free(join);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:35:24 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/24 18:50:56 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:12:18 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	display_sorted_env(t_envp *envp)
 	int		size;
 	t_envp	*tmp;
 
-	size = ft_envplen(envp);
+	size = ft_envplen(envp, 0);
 	index = 1;
 	while (index < size + 1)
 	{
@@ -30,7 +30,7 @@ static void	display_sorted_env(t_envp *envp)
 			if (tmp->value)
 				printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
 			else
-				printf("declare -x %s=\"\"\n", tmp->key);
+				printf("declare -x %s\n", tmp->key);
 		}
 		++index;
 	}
@@ -56,8 +56,8 @@ static void	ft_exportvar(t_envp *envp, char *target, int targetlen)
 			tmp = tmp->next;
 		else
 		{
-			join = ft_strjoin(target, "=");
-			tmp->next = envp_new(join, 1);
+			join = ft_strdup(target);
+			tmp->next = envp_new(join, -1);
 			env_setascii(envp, tmp->next);
 			return (free(join));
 		}
