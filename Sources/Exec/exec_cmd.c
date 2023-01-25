@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:15:40 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/24 13:22:45 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/25 16:31:24 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ static void	exec_cmd_norm(t_ms *ms, char **cmds, int infork)
 	if (!infork)
 	{
 		ft_set_signals(1);
-		ft_fork(&pid);
+		if (ft_fork(ms, &pid))
+			return ;
 		if (!pid)
 		{
 			execve(cmds[0], cmds, ms->envp_dup);

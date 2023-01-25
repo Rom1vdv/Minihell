@@ -3,29 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   forkpipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 09:54:19 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/22 15:10:30 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/25 17:00:10 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-void	ft_fork(int *child_pid)
+/* ms->error_fork is 1 if pipe() failed, put the verif here for norming */
+int	ft_fork(t_ms *ms, int *child_pid)
 {
+	if (ms->error_fork)
+		return (1);
 	*child_pid = fork();
 	if (*child_pid == -1)
-		ft_perror("fork");
+	{
+		ft_close_pipe(ms->pipein);
+		ft_close_pipe(ms->pipeout);
+		ms->error_fork = 1;
+		perror("fork");
+		return (1);
+	}
+	return (0);
 }
 
-void	ft_pipe(int pipefd[2])
+void	ft_pipe(t_ms *ms, int pipefd[2])
 {
 	int	pipe_ret;
 
 	pipe_ret = pipe(pipefd);
 	if (pipe_ret == -1)
-		ft_perror("pipe");
+	{
+		ft_close_pipe(ms->pipein);
+		ft_close_pipe(ms->pipeout);
+		ms->error_fork = 1;
+		perror("pipe");
+	}
 }
 
 void	ft_close_pipe(int pipefd[2])

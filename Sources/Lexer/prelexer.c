@@ -22,7 +22,7 @@ static void	exec_block(t_ms *ms, char *block)
 	if (ft_arraylen(ms->pipes) > 1)
 	{
 		index = 0;
-		while (ms->pipes[index])
+		while (ms->pipes[index] && !ms->error_fork)
 		{
 			ft_handle_redirs(ms->pipes[index], ms, 1,
 				ms->pipes[index + 1] != 0);
@@ -47,13 +47,16 @@ void	prelexer(char *rl, t_ms *ms)
 		return ;
 	}
 	index = 0;
+	ms->error_fork = 0;
 	ms->semicolons = ft_split_quotes(rl, ';');
-	while (ms->semicolons[index])
+	while (ms->semicolons[index] && !ms->error_fork)
 	{
 		exec_block(ms, ms->semicolons[index]);
 		++index;
 	}
 	ft_free_arr(ms->semicolons);
+	if (ms->error_fork)
+		g_ret_cmd = 1;
 }
 
 	// printf("piping %d, cmd = %s\n", piping, block);
@@ -67,9 +70,10 @@ void	exec_pipe(char *block, t_ms *ms, int piping)
 {
 	ft_set_signals(1);
 	if (piping && ms->pipeout[1] == -1)
-		ft_pipe(ms->pipeout);
+		ft_pipe(ms, ms->pipeout);
 	ft_addpid(ms);
-	ft_fork(&ms->last_pid->value);
+	if (ft_fork(ms, &ms->last_pid->value))
+		return ;
 	if (!ms->last_pid->value)
 	{
 		ft_dup2(ms->pipein, 0);
