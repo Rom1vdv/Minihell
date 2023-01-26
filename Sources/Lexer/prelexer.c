@@ -43,7 +43,7 @@ void	prelexer(char *rl, t_ms *ms)
 
 	if (check_parse_error(rl))
 	{
-		g_ret_cmd = 2;
+		g_ret_cmd = 258;
 		return ;
 	}
 	index = 0;

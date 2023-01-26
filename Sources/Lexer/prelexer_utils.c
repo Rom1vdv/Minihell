@@ -71,7 +71,6 @@ static int	quotes_redirs_parenthesis(t_parsing *parse, char *str, int *index)
 	return (semicolons_pipes(parse, str[*index]));
 }
 
-		// printf("str at %d : %c\n", index, str[index]);
 int	check_parse_error(char *str)
 {
 	int			index;

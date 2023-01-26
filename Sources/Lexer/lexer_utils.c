@@ -19,16 +19,13 @@ static void	swap_quotes_arg(t_ms *ms, char *var)
 
 	index = ft_strlen(ms->rl);
 	join = ft_strjoin(ms->rl, var);
-	if (ms->replace_quotes)
+	while (join[index])
 	{
-		while (join[index])
-		{
-			if (join[index] == '\"')
-				join[index] = 24;
-			else if (join[index] == '\'')
-				join[index] = 6;
-			++index;
-		}
+		if (join[index] == '\"')
+			join[index] = 24;
+		else if (join[index] == '\'')
+			join[index] = 6;
+		++index;
 	}
 	free(ms->rl);
 	ms->rl = join;
