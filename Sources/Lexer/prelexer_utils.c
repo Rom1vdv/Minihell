@@ -89,7 +89,7 @@ int	check_parse_error(char *str)
 	}
 	if (parse.parenthesis)
 		return (parse_error("parenthesis", 0));
-	if (parse.pipe)
+	if (parse.pipe == 1)
 		return (parse_error("'|'", 0));
 	if (parse.redir)
 		return (parse_error(0, "<>"[parse.redir > 0]));
