@@ -98,19 +98,22 @@ void	transform_metachars(t_ms *ms, char *str)
 	ft_joinfree(ms, &str, &index);
 }
 
+/* extract form bash manual, about quotes removal :                    *
+ * After the preceding expansions, all unquoted occurrences of the     *
+ * characters ‘\’, ‘'’, and ‘"’ THAT DID NOT RESULT FROM ONE OF THE    *
+ * ABOVE EXPANSIONS are removed                                        */
 void	lexer(char *rl, t_ms *ms, int index, int piping)
 {
 	char	**lex;
 
+	ms->replace_quotes = 1;
 	transform_metachars(ms, rl);
 	lex = ft_split_quotes_set(ms->rl, " \t");
 	free(ms->rl);
 	while (lex[index])
 	{
 		ft_trimquotes(lex[index], 0, 0);
-		//After the preceding expansions, all unquoted occurrences of the
-		//characters ‘\’, ‘'’, and ‘"’ THAT DID NOT RESULT FROM ONE OF THE
-		//ABOVE EXPANSIONS are removed
+		swap_quotes_back(lex[index]);
 		++index;
 	}
 	if (lex[0])

@@ -12,12 +12,33 @@
 
 #include "../../Includes/minishell.h"
 
+static void	swap_quotes_arg(t_ms *ms, char *var)
+{
+	int		index;
+	char	*join;
+
+	index = ft_strlen(ms->rl);
+	join = ft_strjoin(ms->rl, var);
+	if (ms->replace_quotes)
+	{
+		while (join[index])
+		{
+			if (join[index] == '\"')
+				join[index] = 24;
+			else if (join[index] == '\'')
+				join[index] = 6;
+			++index;
+		}
+	}
+	free(ms->rl);
+	ms->rl = join;
+}
+
 static void	replace_arg(t_ms *ms, char **str, int *index)
 {
 	int		kindex;
 	char	key[255];
 	char	*var;
-	char	*join;
 
 	kindex = 0;
 	if ((*str)[*index] >= '0' && (*str)[*index] <= '9')
@@ -35,9 +56,7 @@ static void	replace_arg(t_ms *ms, char **str, int *index)
 	var = ft_getenv(ms->envp, key);
 	if (!var)
 		return ;
-	join = ft_strjoin(ms->rl, var);
-	free(ms->rl);
-	ms->rl = join;
+	swap_quotes_arg(ms, var);
 }
 
 static void	ft_dollars(t_ms *ms, char **str, int *index)

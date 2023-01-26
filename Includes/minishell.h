@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 14:27:55 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/25 16:55:01 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:33:35 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,18 @@ typedef struct s_pid {
 }				t_pid;
 
 typedef struct s_minishell {
-	int					pipein[2];
-	int					pipeout[2];
-	char				*rl;
-	t_envp				*envp;
-	t_pid				*pids;
-	t_pid				*last_pid;
-	char				**pipes;
-	char				**semicolons;
-	char				**envp_dup;
-	int					error_file;
-	int					error_fork;
+	int		pipein[2];
+	int		pipeout[2];
+	char	*rl;
+	t_envp	*envp;
+	t_pid	*pids;
+	t_pid	*last_pid;
+	char	**pipes;
+	char	**semicolons;
+	char	**envp_dup;
+	int		replace_quotes;
+	int		error_file;
+	int		error_fork;
 }				t_ms;
 
 int	g_ret_cmd;
@@ -109,8 +110,8 @@ void	prelexer(char *rl, t_ms *ms);
 int		check_parse_error(char *str);
 void	exec_pipe(char *block, t_ms *ms, int piping);
 int		ft_trimquotes(char *str, int index, int cpyndex);
+void	swap_quotes_back(char *str);
 void	here_doc(char *limiter, t_ms *ms);
-int		empty_cmd(char *str);
 void	transform_metachars(t_ms *ms, char *str);
 void	ft_joinfree(t_ms *ms, char **str, int *index);
 void	ft_joinvar(t_ms *ms, char **str, int *index);

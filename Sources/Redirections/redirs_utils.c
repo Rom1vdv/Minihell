@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 09:28:54 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/24 17:40:45 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:23:14 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static void	redirs_getfile(t_redirs *red, t_ms *ms, char *rl)
+static void	redirs_getfile(t_redirs *red, t_ms *ms, char *rl, int replace)
 {
 	int	len;
 
@@ -37,6 +37,7 @@ static void	redirs_getfile(t_redirs *red, t_ms *ms, char *rl)
 	}
 	red->file[red->findex] = '\0';
 	--red->index;
+	ms->replace_quotes = replace;
 	transform_metachars(ms, red->file);
 }
 
@@ -53,7 +54,7 @@ void	redirs_rights(t_redirs *redir, t_ms *ms, char *rl)
 	}
 	while (rl[redir->index] == ' ')
 		++redir->index;
-	redirs_getfile(redir, ms, rl);
+	redirs_getfile(redir, ms, rl, 0);
 	free(redir->file);
 	redir->file = ms->rl;
 	open_file(redir, ms, mode);
@@ -65,7 +66,7 @@ void	redirs_left(t_redirs *redir, t_ms *ms, char *rl)
 	++redir->index;
 	while (rl[redir->index] == ' ')
 		++redir->index;
-	redirs_getfile(redir, ms, rl);
+	redirs_getfile(redir, ms, rl, 0);
 	free(redir->file);
 	redir->file = ms->rl;
 	open_file(redir, ms, L);
@@ -77,7 +78,7 @@ void	redirs_leftleft(t_redirs *redir, t_ms *ms, char *rl)
 	redir->index += 2;
 	while (rl[redir->index] == ' ')
 		++redir->index;
-	redirs_getfile(redir, ms, rl);
+	redirs_getfile(redir, ms, rl, 1);
 	free(redir->file);
 	redir->file = ms->rl;
 	here_doc(redir->file, ms);
@@ -93,7 +94,7 @@ void	redirs_leftright(t_redirs *redir, t_ms *ms, char *rl)
 	redir->index += 2;
 	while (rl[redir->index] == ' ')
 		++redir->index;
-	redirs_getfile(redir, ms, rl);
+	redirs_getfile(redir, ms, rl, 0);
 	free(redir->file);
 	redir->file = ms->rl;
 	fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT,

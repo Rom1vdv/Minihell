@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romvan-d <romvan-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 17:22:32 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/24 19:02:18 by romvan-d         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:34:03 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static void	here_doc_loop(char *limiter, int fd, t_ms *ms, int quotes)
 		line = readline("heredoc> ");
 		if (!ft_strncmp(limiter, line, ft_strlen(limiter) + 1))
 			break ;
+		ms->replace_quotes = 0;
 		transform_meta_heredoc(ms, line, quotes);
 		write(fd, ms->rl, ft_strlen(ms->rl));
 		write(fd, "\n", 1);
@@ -74,18 +75,19 @@ int	ft_trimquotes(char *str, int index, int cpyndex)
 	return (res);
 }
 
-int	empty_cmd(char *str)
+void	swap_quotes_back(char *str)
 {
 	int	index;
 
 	index = 0;
 	while (str[index])
 	{
-		if (str[index] != ' ')
-			return (0);
-		++index;
+		if (str[index] == 24)
+			str[index] = '\"';
+		else if (str[index] == 6)
+			str[index] = '\'';
+	++index;
 	}
-	return (1);
 }
 
 void	here_doc(char *limiter, t_ms *ms)
@@ -94,6 +96,7 @@ void	here_doc(char *limiter, t_ms *ms)
 	int		quotes;
 
 	quotes = ft_trimquotes(limiter, 0, 0);
+	swap_quotes_back(limiter);
 	fd = open(".here_doc_tmp", O_WRONLY | O_TRUNC | O_CREAT,
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0)

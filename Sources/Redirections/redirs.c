@@ -6,7 +6,7 @@
 /*   By: yhuberla <yhuberla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 08:56:27 by yhuberla          #+#    #+#             */
-/*   Updated: 2023/01/25 16:55:53 by yhuberla         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:33:29 by yhuberla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,20 @@ static int	redirs_no_quotes(t_redirs *redir, t_ms *ms, char *rl)
 		redirs_leftright(redir, ms, rl);
 	else
 		return (0);
+	return (1);
+}
+
+static int	empty_cmd(char *str)
+{
+	int	index;
+
+	index = 0;
+	while (str[index])
+	{
+		if (str[index] != ' ')
+			return (0);
+		++index;
+	}
 	return (1);
 }
 
